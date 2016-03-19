@@ -1,8 +1,11 @@
 package com.iborland.jobfinder;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -19,6 +22,8 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,20 +90,21 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_main) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_profile) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_setting) {
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_exit) {
+            DBHelper mDatabaseHelper;
+            SQLiteDatabase mSqLiteDatabase;
 
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+            mDatabaseHelper = new DBHelper(this, "userinfo.db", null, 2);
+            mSqLiteDatabase = mDatabaseHelper.getWritableDatabase();
+            mDatabaseHelper.onUpgrade(mSqLiteDatabase, 2, 2);
+            CheckLogin();
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -109,9 +115,9 @@ public class MainActivity extends AppCompatActivity
         DBHelper mDatabaseHelper;
         SQLiteDatabase mSqLiteDatabase;
 
-        mDatabaseHelper = new DBHelper(this, "userinfo.db", null, 1);
+        mDatabaseHelper = new DBHelper(this, "userinfo.db", null, 2);
         mSqLiteDatabase = mDatabaseHelper.getWritableDatabase();
-        Cursor cursor = mSqLiteDatabase.query("user", new String[] {"id"},
+        Cursor cursor = mSqLiteDatabase.query("user", new String[] {"id", "Token"},
                 null, null,
                 null, null, null) ;
         if(cursor.getCount() < 1){
@@ -121,7 +127,21 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
         }
         else{
-            Log.w("Authorition", "Пользователь авторизован");
+            Log.e("Authorition", "Пользователь авторизован");
+            cursor.moveToFirst();
+            user = new User(cursor.getInt(cursor.getColumnIndex("id")), cursor.getString(cursor.getColumnIndex("Token")));
         }
+    }
+
+    public static boolean isOnline(Context context)
+    {
+        ConnectivityManager cm =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting())
+        {
+            return true;
+        }
+        return false;
     }
 }

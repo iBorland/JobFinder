@@ -9,11 +9,13 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -82,6 +84,13 @@ public class AuthActivity extends Activity {
                     mSnackbar.show();
                     return;
                 }
+                InputMethodManager imm = (InputMethodManager) getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(enter.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                if(MainActivity.isOnline(getApplicationContext()) == false)
+                {
+                    Toast.makeText(AuthActivity.this, "Ошибка подключения к интернету", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 LoadUser loadUser = new LoadUser();
                 loadUser.execute();
             }
@@ -93,6 +102,7 @@ public class AuthActivity extends Activity {
     {
         String query;
         int id;
+        String Token;
         boolean finded = false;
 
         @Override
@@ -104,6 +114,7 @@ public class AuthActivity extends Activity {
             rl.addView(progressBar);
             text.setText("Загрузка данных\nОдну минуточку...");
             rl.addView(text);
+            progressBar.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -113,11 +124,12 @@ public class AuthActivity extends Activity {
                 DBHelper mDatabaseHelper;
                 SQLiteDatabase mSqLiteDatabase;
 
-                mDatabaseHelper = new DBHelper(getApplicationContext(), "userinfo.db", null, 1);
+                mDatabaseHelper = new DBHelper(getApplicationContext(), "userinfo.db", null, 2);
                 mSqLiteDatabase = mDatabaseHelper.getWritableDatabase();
 
                 ContentValues values = new ContentValues();
                 values.put("id", id);
+                values.put("Token", Token);
                 mSqLiteDatabase.insert("user", null, values);
                 Intent intent = new Intent(AuthActivity.this, MainActivity.class);
                 finish();
@@ -147,6 +159,7 @@ public class AuthActivity extends Activity {
                 rs = statement.executeQuery(query);
                 while (rs.next()) {
                     id = rs.getInt("id");
+                    Token = rs.getString("Token");
                     finded = true;
                     Log.e("Log", "Пользователь найден. Его ID: " + id);
                     break;
