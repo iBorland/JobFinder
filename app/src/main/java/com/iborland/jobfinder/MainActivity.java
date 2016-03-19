@@ -1,8 +1,12 @@
 package com.iborland.jobfinder;
 
+import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,6 +23,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CheckLogin();
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -97,5 +102,26 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void CheckLogin()
+    {
+        DBHelper mDatabaseHelper;
+        SQLiteDatabase mSqLiteDatabase;
+
+        mDatabaseHelper = new DBHelper(this, "userinfo.db", null, 1);
+        mSqLiteDatabase = mDatabaseHelper.getWritableDatabase();
+        Cursor cursor = mSqLiteDatabase.query("user", new String[] {"id"},
+                null, null,
+                null, null, null) ;
+        if(cursor.getCount() < 1){
+            Log.e("Authorition", "Пользователь не авторизован. Открываю авторизацию");
+            Intent intent = new Intent(MainActivity.this, AuthActivity.class);
+            finish();
+            startActivity(intent);
+        }
+        else{
+            Log.w("Authorition", "Пользователь авторизован");
+        }
     }
 }

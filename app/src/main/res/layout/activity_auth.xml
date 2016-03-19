@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@drawable/gradient_background"
+    android:id="@+id/Rel">
+
+    <EditText
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/rowLogin"
+        android:layout_marginTop="25dp"
+        android:singleLine="false"
+        android:textAlignment="center"
+        android:maxLines="1"
+        android:hint="Логин"
+        android:layout_below="@+id/text"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:id="@+id/rowPassword"
+        android:layout_marginTop="15dp"
+        android:singleLine="false"
+        android:textAlignment="center"
+        android:maxLines="1"
+        android:hint="Пароль"
+        android:layout_below="@+id/rowLogin"
+        android:layout_centerHorizontal="true"
+        android:inputType="textPassword" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Авторизация"
+        android:id="@+id/text"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp" />
+
+    <Button
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="Войти"
+        android:id="@+id/button_Enter"
+        android:layout_below="@+id/rowPassword"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:background="#52475cd4" />
+
+    <Button
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="Регистрация"
+        android:id="@+id/button_Reg"
+        android:layout_marginTop="10dp"
+        android:background="#52475cd4"
+        android:layout_below="@+id/button_Enter"
+        android:layout_centerHorizontal="true" />
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:layout_centerInParent="true"
+        android:visibility="invisible" />
+
+</RelativeLayout>
