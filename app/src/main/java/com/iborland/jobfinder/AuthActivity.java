@@ -61,6 +61,21 @@ public class AuthActivity extends Activity {
 
         snackTextView.setTextColor(getResources().getColor(R.color.colorText));
 
+        int key_reg = getIntent().getIntExtra("key", -5);
+
+        if(key_reg == 1) {
+            snackTextView.setText("Логин уже занят");
+            mSnackbar.show();
+        }
+        if(key_reg == 2) {
+            snackTextView.setText("Email уже занят");
+            mSnackbar.show();
+        }
+        if(key_reg == 5) {
+            snackTextView.setText("Аккаунт успешно зарегистрирован");
+            mSnackbar.show();
+        }
+
         enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,13 +101,20 @@ public class AuthActivity extends Activity {
                 }
                 InputMethodManager imm = (InputMethodManager) getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(enter.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                if(MainActivity.isOnline(getApplicationContext()) == false)
-                {
+                if (MainActivity.isOnline(getApplicationContext()) == false) {
                     Toast.makeText(AuthActivity.this, "Ошибка подключения к интернету", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 LoadUser loadUser = new LoadUser();
                 loadUser.execute();
+            }
+        });
+
+        reg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AuthActivity.this, RegActivity.class);
+                startActivity(intent);
             }
         });
 

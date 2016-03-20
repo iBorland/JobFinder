@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:id="@+id/Lay"
+    android:background="@drawable/gradient_background">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Text"
+        android:id="@+id/regText"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="45dp"
+        android:textAlignment="center" />
+
+    <EditText
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/regRow"
+        android:layout_below="@+id/regText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="35dp"
+        android:textAlignment="center"
+        android:hint="Вводить сюда"
+        android:maxLines="1" />
+
+    <Button
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="Далее"
+        android:id="@+id/regButton"
+        android:layout_marginTop="35dp"
+        android:background="#52475cd4"
+        android:layout_below="@+id/regRow"
+        android:layout_centerHorizontal="true" />
+</RelativeLayout>

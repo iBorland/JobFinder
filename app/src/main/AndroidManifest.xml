@@ -21,7 +21,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AuthActivity" android:noHistory="true" android:label="Авторизация"/>
+        <activity android:name=".AuthActivity" android:label="Авторизация"/>
+        <activity android:name=".RegActivity" android:noHistory="true"/>
     </application>
 
 </manifest>
