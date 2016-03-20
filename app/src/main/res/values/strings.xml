@@ -27,4 +27,14 @@
         <item>Введите ваше настоящее имя</item>
         <item>Введите вашу настоящую фамилию</item>
     </string-array>
+
+    <string-array name="categories">
+        <item>Бытовые услуги</item>
+        <item>Курьерские услуги</item>
+        <item>IT Услуги</item>
+        <item>Охранные услуги</item>
+        <item>Ремонтные услуги</item>
+        <item>Другое</item>
+    </string-array>
+
 </resources>

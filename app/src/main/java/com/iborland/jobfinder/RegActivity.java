@@ -72,7 +72,7 @@ public class RegActivity extends Activity {
         snackTextView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
         snackTextView.setTextColor(getResources().getColor(R.color.colorText));
 
-        text.setText(quests[quest-1]);
+        text.setText(quests[quest - 1]);
 
         text.startAnimation(top);
         etext.startAnimation(left);
