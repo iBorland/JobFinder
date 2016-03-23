@@ -81,7 +81,7 @@ public class AuthActivity extends AppCompatActivity {
         enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (rowLogin.length() < 6) {
+                if (rowLogin.length() < 3) {
                     snackTextView.setText("Слишком короткий логин");
                     mSnackbar.show();
                     return;

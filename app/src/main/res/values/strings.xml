@@ -36,5 +36,6 @@
         <item>Ремонтные услуги</item>
         <item>Другое</item>
     </string-array>
+    <string name="title_activity_maps">Map</string>
 
 </resources>
