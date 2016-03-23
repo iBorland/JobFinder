@@ -55,8 +55,8 @@ public class User implements Parcelable{
         protected Void doInBackground(Void... params) {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
-                connection = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/projectz", "iborland",
-                        "22599226a");
+                connection = DriverManager.getConnection("jdbc:mysql://" + MainActivity.db_ip, MainActivity.db_login,
+                        MainActivity.db_password);
                 statement = connection.createStatement();
                 rs = statement.executeQuery(query);
                 while (rs.next()) {

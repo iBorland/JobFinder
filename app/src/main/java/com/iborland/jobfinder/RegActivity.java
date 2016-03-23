@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -32,7 +34,7 @@ import java.util.regex.Pattern;
 /**
  * Created by iborland on 20.03.16.
  */
-public class RegActivity extends Activity {
+public class RegActivity extends AppCompatActivity {
 
     String[] quests;
     int quest = 1;
@@ -219,8 +221,8 @@ public class RegActivity extends Activity {
         protected Integer doInBackground(Void... params) {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
-                connection = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/projectz", "iborland",
-                        "22599226a");
+                connection = DriverManager.getConnection("jdbc:mysql://" + MainActivity.db_ip, MainActivity.db_login,
+                        MainActivity.db_password);
                 statement = connection.createStatement();
                 String query = "SELECT * FROM `users` WHERE `Login` = '" + login + "'";
                 rs = statement.executeQuery(query);

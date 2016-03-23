@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".AuthActivity" android:label="Авторизация"/>
-        <activity android:name=".RegActivity" android:noHistory="true"/>
+        <activity android:name=".RegActivity" android:noHistory="true" android:label="Регистрация"/>
     </application>
 
 </manifest>

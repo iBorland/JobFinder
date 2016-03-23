@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -25,7 +27,7 @@ import java.sql.Statement;
 /**
  * Created by iborland on 19.03.16.
  */
-public class AuthActivity extends Activity {
+public class AuthActivity extends AppCompatActivity {
 
     TextView text;
     EditText rowLogin;
@@ -175,8 +177,8 @@ public class AuthActivity extends Activity {
         protected Void doInBackground(Void... params) {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
-                connection = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/projectz", "iborland",
-                        "22599226a");
+                connection = DriverManager.getConnection("jdbc:mysql://" + MainActivity.db_ip, MainActivity.db_login,
+                        MainActivity.db_password);
                 statement = connection.createStatement();
                 rs = statement.executeQuery(query);
                 while (rs.next()) {
