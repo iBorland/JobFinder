@@ -7,4 +7,6 @@
     <color name="colorBlackText">#525252</color>
     <color name="materialBackground">#DEDBDB</color>
     <color name="white">#FFFF</color>
+    <color name="buttonbackground">#52475cd4</color>
+    <color name="RED">#FF00</color>
 </resources>

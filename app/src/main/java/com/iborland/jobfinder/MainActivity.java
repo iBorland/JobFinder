@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     static final String db_login = "user17667";
-    static final String db_ip = "62.76.74.169:3306/user17667";
+    static final String db_ip = "62.76.74.169:3306/user17667?characterEncoding=utf8";
     static final String db_password = "22599226a";
 
     User user;
@@ -100,10 +100,25 @@ public class MainActivity extends AppCompatActivity
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+                    if(user.loaded != true){
+                        Toast.makeText(MainActivity.this, "Попробуйте через несколько секунд", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    Intent intent = new Intent(MainActivity.this, AddActivity.class);
+                    intent.putExtra("User", user);
                     startActivity(intent);
                 }
             });
+        }
+
+        int addresult = getIntent().getIntExtra("AddResult", -5);
+        if(addresult != -5){
+            if(addresult == 1){
+                Snackbar.make(layout, "Ваше объявление успешно создано", Snackbar.LENGTH_LONG).show();
+            }
+            if(addresult == 0){
+                Snackbar.make(layout, "Ошибка. Ваше объявление не было создано.", Snackbar.LENGTH_LONG).show();
+            }
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -300,7 +315,7 @@ public class MainActivity extends AppCompatActivity
             for(int i = 0; i != Posts.size(); i++){
 
 
-                int padding_in_dp = 6;  // 6 dps
+                int padding_in_dp = 8;  // 6 dps
                 final float scale = getResources().getDisplayMetrics().density;
                 int padding_in_px = (int) (padding_in_dp * scale + 0.5f);
 
@@ -334,7 +349,7 @@ public class MainActivity extends AppCompatActivity
 
                 SimpleDateFormat date = new SimpleDateFormat("dd.MM.yy 'в' hh:mm");
                 long unix = (long) Integer.parseInt(Posts.get(i).createtime);
-                Date data = new Date(unix);
+                Date data = new Date(unix*1000);
                 TextView time = new TextView(getApplicationContext());
                 time.setText("Дата публикации: " + date.format(data));
                 frame.addView(time);

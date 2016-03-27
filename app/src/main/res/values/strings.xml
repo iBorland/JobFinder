@@ -37,5 +37,9 @@
         <item>Другое</item>
     </string-array>
     <string name="title_activity_maps">Map</string>
+    <string name="add_Name">Название вашего объявления:</string>
+    <string name="add_Text">Текст вашего объявления:</string>
+    <string name="add_Cost">Оплата:</string>
+    <string name="add_Adress">Адреса:</string>
 
 </resources>
