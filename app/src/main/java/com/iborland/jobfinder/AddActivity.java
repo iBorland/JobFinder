@@ -39,7 +39,7 @@ public class AddActivity extends AppCompatActivity {
     int amount = 0, category = 0;
     ArrayList<String> coords = new ArrayList<String>();
     ArrayList<String> adress = new ArrayList<String>();
-    Animation top, left, return_left;
+    Animation left, return_left, top, return_top;
     User user;
 
     Connection connection = null;
@@ -55,9 +55,10 @@ public class AddActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add);
         ll = (LinearLayout)findViewById(R.id.LinearInScroll);
         user = getIntent().getParcelableExtra("User");
-        top = AnimationUtils.loadAnimation(this, android.support.design.R.anim.abc_slide_in_top);
         left = AnimationUtils.loadAnimation(this, R.anim.slide_left);
         return_left = AnimationUtils.loadAnimation(this, R.anim.return_slide_left);
+        top = AnimationUtils.loadAnimation(this, R.anim.slide_top);
+        return_top = AnimationUtils.loadAnimation(this, R.anim.return_slide_top);
         categories = getResources().getStringArray(R.array.categories);
         pName = (EditText)findViewById(R.id.pName);
         pText = (EditText)findViewById(R.id.pText);
@@ -120,6 +121,7 @@ public class AddActivity extends AppCompatActivity {
                 createPost.execute();
             }
         });
+        button.startAnimation(top);
 
         int mapAmount = getIntent().getIntExtra("qAmount", 0);
 
@@ -225,11 +227,13 @@ public class AddActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            button.startAnimation(return_top);
             ll.removeAllViews();
             loadtext = new TextView(getApplicationContext());
             loadtext.setText("Загрузка...");
             loadtext.setTextSize(24);
             loadtext.setGravity(Gravity.CENTER);
+            loadtext.setTextColor(getResources().getColor(R.color.colorBlackText));
             ll.addView(loadtext);
 
         }

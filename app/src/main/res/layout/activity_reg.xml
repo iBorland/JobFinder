@@ -24,7 +24,10 @@
         android:layout_marginTop="35dp"
         android:textAlignment="center"
         android:hint="Вводить сюда"
-        android:maxLines="1" />
+        android:maxLines="1"
+        android:maxLength="36"
+        android:lines="1"
+        android:singleLine="true" />
 
     <Button
         android:layout_width="250dp"

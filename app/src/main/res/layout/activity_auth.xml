@@ -11,12 +11,14 @@
         android:ems="10"
         android:id="@+id/rowLogin"
         android:layout_marginTop="25dp"
-        android:singleLine="false"
+        android:singleLine="true"
         android:textAlignment="center"
         android:maxLines="1"
         android:hint="Логин"
         android:layout_below="@+id/text"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:maxLength="24"
+        android:lines="1" />
 
     <EditText
         android:layout_width="250dp"
@@ -24,13 +26,15 @@
         android:ems="10"
         android:id="@+id/rowPassword"
         android:layout_marginTop="15dp"
-        android:singleLine="false"
+        android:singleLine="true"
         android:textAlignment="center"
         android:maxLines="1"
         android:hint="Пароль"
         android:layout_below="@+id/rowLogin"
         android:layout_centerHorizontal="true"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:lines="1"
+        android:maxLength="32" />
 
     <TextView
         android:layout_width="wrap_content"
