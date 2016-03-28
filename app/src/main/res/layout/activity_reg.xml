@@ -36,7 +36,7 @@
         android:id="@+id/regButton"
         android:layout_marginTop="35dp"
         android:background="#52475cd4"
-        android:layout_below="@+id/regRow"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/regRow" />
 
 </RelativeLayout>

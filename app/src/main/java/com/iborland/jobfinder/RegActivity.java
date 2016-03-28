@@ -237,8 +237,8 @@ public class RegActivity extends AppCompatActivity {
                 long date = System.currentTimeMillis() / 1000;
                 String Token = getHash(password);
                 query = "INSERT INTO `users` (`Login`, `Password`,`Email`,`Name`,`Surname`,`DateRegistration`" +
-                        ",`Token`) VALUES ('" + login + "', '" + password + "','" + email + "'," +
-                        "'" + name + "','" + surname + "','" + date + "','" + Token + "')";
+                        ",`Token`,`phone`) VALUES ('" + login + "', '" + password + "','" + email + "'," +
+                        "'" + name + "','" + surname + "','" + date + "','" + Token + "', 'none')";
                 Log.e("Запрос", query);
                 statement.executeUpdate(query);
                 return 5;

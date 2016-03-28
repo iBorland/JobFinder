@@ -43,6 +43,14 @@
             android:name=".AddActivity"
             android:label="Добавление объявления"
             android:windowSoftInputMode="adjustNothing" />
+
+        <activity
+            android:name=".PostActivity"
+            android:label="Объявление"/>
+
+        <activity
+            android:name=".PhoneActivity"
+            android:label="Добавление номера"/>
     </application>
 
 </manifest>

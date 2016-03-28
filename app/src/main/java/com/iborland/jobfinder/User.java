@@ -32,6 +32,8 @@ public class User implements Parcelable{
     int ad_amount;
     String regdata;
     String token;
+    String phone;
+
     boolean loaded = false;
 
     User(int db_id, String db_buffer){
@@ -71,6 +73,7 @@ public class User implements Parcelable{
                     ad_amount = rs.getInt("AmountPosts");
                     regdata = rs.getString("DateRegistration");
                     token = rs.getString("Token");
+                    phone = rs.getString("phone");
                     if(!token.equals(buffer_Token))
                     {
                         Log.e("Error:", "Ошибка. Несоответствие токена");
@@ -110,6 +113,7 @@ public class User implements Parcelable{
         parcel.writeInt(ad_amount);
         parcel.writeString(regdata);
         parcel.writeString(token);
+        parcel.writeString(phone);
 
     }
 
@@ -142,6 +146,7 @@ public class User implements Parcelable{
         ad_amount = parcel.readInt();
         regdata = parcel.readString();
         token = parcel.readString();
+        phone = parcel.readString();
         Log.e("Parcel", "User " + login + "был распакован из Parcel");
         loaded = true;
     }

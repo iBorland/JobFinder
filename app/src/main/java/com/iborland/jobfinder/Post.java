@@ -26,6 +26,9 @@ public class Post implements Parcelable{
     int category;
     String createtime;
     boolean loaded = false;
+    String[] Adresses;
+    String[] Coords;
+    int amount;
 
     int buffer_id;
 
@@ -68,6 +71,14 @@ public class Post implements Parcelable{
                     status = rs.getInt("status");
                     category = rs.getInt("Category");
                     createtime = rs.getString("createtime");
+                    String buffer_adresses = rs.getString("Adresses");
+                    String buffer_coords = rs.getString("Coordinates");
+                    amount = rs.getInt("Amount");
+                    if(buffer_adresses != null) {
+                        Adresses = buffer_adresses.split("split");
+                        Coords = buffer_adresses.split("split");
+                    }
+
                     loaded = true;
                     Log.e("Loaded", "post " + postName + " был загружен");
                     break;
@@ -100,6 +111,12 @@ public class Post implements Parcelable{
         parcel.writeInt(status);
         parcel.writeInt(category);
         parcel.writeString(createtime);
+        parcel.writeInt(amount);
+        if(amount > 0)
+        {
+            parcel.writeStringArray(Adresses);
+            parcel.writeStringArray(Coords);
+        }
 
     }
 
@@ -130,7 +147,15 @@ public class Post implements Parcelable{
         status = parcel.readInt();
         category = parcel.readInt();
         createtime = parcel.readString();
-        Log.e("Parcel", "Post " + postText + "был распакован из Parcel");
+        amount = parcel.readInt();
+        if(amount > 0) {
+            Adresses = new String[amount];
+            Coords = new String[amount];
+            parcel.readStringArray(Adresses);
+            parcel.readStringArray(Coords);
+        }
+
+        Log.e("Parcel", "Post был распакован из Parcel");
         loaded = true;
     }
 

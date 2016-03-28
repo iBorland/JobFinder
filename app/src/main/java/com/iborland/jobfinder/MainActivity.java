@@ -40,6 +40,13 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -81,6 +88,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         CheckLogin();
+
         setContentView(R.layout.activity_main);
         linearLayout = (LinearLayout)findViewById(R.id.linear);
         scrollView = (ScrollView)findViewById(R.id.scrollView);
@@ -95,6 +103,7 @@ public class MainActivity extends AppCompatActivity
         message = (TextView)findViewById(R.id.message);
         LoadMenu();
 
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         if (fab != null) {
             fab.setOnClickListener(new View.OnClickListener() {
@@ -102,6 +111,13 @@ public class MainActivity extends AppCompatActivity
                 public void onClick(View view) {
                     if(user.loaded != true){
                         Toast.makeText(MainActivity.this, "Попробуйте через несколько секунд", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    Log.e("test", user.phone);
+                    if(user.phone.equals("none")){
+                        Intent intent = new Intent(MainActivity.this, PhoneActivity.class);
+                        intent.putExtra("User", user);
+                        startActivity(intent);
                         return;
                     }
                     Intent intent = new Intent(MainActivity.this, AddActivity.class);
@@ -169,6 +185,7 @@ public class MainActivity extends AppCompatActivity
                 Toast.makeText(MainActivity.this, "Обновление ещё не завершено", Toast.LENGTH_SHORT).show();
                 return super.onOptionsItemSelected(item);
             }
+            Posts.clear();
             men.setGroupVisible(R.id.group, false);
             loadCategory = new LoadCategory();
             loadCategory.execute();
@@ -321,7 +338,15 @@ public class MainActivity extends AppCompatActivity
 
                 FrameLayout frame = new FrameLayout(getApplicationContext());
                 frame.setBackgroundResource(android.R.drawable.dialog_holo_light_frame);
-                frame.setId(Posts.get(i).id);
+                frame.setId(i);
+                frame.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(MainActivity.this, PostActivity.class);
+                        intent.putExtra("Post", Posts.get(v.getId()));
+                        startActivity(intent);
+                    }
+                });
 
                 String text = "";
                 if(Posts.get(i).postText.length() > 300) {
@@ -367,4 +392,9 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        CheckLogin();
+    }
 }
