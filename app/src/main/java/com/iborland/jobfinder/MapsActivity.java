@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -46,7 +47,7 @@ import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     Marker mark;
@@ -57,6 +58,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     int amount;
     User user;
 
+    int type = 0;
+    LatLng startLatLng;
+    String adress = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +70,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        type = getIntent().getIntExtra("Type", 0);
+
+        if(type == 5){
+            startLatLng = new LatLng(getIntent().getDoubleExtra("Lat", 0),getIntent().getDoubleExtra("Lng", 0));
+            adress = getIntent().getStringExtra("Adress");
+            return;
+        }
 
         user = getIntent().getParcelableExtra("User");
         name = getIntent().getStringExtra("Name");
@@ -84,6 +97,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.setMyLocationEnabled(true);
+        UiSettings ui = mMap.getUiSettings();
+        ui.setZoomGesturesEnabled(true);
+        ui.setZoomControlsEnabled(true);
+
+        if(type == 5){
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startLatLng, 12));
+            Marker point = mMap.addMarker(new MarkerOptions()
+                                            .position(startLatLng)
+                                            .title("Указанный адрес:")
+                                            .snippet(adress));
+            return;
+        }
 
         LatLng startPos = new LatLng(51.66177076370748,39.2021544277668);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startPos, 12));
@@ -93,7 +119,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                if(getAdress != null && getAdress.getStatus() == AsyncTask.Status.RUNNING){
+                if (getAdress != null && getAdress.getStatus() == AsyncTask.Status.RUNNING) {
                     Toast.makeText(MapsActivity.this, "В данный момент уже запущен поиск адреса", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -128,10 +154,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        mMap.setMyLocationEnabled(true);
-        UiSettings ui = mMap.getUiSettings();
-        ui.setZoomGesturesEnabled(true);
-        ui.setZoomControlsEnabled(true);
     }
 
     private void CamInMyPos() {
@@ -271,6 +293,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onBackPressed() {
+        if(type == 5)
+        {
+            super.onBackPressed();
+            return;
+        }
         Intent intent = new Intent(MapsActivity.this, AddActivity.class);
         intent.putExtra("qName", name);
         intent.putExtra("qText", text);
@@ -288,4 +315,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         finish();
         startActivity(intent);
     }
+
 }

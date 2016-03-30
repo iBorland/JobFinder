@@ -22,6 +22,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Random;
 
@@ -49,6 +50,7 @@ public class PhoneActivity extends AppCompatActivity {
     User User;
     Connection connection = null;
     Statement statement = null;
+    ResultSet rs = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +83,8 @@ public class PhoneActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.e("TEST", "Нажато");
+                if(row.getText().toString() == null) return;
                 if(stape == 1){
                     if(sendSMS != null && sendSMS.getStatus() == AsyncTask.Status.RUNNING){
                         snackTextView.setText("Сообщение уже отправляется");
@@ -104,12 +108,12 @@ public class PhoneActivity extends AppCompatActivity {
                         return;
                     }
                     if(!row.getText().toString().equals(code) && row.getText() != null){
-                        anyText.setText("Неверное введён код");
+                        anyText.setText("Неверно введён код");
                         anyText.setTextColor(getResources().getColor(R.color.RED));
                         rel.addView(anyText);
                         anyText.startAnimation(left);
 
-                        snackTextView.setText("Неверное введён код");
+                        snackTextView.setText("Неверно введён код");
                         mSnackbar.show();
                         return;
                     }
@@ -123,18 +127,25 @@ public class PhoneActivity extends AppCompatActivity {
     class SendSMS extends AsyncTask<Void, Void, Integer>{
         @Override
         protected Integer doInBackground(Void... params) {
-            String adr = "http://sms.ru/sms/send?api_id=8530CA60-A218-33A7-4FBB-BE25D111391C&to=" + number + "&text=Registration+code:+" + code;
-            try {
-                URLConnection conn = new URL(adr).openConnection();
-                conn.setRequestProperty("Accept-Charset", "UTF-8");
 
-                String result = "";
-                String line;
-                BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                while ((line = rd.readLine()) != null) {
-                    result += line;
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+                connection = DriverManager.getConnection("jdbc:mysql://" + MainActivity.db_ip, MainActivity.db_login,
+                        MainActivity.db_password);
+                statement = connection.createStatement();
+                String query = "SELECT * FROM `users` WHERE `phone` = '" + number + "'";
+                rs = statement.executeQuery(query);
+                while(rs.next()){
+                    return 1;
                 }
-                rd.close();
+
+                APILoader api = new APILoader("http://sms.ru/sms/send");
+
+                String[] parametres = {"api_id", "to", "text", "from"};
+                String[] keys = {"8530CA60-A218-33A7-4FBB-BE25D111391C", number, "Registation code: " + code, "JobFinder"};
+
+                api.addParams(parametres, keys);
+                String result = api.execute();
 
                 String res_code = "" + result.charAt(0) + result.charAt(1) + result.charAt(2);
                 return Integer.parseInt(res_code);
@@ -148,6 +159,14 @@ public class PhoneActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Integer aVoid) {
             super.onPostExecute(aVoid);
+            if(aVoid == 1){
+                Toast.makeText(PhoneActivity.this, "Данный номер телефона уже используется", Toast.LENGTH_SHORT).show();
+                phoneText.setText(getResources().getText(R.string.phone_text));
+                rel.addView(anyText);
+                row.setEnabled(true);
+                row.setCursorVisible(true);
+                return;
+            }
             if(aVoid == 100){
                 stape = 2;
                 phoneText.setText("СМС с кодом успешно отправлено на номер +" + number + "\n" +
@@ -155,6 +174,7 @@ public class PhoneActivity extends AppCompatActivity {
                 row.setEnabled(true);
                 row.setCursorVisible(true);
                 row.setText("");
+                row.setHint("Код из СМС");
             }
             else{
                 phoneText.setText("Ошибка отправки кода. Попробуйте позже.\n\nКод ошибки: " + aVoid);

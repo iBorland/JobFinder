@@ -1,12 +1,17 @@
 package com.iborland.jobfinder;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -83,6 +88,23 @@ public class PostActivity extends AppCompatActivity {
                 btn.setBackgroundColor(getResources().getColor(R.color.buttonbackground));
                 lin.addView(btn);
                 btn.startAnimation(left);
+                btn.setId(i);
+
+                btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        String c = String.copyValueOf(Post.Coords[v.getId()].toCharArray(), 10, 35);
+                        double lat = (double) Double.parseDouble(String.copyValueOf(c.toCharArray(), 0, 17));
+                        double lng = (double) Double.parseDouble(String.copyValueOf(c.toCharArray(), 18, 17));
+                        Intent intent = new Intent(PostActivity.this, MapsActivity.class);
+                        intent.putExtra("Lat", lat);
+                        intent.putExtra("Lng", lng);
+                        intent.putExtra("Type", 5);
+                        intent.putExtra("Adress", Post.Adresses[v.getId()]);
+                        startActivity(intent);
+                    }
+                });
             }
         }
 

@@ -76,7 +76,7 @@ public class Post implements Parcelable{
                     amount = rs.getInt("Amount");
                     if(buffer_adresses != null) {
                         Adresses = buffer_adresses.split("split");
-                        Coords = buffer_adresses.split("split");
+                        Coords = buffer_coords.split("split");
                     }
 
                     loaded = true;

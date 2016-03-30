@@ -5,7 +5,7 @@
     <group android:id="@+id/group">
     <item
         android:id="@+id/item1"
-        android:icon="@drawable/obn"
+        android:icon="@android:drawable/stat_notify_sync"
         android:title="Обновить"
         app:showAsAction="always"/>
     </group>

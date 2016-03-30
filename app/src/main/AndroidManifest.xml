@@ -37,7 +37,7 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
+            android:label="Просмотр карты"></activity>
 
         <activity
             android:name=".AddActivity"
@@ -50,7 +50,8 @@
 
         <activity
             android:name=".PhoneActivity"
-            android:label="Добавление номера"/>
+            android:label="Добавление номера"
+            android:windowSoftInputMode="adjustPan"/>
     </application>
 
 </manifest>
