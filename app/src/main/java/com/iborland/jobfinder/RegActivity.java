@@ -2,6 +2,7 @@ package com.iborland.jobfinder;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -18,8 +19,11 @@ import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -36,185 +40,190 @@ import java.util.regex.Pattern;
  */
 public class RegActivity extends AppCompatActivity {
 
-    String[] quests;
-    int quest = 1;
-    ArrayList<String> answers = new ArrayList<String>();
-    TextView text;
-    EditText etext;
-    Button button;
-    boolean button_showed;
-    RelativeLayout rel;
+
     Animation top;
     Animation left;
     Animation return_left;
 
-    Snackbar mSnackbar;
-    View snackbarView;
-    TextView snackTextView;
+    EditText rowName, rowSurname, rowLogin, rowPassword, rowAge;
+    TextView rowCity;
+    Button btnNext;
+    EditText rowCityNew;
+
+    String[] citys;
+
+    RelativeLayout rel;
+    LinearLayout lin;
+    ScrollView scrollView;
     Connection connection = null;
     Statement statement = null;
     ResultSet rs = null;
+
+    boolean default_city = true;
+    boolean city_select = false;
+    ProgressDialog progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reg);
-        quests = getResources().getStringArray(R.array.reg_quests);
-        text = (TextView)findViewById(R.id.regText);
-        etext = (EditText)findViewById(R.id.regRow);
-        button = (Button)findViewById(R.id.regButton);
-        rel = (RelativeLayout)findViewById(R.id.Lay);
-        rel.removeView(button);
-        button_showed = false;
+        citys = getResources().getStringArray(R.array.citys);
+
+        rel = (RelativeLayout)findViewById(R.id.Rel);
+        scrollView = (ScrollView)findViewById(R.id.scrollView4);
+        lin = (LinearLayout)findViewById(R.id.Linnnn);
+
+        rowName = (EditText)findViewById(R.id.rowName);
+        rowSurname = (EditText)findViewById(R.id.rowSurname);
+        rowLogin = (EditText)findViewById(R.id.rowLogin);
+        rowPassword = (EditText)findViewById(R.id.rowPassword);
+        rowAge = (EditText)findViewById(R.id.rowAge);
+        rowCity = (TextView)findViewById(R.id.rowCity);
+        btnNext = (Button)findViewById(R.id.BtnNext);
+
         top = AnimationUtils.loadAnimation(this, android.support.design.R.anim.abc_slide_in_top);
         left = AnimationUtils.loadAnimation(this, R.anim.slide_left);
         return_left = AnimationUtils.loadAnimation(this, R.anim.return_slide_left);
-        mSnackbar = Snackbar.make(rel, "Слишком короткий логин", Snackbar.LENGTH_LONG);
-        snackbarView = mSnackbar.getView();
-        snackTextView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
-        snackTextView.setTextColor(getResources().getColor(R.color.colorText));
 
-        text.setText(quests[quest - 1]);
+        lin.setBaselineAlignedChildIndex(5);
 
-        text.startAnimation(top);
-        etext.startAnimation(left);
-
-        etext.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (s.length() >= 3 && button_showed == false) {
-                    rel.addView(button);
-                    button_showed = true;
-                    button.startAnimation(left);
-                }
-                if (s.length() < 3 && button_showed == true) {
-                    button.startAnimation(return_left);
-                    rel.removeView(button);
-                    button_showed = false;
-                }
-            }
-        });
-
-        button.setOnClickListener(new View.OnClickListener() {
+        rowCity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(etext.length() < 3){
-                    snackTextView.setText("Слишком короткий текст");
-                    mSnackbar.show();
-                    return;
-                }
-                if(etext.length() > 64){
-                    snackTextView.setText("Слишком длинный текст");
-                    mSnackbar.show();
-                    return;
-                }
+                if (default_city == true) {
+                    android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(RegActivity.this);
+                    builder.setTitle("Выберите ваш город:");
+                    builder.setCancelable(false);
+                    builder.setItems(citys, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (which == (citys.length - 1)) {
+                                default_city = false;
+                                dialog.cancel();
+                                lin.removeView(rowCity);
+                                rowCityNew = new EditText(getApplicationContext());
+                                rowCityNew.setHint("Введите ваш город");
 
-                NextQuest();
+                                int padding_in_dp_16 = 16;
+                                int padding_in_dp_10 = 10;
+                                final float scale = getResources().getDisplayMetrics().density;
+                                int padding_in_px_16 = (int) (padding_in_dp_16 * scale + 0.5f);
+                                int padding_in_px_10 = (int) (padding_in_dp_10 * scale + 0.5f);
+                                rowCityNew.setTextColor(getResources().getColor(R.color.colorBlackText));
+                                rowCityNew.setPadding(padding_in_px_16, padding_in_px_10, padding_in_px_16, padding_in_px_16);
+                                rowCityNew.setMaxLines(1);
+                                rowCityNew.setSingleLine();
+                                lin.addView(rowCityNew);
+                            } else {
+                                rowCity.setText(citys[which]);
+                                city_select = true;
+                                dialog.cancel();
+                            }
+                        }
+                    });
+                    android.support.v7.app.AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
             }
         });
-    }
 
-    public void NextQuest(){
-        if(quest == 1)
-        {
-            if(!LoginValidator(etext.getText().toString())){
-                android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(RegActivity.this);
-                builder.setTitle("Ошибка");
-                builder.setMessage("Ошибка ввода логина.\n\nЛогин может состоять только из символов" +
-                        "латинского алфавита.\n\nДлинна логина не может быть меньше 3-ёх и более 16-и символов");
-                builder.setCancelable(false);
-                builder.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(rowName.getText().length() < 3){
+                    ErrorMessage("Вы ввели слишком короткое имя\n\n" +
+                            "Имя пользователя не может быть короче 3-ёх символов и длиннее 32-ух");
+                    return;
+                }
+                if(rowName.getText().length() > 31){
+                    ErrorMessage("Вы ввели слишком длинное имя\n\n" +
+                            "Имя пользователя не может быть короче 3-ёх символов и длиннее 32-ух");
+                    return;
+                }
+                if(rowSurname.getText().length() < 3){
+                    ErrorMessage("Вы ввели слишком короткую фамилию\n\n" +
+                            "Фамилия пользователя не может быть короче 3-ёх символов и длиннее 32-ух");
+                    return;
+                }
+                if(rowSurname.getText().length() > 31){
+                    ErrorMessage("Вы ввели слишком длинную фамилию\n\n" +
+                            "Фамилия пользователя не может быть короче 3-ёх символов и длиннее 32-ух");
+                    return;
+                }
+                if(!LoginValidator(rowLogin.getText().toString())){
+                    ErrorMessage("Вы введи некорректный логин.\n\n" +
+                            "Логин может состоять только из символов латинского алфавита, " +
+                            "содержать цифры и символ подчёркивания.\n\n" +
+                            "Логин не может быть короче 3-ёх символов и длиннее 32-и символов");
+                    return;
+                }
+                if(!PasswordValidator(rowPassword.getText().toString())){
+                    ErrorMessage("Вы введи некорректный пароль.\n\n" +
+                            "Пароль может состоять только из символов латинского алфавита, " +
+                            "содержать цифры и символ подчёркивания.\n\n" +
+                            "Пароль не может быть короче 6-и символов и длиннее 16 символов");
+                    return;
+                }
+                int age = Integer.parseInt(rowAge.getText().toString());
+                if(age < 16){
+                    ErrorMessage("Ваш возраст не позволяет вам пользоваться услугами нашего приложения." +
+                            "\n\nНам очень жаль :(");
+                    return;
+                }
+                if(age >= 70){
+                    ErrorMessage("Да ну, не верю что Вам столько лет ;)");
+                    return;
+                }
+                if(default_city == true)
+                {
+                    if(city_select != true){
+                        ErrorMessage("Нам нужно знать Ваш город, без него мы не сможем подобрать вам интересные услуги.\n\n" +
+                                "Пожалуйста, укажите ваш город");
+                        return;
                     }
-                });
-                android.support.v7.app.AlertDialog dialog = builder.create();
-                dialog.show();
-                return;
-            }
-        }
-        if(quest == 2)
-        {
-            if(!PasswordValidator(etext.getText().toString())){
-                android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(RegActivity.this);
-                builder.setTitle("Ошибка");
-                builder.setMessage("Ошибка ввода пароля.\n\nПароль может состоять только из символов" +
-                        "латинского алфавита.\n\nДлинна пароля не может быть меньше 6-и и более 16-и символов");
-                builder.setCancelable(false);
-                builder.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
+                }
+                else{
+                    if(rowCityNew.getText().length() < 3){
+                        ErrorMessage("Слишком короткое название города.\nТаких не бывает.");
+                        return;
                     }
-                });
-                android.support.v7.app.AlertDialog dialog = builder.create();
-                dialog.show();
-                return;
-            }
-        }
-        if(quest == 3)
-        {
-            if(!EmailValidator(etext.getText().toString())){
-                android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(RegActivity.this);
-                builder.setTitle("Ошибка");
-                builder.setMessage("Ошибка ввода адреса электронной почты." +
-                        "\n\nEmail может состоять только из символов" +
-                        "латинского алфавита и обязательно должна содержать символ @.");
-                builder.setCancelable(false);
-                builder.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
+                    if(rowCityNew.getText().length() > 63){
+                        ErrorMessage("Слишком длинное название города.");
+                        return;
                     }
-                });
-                android.support.v7.app.AlertDialog dialog = builder.create();
-                dialog.show();
-                return;
+                    city_select = true;
+                }
+                CreateUser createUser = new CreateUser();
+                createUser.execute();
             }
-        }
-        button.startAnimation(return_left);
-        rel.removeView(button);
-        button_showed = false;
-        quest++;
-        if(quest <= quests.length){
-            answers.add(etext.getText().toString());
-            etext.setText("");
-            text.setText(quests[quest-1]);
-        }
-        else{
-            answers.add(etext.getText().toString());
-            InputMethodManager imm = (InputMethodManager) getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(button.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-            rel.removeAllViews();
-            rel.addView(text);
-            text.setText("Загрузка данных");
-            CreateUser createUser = new CreateUser();
-            createUser.execute();
-        }
+        });
+
     }
 
     class CreateUser extends AsyncTask<Void, Void, Integer>
     {
-        String name, surname, login, password, email;
+        String name, surname, login, password, city;
+        int age;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            login = answers.get(0);
-            password = answers.get(1);
-            email = answers.get(2);
-            name = answers.get(3);
-            surname = answers.get(4);
+            if(city_select == false){
+                ErrorMessage("Нам нужно знать Ваш город, без него мы не сможем подобрать вам интересные услуги.\n\n" +
+                        "Пожалуйста, укажите ваш город");
+                return;
+            }
+            login = rowLogin.getText().toString();
+            password = rowPassword.getText().toString();
+            name = rowName.getText().toString();
+            surname = rowSurname.getText().toString();
+            age = Integer.parseInt(rowAge.getText().toString());
+            if(default_city == true)
+                city = rowCity.getText().toString();
+            else
+                city = rowCityNew.getText().toString();
+            progress = new ProgressDialog(RegActivity.this);
+            progress.setMessage("Регистрируем вас ;)");
+            progress.show();
         }
 
         @Override
@@ -229,16 +238,11 @@ public class RegActivity extends AppCompatActivity {
                 while(rs.next()){
                     return 1;
                 }
-                query = "SELECT * FROM `users` WHERE `Email` = '" + email + "'";
-                rs = statement.executeQuery(query);
-                while(rs.next()){
-                    return 2;
-                }
                 long date = System.currentTimeMillis() / 1000;
                 String Token = getHash(password);
-                query = "INSERT INTO `users` (`Login`, `Password`,`Email`,`Name`,`Surname`,`DateRegistration`" +
-                        ",`Token`,`phone`) VALUES ('" + login + "', '" + password + "','" + email + "'," +
-                        "'" + name + "','" + surname + "','" + date + "','" + Token + "', 'none')";
+                query = "INSERT INTO `users` (`Login`, `Password`,`City`,`Name`,`Surname`,`DateRegistration`" +
+                        ",`Token`,`phone`,`Age`) VALUES ('" + login + "', '" + password + "','" + city + "'," +
+                        "'" + name + "','" + surname + "','" + date + "','" + Token + "', 'none', '" + age + "')";
                 Log.e("Запрос", query);
                 statement.executeUpdate(query);
                 return 5;
@@ -252,6 +256,12 @@ public class RegActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
+            if(integer == 1)
+            {
+                progress.cancel();
+                ErrorMessage("Введённый вами логин уже занят.\n\nНам очень жаль :(");
+                return;
+            }
             Intent intent = new Intent(RegActivity.this, AuthActivity.class);
             intent.putExtra("key", integer);
             finish();
@@ -265,12 +275,10 @@ public class RegActivity extends AppCompatActivity {
         StringBuffer  hexString = new StringBuffer();
 
         try {
-
             md5 = MessageDigest.getInstance("md5");
 
             md5.reset();
             md5.update(str.getBytes());
-
 
             byte messageDigest[] = md5.digest();
 
@@ -286,7 +294,7 @@ public class RegActivity extends AppCompatActivity {
         return hexString.toString();
     }
 
-    public boolean EmailValidator(String str){
+    /*public boolean EmailValidator(String str){
         Pattern pattern;
         Matcher matcher;
         String EMAIL_PATTERN =
@@ -295,12 +303,12 @@ public class RegActivity extends AppCompatActivity {
         pattern = Pattern.compile(EMAIL_PATTERN);
         matcher = pattern.matcher(str);
         return matcher.matches();
-    }
+    }*/
 
     public boolean LoginValidator(String str){
         Pattern pattern;
         Matcher matcher;
-        String LOGIN_PATTERN = "^[A-Za-z0-9_-]{3,16}$";
+        String LOGIN_PATTERN = "^[A-Za-z0-9_-]{3,32}$";
         pattern = Pattern.compile(LOGIN_PATTERN);
         matcher = pattern.matcher(str);
         return matcher.matches();
@@ -334,6 +342,21 @@ public class RegActivity extends AppCompatActivity {
                 Intent intent = new Intent(RegActivity.this, AuthActivity.class);
                 finish();
                 startActivity(intent);
+            }
+        });
+        android.support.v7.app.AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    public void ErrorMessage(String message){
+        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(RegActivity.this);
+        builder.setTitle("Ошибка");
+        builder.setMessage(message);
+        builder.setCancelable(false);
+        builder.setPositiveButton("Закрыть", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
             }
         });
         android.support.v7.app.AlertDialog dialog = builder.create();

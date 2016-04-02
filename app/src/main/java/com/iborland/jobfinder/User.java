@@ -48,13 +48,20 @@ public class User implements Parcelable{
         buffer_Token = db_buffer;
         query = "SELECT * FROM `users` WHERE `id` = '" + db_id + "'";
         LoadUser loadUser = new LoadUser();
-        loadUser.execute();
+        try{
+            loadUser.join(30000);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
-    class LoadUser extends AsyncTask<Void, Void, Void>
+    class LoadUser extends Thread
     {
-        @Override
-        protected Void doInBackground(Void... params) {
+
+        public LoadUser(){ start(); }
+
+        public void run() {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 connection = DriverManager.getConnection("jdbc:mysql://" + MainActivity.db_ip, MainActivity.db_login,
@@ -77,7 +84,7 @@ public class User implements Parcelable{
                     if(!token.equals(buffer_Token))
                     {
                         Log.e("Error:", "Ошибка. Несоответствие токена");
-                        return null;
+                        return;
                     }
                     loaded = true;
                     Log.e("Loaded", "User " + login + " был загружен");
@@ -87,7 +94,7 @@ public class User implements Parcelable{
             catch (Exception e){
                 Log.e("Error", "Ошибка загрузки БД ", e);
             }
-            return null;
+            return;
         }
     }
 

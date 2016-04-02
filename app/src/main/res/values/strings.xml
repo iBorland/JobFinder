@@ -20,12 +20,28 @@
         completions."
     </string>
 
-    <string-array name="reg_quests">
-        <item>Введите ваш будующий логин</item>
-        <item>Введите ваш будующий пароль</item>
-        <item>Введите ваш адрес электронной почты</item>
-        <item>Введите ваше настоящее имя</item>
-        <item>Введите вашу настоящую фамилию</item>
+    <string-array name="citys">
+        <item>Москва</item>
+        <item>Санкт-Петербург</item>
+        <item>Новосибирск</item>
+        <item>Екатеринбург</item>
+        <item>Нижний Новгород</item>
+        <item>Казань</item>
+        <item>Челябинск</item>
+        <item>Омск</item>
+        <item>Самара</item>
+        <item>Ростов-на-Дону</item>
+        <item>Уфа</item>
+        <item>Красноярск</item>
+        <item>Пермь</item>
+        <item>Воронеж</item>
+        <item>Волгоград</item>
+        <item>Краснодар</item>
+        <item>Саратов</item>
+        <item>Тюмень</item>
+        <item>Тольятти</item>
+        <item>Ижевск</item>
+        <item>Другой город</item>
     </string-array>
 
     <string-array name="categories">

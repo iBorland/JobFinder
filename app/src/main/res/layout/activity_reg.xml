@@ -4,39 +4,163 @@
     android:id="@+id/Lay"
     android:background="@drawable/gradient_background">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Text"
-        android:id="@+id/regText"
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/scrollView4"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="45dp"
-        android:textAlignment="center" />
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/BtnNext">
 
-    <EditText
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/regRow"
-        android:layout_below="@+id/regText"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="35dp"
-        android:textAlignment="center"
-        android:hint="Вводить сюда"
-        android:maxLines="1"
-        android:maxLength="36"
-        android:lines="1"
-        android:singleLine="true" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/Linnnn">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Ваше имя:"
+                android:id="@+id/textView8"
+                android:textSize="20dp"
+                android:paddingLeft="16dp"
+                android:paddingTop="10dp" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/rowName"
+                android:hint="Ваше имя"
+                android:layout_marginLeft="16dp"
+                android:maxLength="32"
+                android:maxLines="1"
+                android:lines="1"
+                android:singleLine="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Ваша фамилия:"
+                android:id="@+id/textView9"
+                android:textSize="20dp"
+                android:paddingLeft="16dp"
+                android:paddingTop="10dp"
+                android:paddingRight="16dp" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/rowSurname"
+                android:layout_marginLeft="16dp"
+                android:hint="Ваша фамилия"
+                android:maxLines="1"
+                android:maxLength="32"
+                android:lines="1"
+                android:singleLine="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Ваш логин:"
+                android:id="@+id/textView10"
+                android:paddingTop="10dp"
+                android:paddingRight="16dp"
+                android:paddingLeft="16dp"
+                android:textSize="20dp" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/rowLogin"
+                android:layout_marginLeft="16dp"
+                android:hint="Ваш логин"
+                android:maxLength="32"
+                android:maxLines="1"
+                android:lines="1"
+                android:singleLine="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Ваш пароль:"
+                android:id="@+id/textView11"
+                android:paddingTop="10dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:textSize="20dp" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/rowPassword"
+                android:layout_marginLeft="16dp"
+                android:hint="Ваш пароль"
+                android:lines="1"
+                android:maxLines="1"
+                android:maxLength="32"
+                android:singleLine="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Ваш возраст:"
+                android:id="@+id/textView12"
+                android:paddingLeft="16dp"
+                android:paddingTop="10dp"
+                android:paddingRight="16dp"
+                android:textSize="20dp" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/rowAge"
+                android:layout_marginLeft="16dp"
+                android:hint="Ваш возраст"
+                android:lines="1"
+                android:maxLength="32"
+                android:maxLines="1"
+                android:singleLine="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Ваш город:"
+                android:id="@+id/textView13"
+                android:paddingLeft="16dp"
+                android:paddingTop="10dp"
+                android:paddingRight="16dp"
+                android:textSize="20dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Нажмите для выбора города"
+                android:id="@+id/rowCity"
+                android:paddingLeft="16dp"
+                android:paddingTop="5dp"
+                android:paddingRight="36dp"
+                android:paddingBottom="16dp" />
+
+        </LinearLayout>
+    </ScrollView>
 
     <Button
-        android:layout_width="250dp"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Далее"
-        android:id="@+id/regButton"
-        android:layout_marginTop="35dp"
-        android:background="#52475cd4"
+        android:id="@+id/BtnNext"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/regRow" />
+        android:background="@color/buttonbackground" />
 
 </RelativeLayout>
