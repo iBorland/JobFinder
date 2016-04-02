@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -25,15 +26,23 @@ public class PostActivity extends AppCompatActivity {
     LinearLayout lin;
     Post Post;
     Animation top, left, return_left;
+    int padding_in_dp = 10;
+    int padding_in_px;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
+
+        final float scale = getResources().getDisplayMetrics().density;
+        padding_in_px = (int) (padding_in_dp * scale + 0.5f);
+
         lin = (LinearLayout)findViewById(R.id.LinearinPost);
         sName = (TextView)findViewById(R.id.sName);
         sText = (TextView)findViewById(R.id.sText);
+        sText.setTextColor(getResources().getColor(R.color.colorBlackText));
         sCost = (TextView)findViewById(R.id.sCost);
+        sCost.setTextColor(getResources().getColor(R.color.colorBlackText));
         sDate = (TextView)findViewById(R.id.sDate);
         sAdresses = (TextView)findViewById(R.id.sAdresses);
         ssText = (TextView)findViewById(R.id.ssText);
@@ -64,7 +73,7 @@ public class PostActivity extends AppCompatActivity {
         ssText.startAnimation(left);
         ssCost.startAnimation(left);
 
-        SimpleDateFormat date = new SimpleDateFormat("dd.MM.yy 'в' hh:mm");
+        SimpleDateFormat date = new SimpleDateFormat("dd.MM.yy 'в' HH:mm");
         long unix = (long) Integer.parseInt(Post.createtime);
         Date data = new Date(unix*1000);
 
@@ -76,10 +85,6 @@ public class PostActivity extends AppCompatActivity {
         if(Post.amount > 0){
             lin.addView(sAdresses);
             for(int i = 0; i != Post.amount; i++){
-
-                int padding_in_dp = 10;  // 6 dps
-                final float scale = getResources().getDisplayMetrics().density;
-                int padding_in_px = (int) (padding_in_dp * scale + 0.5f);
 
                 Button btn = new Button(this);
                 btn.setText("Адрес №" + (i + 1) + ": " + Post.Adresses[i]);
@@ -107,6 +112,32 @@ public class PostActivity extends AppCompatActivity {
                 });
             }
         }
+
+        TextView info_Header = new TextView(PostActivity.this);
+        info_Header.setText("Информация о заказчике");
+        info_Header.setTextColor(getResources().getColor(R.color.colorBlackText));
+        info_Header.setTextSize(20);
+        info_Header.setGravity(Gravity.CENTER);
+        info_Header.setPadding(padding_in_px, padding_in_px, padding_in_px, padding_in_px);
+        lin.addView(info_Header);
+
+        TextView login = new TextView(PostActivity.this);
+        login.setText("Логин: " + Post.ownerLogin);
+        login.setTextColor(getResources().getColor(R.color.colorBlackText));
+        login.setPadding(padding_in_px, padding_in_px, padding_in_px, padding_in_px);
+        lin.addView(login);
+
+        TextView name = new TextView(PostActivity.this);
+        name.setText("Имя: " + Post.ownerName);
+        name.setTextColor(getResources().getColor(R.color.colorBlackText));
+        name.setPadding(padding_in_px, padding_in_px / 2, padding_in_px, padding_in_px);
+        lin.addView(name);
+
+        TextView city = new TextView(PostActivity.this);
+        city.setText("Населённый пункт: " + Post.city);
+        city.setTextColor(getResources().getColor(R.color.colorBlackText));
+        city.setPadding(padding_in_px, padding_in_px / 2, padding_in_px, padding_in_px);
+        lin.addView(city);
 
     }
 

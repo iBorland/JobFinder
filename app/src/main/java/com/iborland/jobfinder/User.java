@@ -33,6 +33,8 @@ public class User implements Parcelable{
     String regdata;
     String token;
     String phone;
+    String city;
+    int age;
 
     boolean loaded = false;
 
@@ -66,6 +68,8 @@ public class User implements Parcelable{
                 Class.forName("com.mysql.jdbc.Driver");
                 connection = DriverManager.getConnection("jdbc:mysql://" + MainActivity.db_ip, MainActivity.db_login,
                         MainActivity.db_password);
+                statement = null;
+                rs = null;
                 statement = connection.createStatement();
                 rs = statement.executeQuery(query);
                 while (rs.next()) {
@@ -81,6 +85,8 @@ public class User implements Parcelable{
                     regdata = rs.getString("DateRegistration");
                     token = rs.getString("Token");
                     phone = rs.getString("phone");
+                    city = rs.getString("City");
+                    age = rs.getInt("Age");
                     if(!token.equals(buffer_Token))
                     {
                         Log.e("Error:", "Ошибка. Несоответствие токена");
@@ -88,6 +94,7 @@ public class User implements Parcelable{
                     }
                     loaded = true;
                     Log.e("Loaded", "User " + login + " был загружен");
+                    Log.e("Score", "SCORE = " + score);
                     break;
                 }
             }
@@ -121,6 +128,8 @@ public class User implements Parcelable{
         parcel.writeString(regdata);
         parcel.writeString(token);
         parcel.writeString(phone);
+        parcel.writeString(city);
+        parcel.writeInt(age);
 
     }
 
@@ -154,8 +163,59 @@ public class User implements Parcelable{
         regdata = parcel.readString();
         token = parcel.readString();
         phone = parcel.readString();
+        city = parcel.readString();
+        age = parcel.readInt();
         Log.e("Parcel", "User " + login + "был распакован из Parcel");
         loaded = true;
+    }
+
+    public void updateUser(){
+        UpdateUserInfo updateUserInfo = new UpdateUserInfo();
+        try{
+            updateUserInfo.join(30000);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        LoadUser loadUser = new LoadUser();
+        try{
+            loadUser.join(30000);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    class UpdateUserInfo extends Thread{
+
+        public UpdateUserInfo() { run(); }
+
+        public void run(){
+            String queryyy = "UPDATE `users` SET `Login` = '" + login + "',`Password` = '" + password + "'" +
+                    ",`Surname` = '" + surname + "',`Name` = '" + name + "'," +
+                    "`Email` = '" + email + "',`Score` = '" + score + "'" +
+                    ",`Status` = '" + status + "'" +
+                    ",`AmountPosts` = '" + ad_amount + "'" +
+                    ",`Token` = '" + token + "'" +
+                    ",`Phone` = '" + phone + "'" +
+                    ",`City` = '" + city + "'" +
+                    ",`Age` = '" + age + "' WHERE `id` = '" + id + "'";
+            Log.w("QUERY - UPDATE", queryyy);
+            try{
+                Class.forName("com.mysql.jdbc.Driver");
+                connection = DriverManager.getConnection("jdbc:mysql://" + MainActivity.db_ip, MainActivity.db_login,
+                        MainActivity.db_password);
+                statement = null;
+                rs = null;
+                statement = connection.createStatement();
+                statement.executeUpdate(queryyy);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
     }
 
 }

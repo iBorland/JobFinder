@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        
+
     }
 
     @Override
@@ -287,7 +287,8 @@ public class MainActivity extends AppCompatActivity
         protected Void doInBackground(Void... params) {
 
             try {
-                String query = "SELECT * FROM `posts` WHERE `Category` = '" + select_category + "'";
+                String query = "SELECT * FROM `posts` WHERE `Category` = '" + select_category + "' AND `City` = " +
+                        "'" + user.city + "'";
                 Class.forName("com.mysql.jdbc.Driver");
                 connection = DriverManager.getConnection("jdbc:mysql://" + MainActivity.db_ip, MainActivity.db_login,
                         MainActivity.db_password);
@@ -366,14 +367,14 @@ public class MainActivity extends AppCompatActivity
                 name.setPadding(padding_in_px, padding_in_px, padding_in_px, padding_in_px);
 
                 TextView author = new TextView(getApplicationContext());
-                author.setText("Автор: " + Posts.get(i).ownerName);
+                author.setText("Автор: " + Posts.get(i).ownerLogin);
                 frame.addView(author);
                 author.setTextColor(getResources().getColor(R.color.colorBlackText));
                 author.setGravity(Gravity.RIGHT | Gravity.BOTTOM);
                 author.setPadding(padding_in_px, padding_in_px, padding_in_px, padding_in_px);
                 author.setTextSize(12);
 
-                SimpleDateFormat date = new SimpleDateFormat("dd.MM.yy 'в' hh:mm");
+                SimpleDateFormat date = new SimpleDateFormat("dd.MM.yy 'в' HH:mm");
                 long unix = (long) Integer.parseInt(Posts.get(i).createtime);
                 Date data = new Date(unix*1000);
                 TextView time = new TextView(getApplicationContext());

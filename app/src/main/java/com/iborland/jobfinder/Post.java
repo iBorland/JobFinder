@@ -18,6 +18,7 @@ public class Post implements Parcelable{
 
     int id;
     int ownerID;
+    String ownerLogin;
     String ownerName;
     String postName;
     String postText;
@@ -29,6 +30,7 @@ public class Post implements Parcelable{
     String[] Adresses;
     String[] Coords;
     int amount;
+    String city;
 
     int buffer_id;
 
@@ -64,6 +66,7 @@ public class Post implements Parcelable{
                 while (rs.next()) {
                     id = rs.getInt("id");
                     ownerID = rs.getInt("ownerID");
+                    ownerLogin = rs.getString("ownerLogin");
                     ownerName = rs.getString("ownerName");
                     postName = rs.getString("postName");
                     postText = rs.getString("postText");
@@ -74,6 +77,7 @@ public class Post implements Parcelable{
                     String buffer_adresses = rs.getString("Adresses");
                     String buffer_coords = rs.getString("Coordinates");
                     amount = rs.getInt("Amount");
+                    city = rs.getString("City");
                     if(buffer_adresses != null) {
                         Adresses = buffer_adresses.split("split");
                         Coords = buffer_coords.split("split");
@@ -104,6 +108,7 @@ public class Post implements Parcelable{
         Log.e("Parcel", "Parcel упакован");
         parcel.writeInt(id);
         parcel.writeInt(ownerID);
+        parcel.writeString(ownerLogin);
         parcel.writeString(ownerName);
         parcel.writeString(postName);
         parcel.writeString(postText);
@@ -112,6 +117,7 @@ public class Post implements Parcelable{
         parcel.writeInt(category);
         parcel.writeString(createtime);
         parcel.writeInt(amount);
+        parcel.writeString(city);
         if(amount > 0)
         {
             parcel.writeStringArray(Adresses);
@@ -140,6 +146,7 @@ public class Post implements Parcelable{
         }
         id = parcel.readInt();
         ownerID = parcel.readInt();
+        ownerLogin = parcel.readString();
         ownerName = parcel.readString();
         postName = parcel.readString();
         postText = parcel.readString();
@@ -148,6 +155,7 @@ public class Post implements Parcelable{
         category = parcel.readInt();
         createtime = parcel.readString();
         amount = parcel.readInt();
+        city = parcel.readString();
         if(amount > 0) {
             Adresses = new String[amount];
             Coords = new String[amount];

@@ -31,7 +31,7 @@ import java.util.ArrayList;
  */
 public class AddActivity extends AppCompatActivity {
 
-    EditText pName, pText, pCost;
+    EditText pName, pText, pCost, pCity;
     TextView pCategory;
     LinearLayout ll;
     Button button;
@@ -64,6 +64,9 @@ public class AddActivity extends AppCompatActivity {
         pText = (EditText)findViewById(R.id.pText);
         pCost = (EditText)findViewById(R.id.pCost);
         pCategory = (TextView)findViewById(R.id.pCategory);
+        pCity = (EditText)findViewById(R.id.pCity);
+
+        pCity.setText(user.city);
 
         mSnackbar = Snackbar.make(ll, "Слишком короткий логин", Snackbar.LENGTH_LONG);
         snackbarView = mSnackbar.getView();
@@ -216,10 +219,12 @@ public class AddActivity extends AppCompatActivity {
 
         TextView loadtext;
         int ownerID = user.id;
-        String ownerName = user.login;
+        String ownerLogin = user.login;
+        String ownerName = user.name + " " + user.surname;
         String postName = pName.getText().toString();
         String postText = pText.getText().toString();
         String cost = pCost.getText().toString();
+        String city = pCity.getText().toString();
         int status = 1;
         //int category = ca
         long createtime = System.currentTimeMillis() / 1000;
@@ -255,11 +260,11 @@ public class AddActivity extends AppCompatActivity {
             for(int i = 0; i != coords.size(); i++) Coordinates += coords.get(i) + "split";
             //int amount;
 
-            String query = "INSERT INTO `posts` (`ownerID`, `ownerName`,`postName`,`postText`," +
-                    "`cost`,`status`,`Category`,`createtime`,`Adresses`,`Coordinates`,`Amount`)" +
-                    " VALUES ('" + ownerID + "', '" + ownerName + "','" + postName + "'," +
+            String query = "INSERT INTO `posts` (`ownerID`,`ownerLogin`,`ownerName`,`postName`,`postText`," +
+                    "`cost`,`status`,`Category`,`createtime`,`Adresses`,`Coordinates`,`Amount`,`City`)" +
+                    " VALUES ('" + ownerID + "', '" + ownerLogin + "', '" + ownerName + "','" + postName + "'," +
                     "'" + postText + "','" + cost + "','" + status + "','" + category + "'" +
-                    ",'" + createtime + "','" + Adresses + "','" + Coordinates + "','" + amount + "')";
+                    ",'" + createtime + "','" + Adresses + "','" + Coordinates + "','" + amount + "','" + city + "')";
             String rightquery = "";
             try{
                 rightquery = new String(query.getBytes("utf-8"), "utf-8");
@@ -284,6 +289,8 @@ public class AddActivity extends AppCompatActivity {
                 e.printStackTrace();
                 return 0;
             }
+            user.score += 20;
+            user.updateUser();;
             return 1;
         }
 
