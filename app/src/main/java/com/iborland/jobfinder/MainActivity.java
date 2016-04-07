@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity
     ListView listView;
     String categories[];
     TextView message;
-    int select_category = 0;
     RelativeLayout layout;
     ArrayList<Post> Posts = new ArrayList<Post>();
 
@@ -81,8 +80,7 @@ public class MainActivity extends AppCompatActivity
     Animation return_left;
     ScrollView scrollView;
     LinearLayout linearLayout;
-    Menu men;
-    LoadCategory loadCategory;
+    ActionBar act;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +92,7 @@ public class MainActivity extends AppCompatActivity
         scrollView = (ScrollView)findViewById(R.id.scrollView);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        act = getSupportActionBar();
         top = AnimationUtils.loadAnimation(this, android.support.design.R.anim.abc_slide_in_top);
         left = AnimationUtils.loadAnimation(this, R.anim.slide_left);
         return_left = AnimationUtils.loadAnimation(this, R.anim.return_slide_left);
@@ -102,7 +101,6 @@ public class MainActivity extends AppCompatActivity
         listView = (ListView)findViewById(R.id.listView);
         message = (TextView)findViewById(R.id.message);
         LoadMenu();
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         if (fab != null) {
@@ -155,12 +153,6 @@ public class MainActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
             return;
         }
-        if(select_category != 0)
-        {
-            LoadMenu();
-            men.setGroupVisible(R.id.group, false);
-            return;
-        }
         super.onBackPressed();
     }
 
@@ -168,9 +160,6 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
-        if(men == null) men = menu;
-        men.setGroupVisible(R.id.group, false);
         return true;
     }
 
@@ -180,17 +169,6 @@ public class MainActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if(id == R.id.item1)
-        {
-            if(loadCategory.getStatus() != AsyncTask.Status.FINISHED){
-                Toast.makeText(MainActivity.this, "Обновление ещё не завершено", Toast.LENGTH_SHORT).show();
-                return super.onOptionsItemSelected(item);
-            }
-            Posts.clear();
-            men.setGroupVisible(R.id.group, false);
-            loadCategory = new LoadCategory();
-            loadCategory.execute();
-        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -270,129 +248,19 @@ public class MainActivity extends AppCompatActivity
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                select_category = position + 1;
-                loadCategory = new LoadCategory();
-                loadCategory.execute();
+                if(user.loaded != true){
+                    Toast.makeText(MainActivity.this, "Попробуйте через несколько секунд", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                int select_category = position + 1;
+                Intent intent = new Intent(MainActivity.this, CategoryActivity.class);
+                intent.putExtra("Category", select_category);
+                intent.putExtra("User", user);
+                startActivity(intent);
             }
         });
     }
 
-
-
-    class LoadCategory extends AsyncTask<Void, Void, Void>{
-
-        int amount = 0;
-
-        @Override
-        protected Void doInBackground(Void... params) {
-
-            try {
-                String query = "SELECT * FROM `posts` WHERE `Category` = '" + select_category + "' AND `City` = " +
-                        "'" + user.city + "'";
-                Class.forName("com.mysql.jdbc.Driver");
-                connection = DriverManager.getConnection("jdbc:mysql://" + MainActivity.db_ip, MainActivity.db_login,
-                        MainActivity.db_password);
-                statement = connection.createStatement();
-                rs = statement.executeQuery(query);
-                while (rs.next()) {
-                    amount++;
-                    int id = rs.getInt("id");
-                    Post post = new Post(id);
-                    Posts.add(post);
-                }
-            }
-            catch (Exception e){
-                Log.e("Error:", "Ошибка конекта к БД", e);
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            layout.removeAllViews();
-            layout.addView(message);
-            message.setText("Загрузка постов");
-            message.startAnimation(top);
-            super.onPreExecute();
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            linearLayout.removeAllViews();
-            if(amount == 0)
-            {
-                int padding_in_dp = 16;  // 6 dps
-                final float scale = getResources().getDisplayMetrics().density;
-                int padding_in_px = (int) (padding_in_dp * scale + 0.5f);
-                layout.setPadding(padding_in_px, padding_in_px, padding_in_px, padding_in_px);
-                message.setText("В данной категории пока-что нету объявлений.\n\nНам очень жаль.");
-                return;
-            }
-            layout.setBackgroundColor(getResources().getColor(R.color.materialBackground));
-            men.setGroupVisible(R.id.group, true);
-            for(int i = 0; i != Posts.size(); i++){
-
-
-                int padding_in_dp = 8;  // 6 dps
-                final float scale = getResources().getDisplayMetrics().density;
-                int padding_in_px = (int) (padding_in_dp * scale + 0.5f);
-
-                FrameLayout frame = new FrameLayout(getApplicationContext());
-                frame.setBackgroundResource(android.R.drawable.dialog_holo_light_frame);
-                frame.setId(i);
-                frame.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(MainActivity.this, PostActivity.class);
-                        intent.putExtra("Post", Posts.get(v.getId()));
-                        startActivity(intent);
-                    }
-                });
-
-                String text = "";
-                if(Posts.get(i).postText.length() > 300) {
-                    text = Posts.get(i).postText.substring(0, 300);
-                    text += " ...";
-                }
-                else{
-                    text = Posts.get(i).postText;
-                }
-
-                TextView name = new TextView(getApplicationContext());
-                name.setText(Posts.get(i).postName + "\n\n" + text + "\n\n");
-                frame.addView(name);
-                name.setGravity(Gravity.LEFT | Gravity.TOP);
-                name.setTextColor(getResources().getColor(R.color.colorBlackText));
-                name.setPadding(padding_in_px, padding_in_px, padding_in_px, padding_in_px);
-
-                TextView author = new TextView(getApplicationContext());
-                author.setText("Автор: " + Posts.get(i).ownerLogin);
-                frame.addView(author);
-                author.setTextColor(getResources().getColor(R.color.colorBlackText));
-                author.setGravity(Gravity.RIGHT | Gravity.BOTTOM);
-                author.setPadding(padding_in_px, padding_in_px, padding_in_px, padding_in_px);
-                author.setTextSize(12);
-
-                SimpleDateFormat date = new SimpleDateFormat("dd.MM.yy 'в' HH:mm");
-                long unix = (long) Integer.parseInt(Posts.get(i).createtime);
-                Date data = new Date(unix*1000);
-                TextView time = new TextView(getApplicationContext());
-                time.setText("Дата публикации: " + date.format(data));
-                frame.addView(time);
-                time.setTextColor(getResources().getColor(R.color.colorBlackText));
-                time.setGravity(Gravity.LEFT | Gravity.BOTTOM);
-                time.setPadding(padding_in_px, padding_in_px, padding_in_px, padding_in_px);
-                time.setTextSize(12);
-
-                linearLayout.addView(frame);
-            }
-            layout.setPadding(0, 0, 0 ,0);
-            layout.removeView(message);
-            layout.addView(scrollView);
-            scrollView.startAnimation(left);
-        }
-    }
 
     @Override
     protected void onResume() {

@@ -4,10 +4,10 @@
 
     To get one, follow this link, follow the directions and press "Create" at the end:
 
-    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=50:83:FA:74:CE:62:06:68:80:6F:FD:F6:E5:9C:27:84:0B:BC:98:67%3Bcom.iborland.jobfinder
+    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=13:EC:93:98:F5:48:75:DD:1B:FE:64:E7:92:E1:09:C7:63:D3:66:F9%3Bcom.iborland.jobfinder
 
     You can also add your credentials to an existing key, using this line:
-    50:83:FA:74:CE:62:06:68:80:6F:FD:F6:E5:9C:27:84:0B:BC:98:67;com.iborland.jobfinder
+    13:EC:93:98:F5:48:75:DD:1B:FE:64:E7:92:E1:09:C7:63:D3:66:F9;com.iborland.jobfinder
 
     Alternatively, follow the directions here:
     https://developers.google.com/maps/documentation/android/start#get-key
@@ -15,7 +15,5 @@
     Once you have your key (it starts with "AIza"), replace the "google_maps_key"
     string in this file.
     -->
-    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
-        AIzaSyCwJ2EsoUJPuMz0hsLXwnEWk4WjlmwRGCw
-    </string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyCwJ2EsoUJPuMz0hsLXwnEWk4WjlmwRGCw</string>
 </resources>

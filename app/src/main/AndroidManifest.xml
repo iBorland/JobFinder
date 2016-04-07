@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -30,7 +30,7 @@
             android:name=".RegActivity"
             android:label="Регистрация"
             android:noHistory="true"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -38,21 +38,21 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="Просмотр карты"></activity>
-
+            android:label="Просмотр карты" />
         <activity
             android:name=".AddActivity"
             android:label="Добавление объявления"
             android:windowSoftInputMode="adjustNothing" />
-
         <activity
             android:name=".PostActivity"
-            android:label="Объявление"/>
-
+            android:label="Объявление" />
         <activity
             android:name=".PhoneActivity"
             android:label="Добавление номера"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".CategoryActivity"
+            android:label="Объявления"></activity>
     </application>
 
 </manifest>

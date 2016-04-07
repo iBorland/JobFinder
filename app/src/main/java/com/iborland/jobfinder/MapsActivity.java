@@ -303,6 +303,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         intent.putExtra("qText", text);
         intent.putExtra("qCost", cost);
         intent.putExtra("qAmount", amount);
+        intent.putExtra("User", user);
         if(amount > 0)
         {
             for(int i = 0; i != amount; i++){

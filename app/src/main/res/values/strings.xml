@@ -63,5 +63,7 @@
 
     <string name="phone_accept">Подтверждая свой номер вы соглашаетесь с тем, что мы можем отправлять СМС сообщения
     на ваш номер.</string>
+    <string name="title_activity_asfgasg">Map</string>
+    <string name="title_activity_ashg">Map</string>
 
 </resources>
