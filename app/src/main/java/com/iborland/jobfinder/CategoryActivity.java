@@ -211,18 +211,19 @@ public class CategoryActivity extends AppCompatActivity {
     public boolean AddPost(Post post, LinearLayout lin){
 
         FrameLayout frame = new FrameLayout(getApplicationContext());
+        frame.setId(count);
         frame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(loadPosts.getStatus() == AsyncTask.Status.RUNNING) loadPosts.cancel(true);
                 Intent intent = new Intent(CategoryActivity.this, PostActivity.class);
-                intent.putExtra("Post", Posts.get(count));
-                count++;
+                intent.putExtra("Post", Posts.get(v.getId()));
                 intent.putExtra("User", user);
                 startActivity(intent);
             }
         });
         frame.setBackgroundResource(android.R.drawable.dialog_holo_light_frame);
+        count++;
 
         String text = "";
         if(post.postText.length() > 300) {

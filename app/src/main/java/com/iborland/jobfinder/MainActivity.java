@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -56,6 +57,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity
@@ -200,6 +202,21 @@ public class MainActivity extends AppCompatActivity
 
     public void CheckLogin()
     {
+        if(!isOnline(MainActivity.this)){
+            android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(MainActivity.this);
+            builder.setTitle("Ошибка");
+            builder.setMessage("У вас отсутствует подключение к интернету.\n\n" +
+                    "Проверьте ваше подключение и повторите попытку снова.");
+            builder.setCancelable(false);
+            builder.setPositiveButton("Выйти", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    System.exit(0);
+                }
+            });
+            android.support.v7.app.AlertDialog dialog = builder.create();
+            dialog.show();
+        }
         DBHelper mDatabaseHelper;
         SQLiteDatabase mSqLiteDatabase;
 
@@ -243,7 +260,28 @@ public class MainActivity extends AppCompatActivity
         layout.addView(message);
         layout.addView(listView);
         message.setText("Выберите категорию:");
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, categories);
+
+        Object[] icons = {R.drawable.icon_service,
+                            R.drawable.icon_postal,
+                            R.drawable.icon_it,
+                            R.drawable.icon_security,
+                            R.drawable.icon_repair,
+                            R.drawable.icon_default};
+
+        ArrayList<HashMap<String, Object>> data = new ArrayList<HashMap<String, Object>>(6);
+        HashMap<String, Object> buffer;
+
+        for(int i = 0; i != 6; i++){
+            buffer = new HashMap<String, Object>();
+            buffer.put("Name", categories[i]);
+            buffer.put("Icon", icons[i]);
+            data.add(buffer);
+        }
+
+        String[] from = {"Name", "Icon"};
+        int[] to = {R.id.name, R.id.icon};
+
+        SimpleAdapter adapter = new SimpleAdapter(this, data, R.layout.list_category, from, to);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

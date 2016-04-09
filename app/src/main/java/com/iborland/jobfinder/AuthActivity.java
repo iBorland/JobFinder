@@ -2,6 +2,7 @@ package com.iborland.jobfinder;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
@@ -50,6 +51,21 @@ public class AuthActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
+        if(!MainActivity.isOnline(AuthActivity.this)){
+            android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(AuthActivity.this);
+            builder.setTitle("Ошибка");
+            builder.setMessage("У вас отсутствует подключение к интернету.\n\n" +
+                    "Проверьте ваше подключение и повторите попытку снова.");
+            builder.setCancelable(false);
+            builder.setPositiveButton("Выйти", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    System.exit(0);
+                }
+            });
+            android.support.v7.app.AlertDialog dialog = builder.create();
+            dialog.show();
+        }
         text = (TextView)findViewById(R.id.text);
         rowLogin = (EditText)findViewById(R.id.rowLogin);
         rowPassword = (EditText)findViewById(R.id.rowPassword);
