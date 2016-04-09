@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:id="@+id/reeeeeeeel">
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -22,50 +23,146 @@
                 android:text="Name"
                 android:id="@+id/sName"
                 android:layout_gravity="center_horizontal"
-                android:padding="16dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Описание:"
-                android:id="@+id/ssText"
+                android:elegantTextHeight="false"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:textColor="@color/colorBlackText"
                 android:padding="10dp"
-                android:textSize="20dp" />
+                android:textSize="24dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
+            <FrameLayout
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Описание"
-                android:id="@+id/sText"
-                android:paddingLeft="10dp"
-                android:paddingBottom="10dp" />
+                android:background="@android:drawable/dialog_holo_light_frame"
+                android:padding="16dp"
+                android:id="@+id/fText">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Оплата:"
-                android:id="@+id/ssCost"
-                android:padding="10dp"
-                android:textSize="20dp" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/laoyot_Text">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Оплата"
-                android:id="@+id/sCost"
-                android:paddingLeft="10dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="Описание:"
+                        android:id="@+id/ssText"
+                        android:textColor="@color/colorBlackText"
+                        android:textSize="18dp"
+                        android:padding="4dp"
+                        android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Дата создания"
-                android:id="@+id/sDate"
-                android:padding="10dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="Описаньеце"
+                        android:id="@+id/sText"
+                        android:layout_alignParentBottom="false"
+                        android:layout_alignParentStart="false"
+                        android:layout_alignParentEnd="false"
+                        android:layout_below="@+id/ssText"
+                        android:textColor="@color/colorBlackText"
+                        android:textSize="18dp"
+                        android:padding="4dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="Дата создания"
+                        android:id="@+id/sDate"
+                        android:layout_below="@+id/sText"
+                        android:padding="4dp"
+                        android:textColor="@color/colorBlackText"
+                        android:textSize="18dp" />
+
+                </RelativeLayout>
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:drawable/dialog_holo_light_frame"
+                android:id="@+id/fCost"
+                android:padding="16dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/layout_Cost">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="Оплата:"
+                        android:id="@+id/ssCost"
+                        android:padding="4dp"
+                        android:textColor="@color/colorBlackText"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="Оплатушка"
+                        android:id="@+id/sCost"
+                        android:layout_below="@+id/ssCost"
+                        android:padding="4dp"
+                        android:textColor="@color/colorBlackText"
+                        android:textSize="18dp" />
+                </RelativeLayout>
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/fInfo"
+                android:background="@android:drawable/dialog_holo_light_frame"
+                android:padding="16dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/layout_Info">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="Информация о заказчике:"
+                        android:id="@+id/ssInfo"
+                        android:padding="4dp"
+                        android:textColor="@color/colorBlackText"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="Имя"
+                        android:id="@+id/zName"
+                        android:layout_below="@+id/ssInfo"
+                        android:padding="4dp"
+                        android:textColor="@color/colorBlackText"
+                        android:textSize="18dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="Населённый пункт"
+                        android:id="@+id/zCity"
+                        android:padding="4dp"
+                        android:textColor="@color/colorBlackText"
+                        android:textSize="18dp"
+                        android:layout_below="@+id/zName" />
+                </RelativeLayout>
+            </FrameLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -74,8 +171,10 @@
                 android:text="Адреса:"
                 android:id="@+id/sAdresses"
                 android:layout_gravity="center_horizontal"
-                android:padding="10dp" />
-
+                android:padding="10dp"
+                android:textColor="@color/colorBlackText"
+                android:textSize="24dp" />
         </LinearLayout>
     </ScrollView>
+
 </RelativeLayout>

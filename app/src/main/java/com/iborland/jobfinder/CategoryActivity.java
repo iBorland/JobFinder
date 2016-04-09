@@ -3,6 +3,7 @@ package com.iborland.jobfinder;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -50,11 +51,12 @@ public class CategoryActivity extends AppCompatActivity {
     Animation return_left;
     Menu buffer_menu;
 
-    int select_category, amount = 0;
+    int select_category, amount = 0, count = 0;
     User user;
     ArrayList<Post> Posts = new ArrayList<Post>();
     LoadPosts loadPosts;
     ActionBar act;
+    int padding_in_px;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,10 @@ public class CategoryActivity extends AppCompatActivity {
         user = getIntent().getParcelableExtra("User");
 
         act = getSupportActionBar();
+
+        int padding_in_dp = 8;  // 6 dps
+        final float scale = getResources().getDisplayMetrics().density;
+        padding_in_px = (int) (padding_in_dp * scale + 0.5f);
 
         progressBar = (ProgressBar)findViewById(R.id.progressBar2);
         scroller = (ScrollView)findViewById(R.id.scroller);
@@ -134,6 +140,34 @@ public class CategoryActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            if(amount == 0){
+                if(progressBar.isShown() == true) linearLayout.removeView(progressBar);
+                TextView msg = new TextView(CategoryActivity.this);
+                msg.setTextSize(16);
+                msg.setTextColor(getResources().getColor(R.color.colorBlackText));
+                msg.setText("В данной категории пока-что нету объявлений :(");
+                msg.setGravity(Gravity.CENTER);
+                msg.setPadding(padding_in_px, padding_in_px, padding_in_px, padding_in_px);
+                linearLayout.addView(msg);
+
+                TextView createAdd = new TextView(CategoryActivity.this);
+                createAdd.setPadding(0, padding_in_px, 0, padding_in_px);
+                createAdd.setTextSize(16);
+                createAdd.setTextColor(getResources().getColor(R.color.colorBlackText));
+                createAdd.setText("Создать новое объявление");
+                createAdd.setGravity(Gravity.CENTER);
+                createAdd.setBackground(getResources().getDrawable(R.color.buttonbackground));
+                createAdd.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(CategoryActivity.this, AddActivity.class);
+                        intent.putExtra("User", user);
+                        finish();
+                        startActivity(intent);
+                    }
+                });
+                linearLayout.addView(createAdd);
+            }
         }
 
         @Override
@@ -176,22 +210,19 @@ public class CategoryActivity extends AppCompatActivity {
 
     public boolean AddPost(Post post, LinearLayout lin){
 
-        int padding_in_dp = 8;  // 6 dps
-        final float scale = getResources().getDisplayMetrics().density;
-        int padding_in_px = (int) (padding_in_dp * scale + 0.5f);
-
         FrameLayout frame = new FrameLayout(getApplicationContext());
-        frame.setBackgroundResource(android.R.drawable.dialog_holo_light_frame);
-        frame.setId(amount);
         frame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(loadPosts.getStatus() == AsyncTask.Status.RUNNING) loadPosts.cancel(true);
                 Intent intent = new Intent(CategoryActivity.this, PostActivity.class);
-                intent.putExtra("Post", Posts.get(amount - 1));
+                intent.putExtra("Post", Posts.get(count));
+                count++;
                 intent.putExtra("User", user);
                 startActivity(intent);
             }
         });
+        frame.setBackgroundResource(android.R.drawable.dialog_holo_light_frame);
 
         String text = "";
         if(post.postText.length() > 300) {

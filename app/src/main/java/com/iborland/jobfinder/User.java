@@ -50,12 +50,12 @@ public class User implements Parcelable{
         buffer_Token = db_buffer;
         query = "SELECT * FROM `users` WHERE `id` = '" + db_id + "'";
         LoadUser loadUser = new LoadUser();
-        try{
+        /*try{
             loadUser.join(30000);
         }
         catch (Exception e){
             e.printStackTrace();
-        }
+        }*/
     }
 
     class LoadUser extends Thread

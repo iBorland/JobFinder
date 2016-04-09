@@ -2,14 +2,20 @@ package com.iborland.jobfinder;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -22,12 +28,14 @@ import java.util.Date;
  */
 public class PostActivity extends AppCompatActivity {
 
-    TextView sName, sText, sCost, sAdresses, sDate, ssText, ssCost;
+    TextView sName, sText, sCost, sAdresses, sDate, zName, zCity;
+    FrameLayout fText, fCost, fInfo;
     LinearLayout lin;
     Post Post;
     Animation top, left, return_left;
     int padding_in_dp = 10;
     int padding_in_px;
+    ActionBar bar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,16 +45,20 @@ public class PostActivity extends AppCompatActivity {
         final float scale = getResources().getDisplayMetrics().density;
         padding_in_px = (int) (padding_in_dp * scale + 0.5f);
 
+        bar = getSupportActionBar();
+
         lin = (LinearLayout)findViewById(R.id.LinearinPost);
         sName = (TextView)findViewById(R.id.sName);
         sText = (TextView)findViewById(R.id.sText);
-        sText.setTextColor(getResources().getColor(R.color.colorBlackText));
         sCost = (TextView)findViewById(R.id.sCost);
-        sCost.setTextColor(getResources().getColor(R.color.colorBlackText));
         sDate = (TextView)findViewById(R.id.sDate);
         sAdresses = (TextView)findViewById(R.id.sAdresses);
-        ssText = (TextView)findViewById(R.id.ssText);
-        ssCost = (TextView)findViewById(R.id.ssCost);
+        zName = (TextView)findViewById(R.id.zName);
+        zCity = (TextView)findViewById(R.id.zCity);
+        fText = (FrameLayout)findViewById(R.id.fText);
+        fCost = (FrameLayout)findViewById(R.id.fCost);
+        fInfo = (FrameLayout)findViewById(R.id.fInfo);
+
         lin.removeView(sAdresses);
         top = AnimationUtils.loadAnimation(this, android.support.design.R.anim.abc_slide_in_top);
         left = AnimationUtils.loadAnimation(this, R.anim.slide_left);
@@ -63,24 +75,25 @@ public class PostActivity extends AppCompatActivity {
             return;
         }
 
-        sName.setText(Post.postName);
-        sName.startAnimation(top);
         sText.setText(Post.postText);
-        sText.startAnimation(left);
+        sName.setText(Post.postName);
         sCost.setText(Post.cost);
-        sCost.startAnimation(left);
-        sAdresses.startAnimation(left);
-        ssText.startAnimation(left);
-        ssCost.startAnimation(left);
+        zName.setText(Post.ownerName);
+        zCity.setText(Post.city);
+
+        fText.startAnimation(left);
+        fCost.startAnimation(left);
+        fInfo.startAnimation(left);
+
+        bar.setTitle(Post.postName);
+        bar.setSubtitle("Автор: " + Post.ownerLogin);
+        bar.setBackgroundDrawable(getResources().getDrawable(R.drawable.baryellow));
 
         SimpleDateFormat date = new SimpleDateFormat("dd.MM.yy 'в' HH:mm");
         long unix = (long) Integer.parseInt(Post.createtime);
         Date data = new Date(unix*1000);
 
-        sDate.setText("Объявление добавлено: " + date.format(data));
-        sDate.setTextColor(getResources().getColor(R.color.colorBlackText));
-        sDate.setTextSize(10);
-        sCost.startAnimation(left);
+        sDate.setText("Создано " + date.format(data));
 
         if(Post.amount > 0){
             lin.addView(sAdresses);
@@ -113,32 +126,18 @@ public class PostActivity extends AppCompatActivity {
             }
         }
 
-        TextView info_Header = new TextView(PostActivity.this);
-        info_Header.setText("Информация о заказчике");
-        info_Header.setTextColor(getResources().getColor(R.color.colorBlackText));
-        info_Header.setTextSize(20);
-        info_Header.setGravity(Gravity.CENTER);
-        info_Header.setPadding(padding_in_px, padding_in_px, padding_in_px, padding_in_px);
-        lin.addView(info_Header);
-
-        TextView login = new TextView(PostActivity.this);
-        login.setText("Логин: " + Post.ownerLogin);
-        login.setTextColor(getResources().getColor(R.color.colorBlackText));
-        login.setPadding(padding_in_px, padding_in_px, padding_in_px, padding_in_px);
-        lin.addView(login);
-
-        TextView name = new TextView(PostActivity.this);
-        name.setText("Имя: " + Post.ownerName);
-        name.setTextColor(getResources().getColor(R.color.colorBlackText));
-        name.setPadding(padding_in_px, padding_in_px / 2, padding_in_px, padding_in_px);
-        lin.addView(name);
-
-        TextView city = new TextView(PostActivity.this);
-        city.setText("Населённый пункт: " + Post.city);
-        city.setTextColor(getResources().getColor(R.color.colorBlackText));
-        city.setPadding(padding_in_px, padding_in_px / 2, padding_in_px, padding_in_px);
-        lin.addView(city);
-
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        bar.setHomeButtonEnabled(true);
+        bar.setDisplayHomeAsUpEnabled(true);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home) finish();
+        return super.onOptionsItemSelected(item);
+    }
 }
