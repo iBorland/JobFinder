@@ -13,22 +13,21 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/LinearinPost">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Name"
+                android:text="@string/unusedname"
                 android:id="@+id/sName"
                 android:layout_gravity="center_horizontal"
-                android:elegantTextHeight="false"
                 android:gravity="center"
                 android:textAlignment="center"
                 android:textColor="@color/colorBlackText"
                 android:padding="10dp"
-                android:textSize="24dp" />
+                android:textSize="24sp" />
 
             <FrameLayout
                 android:layout_width="fill_parent"
@@ -168,12 +167,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Адреса:"
+                android:text="@string/adresses"
                 android:id="@+id/sAdresses"
                 android:layout_gravity="center_horizontal"
                 android:padding="10dp"
                 android:textColor="@color/colorBlackText"
-                android:textSize="24dp" />
+                android:textSize="24sp" />
         </LinearLayout>
     </ScrollView>
 

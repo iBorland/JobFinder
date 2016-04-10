@@ -65,5 +65,38 @@
     на ваш номер.</string>
     <string name="title_activity_asfgasg">Map</string>
     <string name="title_activity_ashg">Map</string>
+    <string name="pName">Название объявления</string>
+    <string name="pText">Текст объявления</string>
+    <string name="pCost">Оплата за выполнение</string>
+    <string name="select_category">Выберите категорию:</string>
+    <string name="pCategory">Нажмите чтобы выбрать категорию</string>
+    <string name="select_sity">Населённый пункт:</string>
+    <string name="pCity">Населённый пункт</string>
+    <string name="next">Далее</string>
+    <string name="login">Логин</string>
+    <string name="password">Пароль</string>
+    <string name="authorization">Авторизация</string>
+    <string name="enter">Войти</string>
+    <string name="registation">Регистрация</string>
+    <string name="accept_phone">Подтверждение телефона</string>
+    <string name="_7951_111_11_11">7951-111-11-11</string>
+    <string name="nexty">Nexty</string>
+    <string name="name">Name</string>
+    <string name="unusedname">Name</string>
+    <string name="adresses">Адреса:</string>
+    <string name="yourName">Ваше имя:</string>
+    <string name="yourNamess">Ваше имя</string>
+    <string name="yourSurname">Ваша фамилия:</string>
+    <string name="yourSurname_hint">Ваша фамилия</string>
+    <string name="yourLogin">Ваш логин:</string>
+    <string name="yourLogin_hint">Ваш логин</string>
+    <string name="yourPassword">Ваш пароль:</string>
+    <string name="yourPassword_hint">Ваш пароль</string>
+    <string name="yourAge">Ваш возраст:</string>
+    <string name="yourAge_hint">Ваш возраст</string>
+    <string name="yourCity">Ваш город:</string>
+    <string name="select_city">Нажмите для выбора города</string>
+    <string name="default_text">Text</string>
+    <string name="icon">icon</string>
 
 </resources>

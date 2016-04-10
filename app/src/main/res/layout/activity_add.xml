@@ -30,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/pName"
-                android:hint="Название объявления"
+                android:hint="@string/pName"
                 android:maxLines="1"
                 android:maxLength="32"
                 android:lines="1"
@@ -48,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/pText"
-                android:hint="Текст объявления"
+                android:hint="@string/pText"
                 android:maxLength="2048" />
 
             <TextView
@@ -63,7 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/pCost"
-                android:hint="Оплата за выполнение"
+                android:hint="@string/pCost"
                 android:maxLength="256"
                 android:maxLines="1"
                 android:lines="1"
@@ -73,30 +73,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Выберите категорию:"
+                android:text="@string/select_category"
                 android:id="@+id/textView6"
-                android:textSize="20dp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Нажмите чтобы выбрать категорию"
+                android:text="@string/pCategory"
                 android:id="@+id/pCategory"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 android:padding="6dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Населённый пункт:"
+                android:text="@string/select_sity"
                 android:id="@+id/textView14" />
 
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/pCity"
-                android:hint="Населённый пункт"
+                android:hint="@string/pCity"
                 android:lines="1"
                 android:maxLength="32"
                 android:maxLines="1"
@@ -115,7 +115,7 @@
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Далее"
+        android:text="@string/next"
         android:id="@+id/nextButton"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"

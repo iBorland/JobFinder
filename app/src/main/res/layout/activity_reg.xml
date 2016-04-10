@@ -22,9 +22,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Ваше имя:"
+                android:text="@string/yourName"
                 android:id="@+id/textView8"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:paddingLeft="16dp"
                 android:paddingTop="10dp" />
 
@@ -32,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/rowName"
-                android:hint="Ваше имя"
+                android:hint="@string/yourNamess"
                 android:layout_marginLeft="16dp"
                 android:maxLength="32"
                 android:maxLines="1"
@@ -43,9 +43,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Ваша фамилия:"
+                android:text="@string/yourSurname"
                 android:id="@+id/textView9"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:paddingLeft="16dp"
                 android:paddingTop="10dp"
                 android:paddingRight="16dp" />
@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/rowSurname"
                 android:layout_marginLeft="16dp"
-                android:hint="Ваша фамилия"
+                android:hint="@string/yourSurname_hint"
                 android:maxLines="1"
                 android:maxLength="32"
                 android:lines="1"
@@ -65,19 +65,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Ваш логин:"
+                android:text="@string/yourLogin"
                 android:id="@+id/textView10"
                 android:paddingTop="10dp"
                 android:paddingRight="16dp"
                 android:paddingLeft="16dp"
-                android:textSize="20dp" />
+                android:textSize="20sp" />
 
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/rowLogin"
                 android:layout_marginLeft="16dp"
-                android:hint="Ваш логин"
+                android:hint="@string/yourLogin_hint"
                 android:maxLength="32"
                 android:maxLines="1"
                 android:lines="1"
@@ -87,43 +87,44 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Ваш пароль:"
+                android:text="@string/yourPassword"
                 android:id="@+id/textView11"
                 android:paddingTop="10dp"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
-                android:textSize="20dp" />
+                android:textSize="20sp" />
 
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/rowPassword"
                 android:layout_marginLeft="16dp"
-                android:hint="Ваш пароль"
+                android:hint="@string/yourPassword_hint"
                 android:lines="1"
                 android:maxLines="1"
                 android:maxLength="32"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:inputType="numberPassword|textPassword" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Ваш возраст:"
+                android:text="@string/yourAge"
                 android:id="@+id/textView12"
                 android:paddingLeft="16dp"
                 android:paddingTop="10dp"
                 android:paddingRight="16dp"
-                android:textSize="20dp" />
+                android:textSize="20sp" />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 android:ems="10"
                 android:id="@+id/rowAge"
                 android:layout_marginLeft="16dp"
-                android:hint="Ваш возраст"
+                android:hint="@string/yourAge_hint"
                 android:lines="1"
                 android:maxLength="32"
                 android:maxLines="1"
@@ -133,18 +134,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Ваш город:"
+                android:text="@string/yourCity"
                 android:id="@+id/textView13"
                 android:paddingLeft="16dp"
                 android:paddingTop="10dp"
                 android:paddingRight="16dp"
-                android:textSize="20dp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Нажмите для выбора города"
+                android:text="@string/select_city"
                 android:id="@+id/rowCity"
                 android:paddingLeft="16dp"
                 android:paddingTop="5dp"
@@ -157,7 +158,7 @@
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Далее"
+        android:text="@string/next"
         android:id="@+id/BtnNext"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
