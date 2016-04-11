@@ -83,7 +83,7 @@ public class CategoryActivity extends AppCompatActivity {
 
         if(select_category == -5){
             TextView mess = new TextView(this);
-            mess.setText("Ошибка загрузки. Попробуйте позже");
+            mess.setText(getString(R.string.error_loaded));
             mess.setGravity(Gravity.CENTER);
             mess.setTextColor(getResources().getColor(R.color.colorBlackText));
             mess.setTextSize(18);
@@ -111,7 +111,7 @@ public class CategoryActivity extends AppCompatActivity {
         if(item.getItemId() == R.id.item1){
             ClearPosts();
             if(loadPosts != null && loadPosts.getStatus() == AsyncTask.Status.RUNNING){
-                Toast.makeText(CategoryActivity.this, "Обновление невозможно. Посты уже загружаются.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CategoryActivity.this, getString(R.string.try_again), Toast.LENGTH_SHORT).show();
                 return super.onOptionsItemSelected(item);
             }
             loadPosts = new LoadPosts();
@@ -145,7 +145,7 @@ public class CategoryActivity extends AppCompatActivity {
                 TextView msg = new TextView(CategoryActivity.this);
                 msg.setTextSize(16);
                 msg.setTextColor(getResources().getColor(R.color.colorBlackText));
-                msg.setText("В данной категории пока-что нету объявлений :(");
+                msg.setText(getString(R.string.posts_not_found));
                 msg.setGravity(Gravity.CENTER);
                 msg.setPadding(padding_in_px, padding_in_px, padding_in_px, padding_in_px);
                 linearLayout.addView(msg);
@@ -154,7 +154,7 @@ public class CategoryActivity extends AppCompatActivity {
                 createAdd.setPadding(0, padding_in_px, 0, padding_in_px);
                 createAdd.setTextSize(16);
                 createAdd.setTextColor(getResources().getColor(R.color.colorBlackText));
-                createAdd.setText("Создать новое объявление");
+                createAdd.setText(getString(R.string.create_post));
                 createAdd.setGravity(Gravity.CENTER);
                 createAdd.setBackground(getResources().getDrawable(R.color.buttonbackground));
                 createAdd.setOnClickListener(new View.OnClickListener() {

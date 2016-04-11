@@ -68,7 +68,7 @@ public class AddActivity extends AppCompatActivity {
 
         pCity.setText(user.city);
 
-        mSnackbar = Snackbar.make(ll, "Слишком короткий логин", Snackbar.LENGTH_LONG);
+        mSnackbar = Snackbar.make(ll, getString(R.string.small_login), Snackbar.LENGTH_LONG);
         snackbarView = mSnackbar.getView();
         snackTextView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
 
@@ -77,7 +77,7 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(AddActivity.this);
-                builder.setTitle("Выберите категорию:");
+                builder.setTitle(getString(R.string.select_category));
                 builder.setCancelable(false);
                 builder.setItems(categories, new DialogInterface.OnClickListener() {
                     @Override
@@ -99,22 +99,22 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(pName.length() < 6){
-                    snackTextView.setText("Слишком короткое название объявления");
+                    snackTextView.setText(getString(R.string.small_namePost));
                     mSnackbar.show();
                     return;
                 }
                 if(pText.length() < 32){
-                    snackTextView.setText("Текст объявления должен содержать минимум 32 символа");
+                    snackTextView.setText(getString(R.string.small_textPost));
                     mSnackbar.show();
                     return;
                 }
                 if(pCost.length() < 6){
-                    snackTextView.setText("Слишком короткое описание оплаты");
+                    snackTextView.setText(getString(R.string.small_costPost));
                     mSnackbar.show();
                     return;
                 }
                 if(category == 0){
-                    snackTextView.setText("Вы не выбрали категорию");
+                    snackTextView.setText(getString(R.string.category_no_selected));
                     pCategory.setTextSize(24);
                     pCategory.setTextColor(getResources().getColor(R.color.RED));
                     mSnackbar.show();
@@ -160,7 +160,7 @@ public class AddActivity extends AppCompatActivity {
 
         if(amount < 10) {
             TextView addAdres = new TextView(this);
-            addAdres.setText("+ добавить адрес");
+            addAdres.setText(getString(R.string.add_Adress));
             addAdres.setTextSize(18);
 
             addAdres.setOnClickListener(new View.OnClickListener() {
@@ -193,9 +193,8 @@ public class AddActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(AddActivity.this);
-        builder.setTitle("Выход");
-        builder.setMessage("Вы действительно хотите завершить создание объявления?\n\n" +
-                "Внимение: Если вы покините создание нового объявления, все введённые вами данные будут потеряны.");
+        builder.setTitle(getString(R.string.exit));
+        builder.setMessage(getString(R.string.accept_exit_post));
         builder.setCancelable(false);
         builder.setNegativeButton("Нет", new DialogInterface.OnClickListener() {
             @Override

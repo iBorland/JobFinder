@@ -63,7 +63,7 @@ public class PhoneActivity extends AppCompatActivity {
         row = (EditText)findViewById(R.id.rowNumber);
         btn = (ImageView)findViewById(R.id.imageView);
         rel = (RelativeLayout)findViewById(R.id.RelInPhone);
-        mSnackbar = Snackbar.make(rel, "Введите номер в формате 79012345678", Snackbar.LENGTH_LONG);
+        mSnackbar = Snackbar.make(rel, getString(R.string.number_phone), Snackbar.LENGTH_LONG);
         snackbarView = mSnackbar.getView();
         snackTextView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
         snackTextView.setTextColor(getResources().getColor(R.color.colorText));
@@ -75,7 +75,7 @@ public class PhoneActivity extends AppCompatActivity {
         }
         else{
             rel.removeAllViews();
-            anyText.setText("Неизвестная ошибка");
+            anyText.setText(getString(R.string.try_again));
             rel.addView(anyText);
             return;
         }
@@ -87,33 +87,52 @@ public class PhoneActivity extends AppCompatActivity {
                 if(row.getText().toString() == null) return;
                 if(stape == 1){
                     if(sendSMS != null && sendSMS.getStatus() == AsyncTask.Status.RUNNING){
-                        snackTextView.setText("Сообщение уже отправляется");
+                        snackTextView.setText(getString(R.string.message_sending));
                         mSnackbar.show();
                         return;
                     }
-                    if(row.length() != 11){
-                        snackTextView.setText("Введите номер в формате 79012345678");
+                    if(row.length() > 9){
+                        if(row.length() == 10 && row.getText().toString().startsWith("9")){
+                            number = "7" + row.getText().toString();
+                        }
+                        if(row.length() == 11 && row.getText().toString().startsWith("7")){
+                            number = row.getText().toString();
+                        }
+                        if(row.length() == 11 && row.getText().toString().startsWith("8")){
+                            number = "7" + String.copyValueOf(row.getText().toString().toCharArray(), 1, row.length()-1);
+                        }
+                        if(row.length() == 12 && row.getText().toString().startsWith("+7")){
+                            number = String.copyValueOf(row.getText().toString().toCharArray(), 1, row.length());
+                        }
+                    }
+                    else{
+                        snackTextView.setText("Введите номер вашего сотового телефона");
                         mSnackbar.show();
                         return;
                     }
-                    number = row.getText().toString();
+                    if(number == null){
+                        snackTextView.setText("Введите настоящий номер вашего сотового телефона");
+                        mSnackbar.show();
+                        return;
+                    }
+                    Log.e("NUMBER", "НОМЕР: " + number);
                     code = "" + (1000 + new Random().nextInt(8999));
                     sendSMS = new SendSMS();
                     sendSMS.execute();
                 }
                 if(stape == 2){
                     if(updateNumber != null && updateNumber.getStatus() == AsyncTask.Status.RUNNING){
-                        snackTextView.setText("Код уже проверяется");
+                        snackTextView.setText(getString(R.string.code_checking));
                         mSnackbar.show();
                         return;
                     }
                     if(!row.getText().toString().equals(code) && row.getText() != null){
-                        anyText.setText("Неверно введён код");
+                        anyText.setText(getString(R.string.false_code));
                         anyText.setTextColor(getResources().getColor(R.color.RED));
                         rel.addView(anyText);
                         anyText.startAnimation(left);
 
-                        snackTextView.setText("Неверно введён код");
+                        snackTextView.setText(getString(R.string.false_code));
                         mSnackbar.show();
                         return;
                     }
@@ -160,7 +179,7 @@ public class PhoneActivity extends AppCompatActivity {
         protected void onPostExecute(Integer aVoid) {
             super.onPostExecute(aVoid);
             if(aVoid == 1){
-                Toast.makeText(PhoneActivity.this, "Данный номер телефона уже используется", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PhoneActivity.this, getString(R.string.phone_used), Toast.LENGTH_SHORT).show();
                 phoneText.setText(getResources().getText(R.string.phone_text));
                 rel.addView(anyText);
                 row.setEnabled(true);
@@ -174,10 +193,10 @@ public class PhoneActivity extends AppCompatActivity {
                 row.setEnabled(true);
                 row.setCursorVisible(true);
                 row.setText("");
-                row.setHint("Код из СМС");
+                row.setHint(getString(R.string.code_in_sms));
             }
             else{
-                phoneText.setText("Ошибка отправки кода. Попробуйте позже.\n\nКод ошибки: " + aVoid);
+                phoneText.setText(getString(R.string.error) + "\n\nError code: " + aVoid);
                 rel.removeAllViews();
                 rel.addView(phoneText);
             }
@@ -189,7 +208,7 @@ public class PhoneActivity extends AppCompatActivity {
             row.setEnabled(false);
             row.setCursorVisible(false);
             rel.removeView(anyText);
-            phoneText.setText("Отправка смс...");
+            phoneText.setText(getString(R.string.sending_sms));
         }
     }
 
@@ -214,7 +233,7 @@ public class PhoneActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            Toast.makeText(PhoneActivity.this, "Номер сохранён", Toast.LENGTH_SHORT).show();
+            Toast.makeText(PhoneActivity.this, getString(R.string.number_is_saved), Toast.LENGTH_SHORT).show();
             finish();
         }
 
@@ -229,7 +248,7 @@ public class PhoneActivity extends AppCompatActivity {
             catch (Exception e){
                 e.printStackTrace();
             }
-            phoneText.setText("Проверка...");
+            phoneText.setText(getString(R.string.checked));
         }
     }
 

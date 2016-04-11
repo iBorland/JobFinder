@@ -79,7 +79,7 @@
     <string name="enter">Войти</string>
     <string name="registation">Регистрация</string>
     <string name="accept_phone">Подтверждение телефона</string>
-    <string name="_7951_111_11_11">7951-111-11-11</string>
+    <string name="_7951_111_11_11">Номер телефона</string>
     <string name="nexty">Nexty</string>
     <string name="name">Name</string>
     <string name="unusedname">Name</string>
@@ -98,5 +98,47 @@
     <string name="select_city">Нажмите для выбора города</string>
     <string name="default_text">Text</string>
     <string name="icon">icon</string>
+    <string name="try_again">Попробуйте через несколько секунд</string>
+    <string name="succesfull_created">Ваше объявление успешно создано</string>
+    <string name="error_created">Ошибка. Ваше объявление не было создано</string>
+    <string name="error">Ошибка</string>
+    <string name="error_loaded">Ошибка загрузки. Попроуйте позже</string>
+    <string name="not_found_internet">Ошибка. У вас отсутствует подключение к сети Интернет. Проверьте ваше соединение
+     и повторите попытку позже.</string>
+    <string name="exit">Выйти</string>
+    <string name="posts_not_found">В данной категории пока-что нету объявлений :(</string>
+    <string name="create_post">Создать новое объявление</string>
+    <string name="small_login">Слишком короткий логин</string>
+    <string name="small_password">Слишком короткий пароль</string>
+    <string name="long_password">Слишком длинный пароль</string>
+    <string name="small_namePost">Слишком короткое название объявления</string>
+    <string name="small_textPost">Текст объявления должен содержать минимум 32 символа</string>
+    <string name="small_costPost">Слишком короткое описание оплаты</string>
+    <string name="category_no_selected">Вы не выбрали категорию</string>
+    <string name="add_adress">+ добавить адрес</string>
+    <string name="accept_exit_post">Вы действительно хотите завершить создание объявления?\n\nВнимение: Если вы покините создание нового объявления, все введённые вами данные будут потеряны.</string>
+    <string name="login_used">Данный логин уже занят</string>
+    <string name="email_used">Данный адрес электронной почты уже занят</string>
+    <string name="succesfull_register">Аккаунт успешно зарегистрирован</string>
+    <string name="long_login">Слишком длинный логин</string>
+    <string name="error_internet">Ошибка подключения к интернету</string>
+    <string name="loaded">Загрузка данных\nОдну минуточку...</string>
+    <string name="error_auth">Логин с таким логином и паролем не найден</string>
+    <string name="select_adress">Выбранный адрес:</string>
+    <string name="adres">Адрес:</string>
+    <string name="loaded_info">Загрузка данных:</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="number_phone">Введите номер вашего телефона</string>
+    <string name="message_sending">Сообщение уже отправляется</string>
+    <string name="code_checking">Код уже проверяется</string>
+    <string name="false_code">Неверное введён код</string>
+    <string name="phone_used">Данный номер телефона уже используется другим пользователем</string>
+    <string name="sending_sms">Отправка смс...</string>
+    <string name="code_in_sms">Код из СМС</string>
+    <string name="number_is_saved">Номер привязан</string>
+    <string name="checked">Проверка...</string>
+    <string name="selected_city">Выберите ваш город:</string>
+    <string name="enter_city">Введине название вашего города</string>
 
 </resources>

@@ -68,7 +68,7 @@ public class PostActivity extends AppCompatActivity {
             Post = getIntent().getParcelableExtra("Post");
         }
         catch (Exception e){
-            sName.setText("Ошибка загрузки данных");
+            sName.setText(getString(R.string.error_loaded));
             lin.removeAllViews();
             lin.addView(sName);
             e.printStackTrace();

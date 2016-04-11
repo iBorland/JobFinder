@@ -92,7 +92,7 @@ public class RegActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (default_city == true) {
                     android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(RegActivity.this);
-                    builder.setTitle("Выберите ваш город:");
+                    builder.setTitle(getString(R.string.selected_city));
                     builder.setCancelable(false);
                     builder.setItems(citys, new DialogInterface.OnClickListener() {
                         @Override
@@ -102,7 +102,7 @@ public class RegActivity extends AppCompatActivity {
                                 dialog.cancel();
                                 lin.removeView(rowCity);
                                 rowCityNew = new EditText(getApplicationContext());
-                                rowCityNew.setHint("Введите ваш город");
+                                rowCityNew.setHint(getString(R.string.enter_city));
 
                                 int padding_in_dp_16 = 16;
                                 int padding_in_dp_10 = 10;

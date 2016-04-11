@@ -106,7 +106,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startLatLng, 12));
             Marker point = mMap.addMarker(new MarkerOptions()
                                             .position(startLatLng)
-                                            .title("Указанный адрес:")
+                                            .title(getString(R.string.select_adress))
                                             .snippet(adress));
             return;
         }
@@ -120,22 +120,22 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onMapClick(LatLng latLng) {
                 if (getAdress != null && getAdress.getStatus() == AsyncTask.Status.RUNNING) {
-                    Toast.makeText(MapsActivity.this, "В данный момент уже запущен поиск адреса", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MapsActivity.this, getString(R.string.try_again), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (mark == null) {
                     mark = mMap.addMarker(new MarkerOptions()
                             .position(latLng)
-                            .title("Адрес:")
-                            .snippet("Загрузка данных")
+                            .title(getString(R.string.adres))
+                            .snippet(getString(R.string.loaded_info))
                             .draggable(true));
                     mark.showInfoWindow();
                 } else {
                     mark.remove();
                     mark = mMap.addMarker(new MarkerOptions()
                             .position(latLng)
-                            .title("Адрес:")
-                            .snippet("Загрузка данных")
+                            .title(getString(R.string.adres))
+                            .snippet(getString(R.string.loaded_info))
                             .draggable(true));
                     mark.showInfoWindow();
                 }
@@ -248,17 +248,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 mark.setSnippet(adress);
                 android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(MapsActivity.this);
-                builder.setTitle("Адрес");
+                builder.setTitle(getString(R.string.adres));
                 builder.setMessage(adress + "\n\nВы действительно хотите указать этот адрес, " +
                         "как адрес №" + (amount + 1) + " ?");
                 builder.setCancelable(false);
-                builder.setNegativeButton("Нет", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                     }
                 });
-                builder.setPositiveButton("Да", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(MapsActivity.this, AddActivity.class);

@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onClick(View view) {
                     if(user.loaded != true){
-                        Toast.makeText(MainActivity.this, "Попробуйте через несколько секунд", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, getString(R.string.try_again), Toast.LENGTH_SHORT).show();
                         return;
                     }
                     Log.e("test", user.phone);
@@ -130,10 +130,10 @@ public class MainActivity extends AppCompatActivity
         int addresult = getIntent().getIntExtra("AddResult", -5);
         if(addresult != -5){
             if(addresult == 1){
-                Snackbar.make(layout, "Ваше объявление успешно создано", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(layout, getString(R.string.succesfull_created), Snackbar.LENGTH_LONG).show();
             }
             if(addresult == 0){
-                Snackbar.make(layout, "Ошибка. Ваше объявление не было создано.", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(layout, getString(R.string.error_created), Snackbar.LENGTH_LONG).show();
             }
         }
 
@@ -204,11 +204,10 @@ public class MainActivity extends AppCompatActivity
     {
         if(!isOnline(MainActivity.this)){
             android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(MainActivity.this);
-            builder.setTitle("Ошибка");
-            builder.setMessage("У вас отсутствует подключение к интернету.\n\n" +
-                    "Проверьте ваше подключение и повторите попытку снова.");
+            builder.setTitle(getString(R.string.error));
+            builder.setMessage(getString(R.string.not_found_internet));
             builder.setCancelable(false);
-            builder.setPositiveButton("Выйти", new DialogInterface.OnClickListener() {
+            builder.setPositiveButton(getString(R.string.exit), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     System.exit(0);
@@ -259,7 +258,7 @@ public class MainActivity extends AppCompatActivity
         layout.removeAllViews();
         layout.addView(message);
         layout.addView(listView);
-        message.setText("Выберите категорию:");
+        message.setText(getString(R.string.select_category));
 
         Object[] icons = {R.drawable.icon_service,
                             R.drawable.icon_postal,
@@ -287,7 +286,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if(user.loaded != true){
-                    Toast.makeText(MainActivity.this, "Попробуйте через несколько секунд", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, getString(R.string.try_again), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 int select_category = position + 1;

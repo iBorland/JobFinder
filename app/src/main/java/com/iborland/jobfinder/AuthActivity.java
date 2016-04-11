@@ -53,11 +53,10 @@ public class AuthActivity extends AppCompatActivity {
         setContentView(R.layout.activity_auth);
         if(!MainActivity.isOnline(AuthActivity.this)){
             android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(AuthActivity.this);
-            builder.setTitle("Ошибка");
-            builder.setMessage("У вас отсутствует подключение к интернету.\n\n" +
-                    "Проверьте ваше подключение и повторите попытку снова.");
+            builder.setTitle(getString(R.string.error));
+            builder.setMessage(getString(R.string.not_found_internet));
             builder.setCancelable(false);
-            builder.setPositiveButton("Выйти", new DialogInterface.OnClickListener() {
+            builder.setPositiveButton(getString(R.string.exit), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     System.exit(0);
@@ -73,7 +72,7 @@ public class AuthActivity extends AppCompatActivity {
         reg = (Button)findViewById(R.id.button_Reg);
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
         rl = (RelativeLayout)findViewById(R.id.Rel);
-        mSnackbar = Snackbar.make(rl, "Слишком короткий логин", Snackbar.LENGTH_LONG);
+        mSnackbar = Snackbar.make(rl, getString(R.string.small_login), Snackbar.LENGTH_LONG);
         snackbarView = mSnackbar.getView();
         snackTextView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
 
@@ -82,15 +81,15 @@ public class AuthActivity extends AppCompatActivity {
         int key_reg = getIntent().getIntExtra("key", -5);
 
         if(key_reg == 1) {
-            snackTextView.setText("Логин уже занят");
+            snackTextView.setText(getString(R.string.login_used));
             mSnackbar.show();
         }
         if(key_reg == 2) {
-            snackTextView.setText("Email уже занят");
+            snackTextView.setText(getString(R.string.email_used));
             mSnackbar.show();
         }
         if(key_reg == 5) {
-            snackTextView.setText("Аккаунт успешно зарегистрирован");
+            snackTextView.setText(getString(R.string.succesfull_register));
             mSnackbar.show();
         }
 
@@ -98,29 +97,29 @@ public class AuthActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (rowLogin.length() < 3) {
-                    snackTextView.setText("Слишком короткий логин");
+                    snackTextView.setText(getString(R.string.small_login));
                     mSnackbar.show();
                     return;
                 }
                 if (rowLogin.length() > 255) {
-                    snackTextView.setText("Слишком длинный логин");
+                    snackTextView.setText(getString(R.string.long_login));
                     mSnackbar.show();
                     return;
                 }
                 if (rowPassword.length() < 6) {
-                    snackTextView.setText("Слишком короткий пароль");
+                    snackTextView.setText(getString(R.string.small_password));
                     mSnackbar.show();
                     return;
                 }
                 if (rowPassword.length() > 255) {
-                    snackTextView.setText("Слишком длинный пароль");
+                    snackTextView.setText(getString(R.string.long_password));
                     mSnackbar.show();
                     return;
                 }
                 InputMethodManager imm = (InputMethodManager) getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(enter.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 if (MainActivity.isOnline(getApplicationContext()) == false) {
-                    Toast.makeText(AuthActivity.this, "Ошибка подключения к интернету", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AuthActivity.this, getString(R.string.error_internet), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 LoadUser loadUser = new LoadUser();
@@ -152,7 +151,7 @@ public class AuthActivity extends AppCompatActivity {
                     "' AND `Password` = '" + rowPassword.getText().toString() + "'";
             rl.removeAllViews();
             rl.addView(progressBar);
-            text.setText("Загрузка данных\nОдну минуточку...");
+            text.setText(getString(R.string.loaded));
             rl.addView(text);
             progressBar.setVisibility(View.VISIBLE);
         }
@@ -182,9 +181,9 @@ public class AuthActivity extends AppCompatActivity {
                 rl.addView(rowPassword);
                 rl.addView(enter);
                 rl.addView(reg);
-                text.setText("Авторизация");
+                text.setText(getString(R.string.authorization));
                 rl.addView(text);
-                snackTextView.setText("Пользователь с таким логином и паролем не найден");
+                snackTextView.setText(getString(R.string.error_auth));
                 mSnackbar.show();
             }
         }
