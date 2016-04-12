@@ -140,5 +140,7 @@
     <string name="checked">Проверка...</string>
     <string name="selected_city">Выберите ваш город:</string>
     <string name="enter_city">Введине название вашего города</string>
+    <string name="messages_not_found">У вас пока-что нету сообщений</string>
+    <string name="error_connection">Ошибка соединения с серверов. Попробуйте чуточку позже</string>
 
 </resources>

@@ -6,6 +6,9 @@
             android:id="@+id/nav_main"
             android:title="Главная" />
         <item
+            android:id="@+id/nav_messages"
+            android:title="Сообщения"/>
+        <item
             android:id="@+id/nav_profile"
             android:title="Профиль" />
         <item

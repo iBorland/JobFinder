@@ -1,6 +1,5 @@
 package com.iborland.jobfinder;
 
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,7 +8,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -65,7 +63,7 @@ public class AuthActivity extends AppCompatActivity {
             android.support.v7.app.AlertDialog dialog = builder.create();
             dialog.show();
         }
-        text = (TextView)findViewById(R.id.text);
+        text = (TextView)findViewById(R.id.text_message);
         rowLogin = (EditText)findViewById(R.id.rowLogin);
         rowPassword = (EditText)findViewById(R.id.rowPassword);
         enter = (Button)findViewById(R.id.button_Enter);

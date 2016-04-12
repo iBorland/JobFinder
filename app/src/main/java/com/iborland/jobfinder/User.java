@@ -1,5 +1,7 @@
 package com.iborland.jobfinder;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -94,7 +96,6 @@ public class User implements Parcelable{
                     }
                     loaded = true;
                     Log.e("Loaded", "User " + login + " был загружен");
-                    Log.e("Score", "SCORE = " + score);
                     break;
                 }
             }

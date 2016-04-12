@@ -180,6 +180,16 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        if(id == R.id.nav_messages){
+            if(user.loaded != true){
+                Toast.makeText(MainActivity.this, getString(R.string.try_again), Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            Intent intent = new Intent(MainActivity.this, MessagesActivity.class);
+            intent.putExtra("User", user);
+            startActivity(intent);
+        }
+
         if (id == R.id.nav_main) {
             // Handle the camera action
         } else if (id == R.id.nav_profile) {

@@ -52,7 +52,10 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".CategoryActivity"
-            android:label="Объявления"></activity>
+            android:label="Объявления"/>
+        <activity
+            android:name=".MessagesActivity"
+            android:label="Сообщения"/>
     </application>
 
 </manifest>
