@@ -52,10 +52,19 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".CategoryActivity"
-            android:label="Объявления"/>
+            android:label="Объявления" />
         <activity
-            android:name=".MessagesActivity"
-            android:label="Сообщения"/>
+            android:name=".DialogsActivity"
+            android:label="Сообщения" />
+        <activity
+            android:name=".ChatActivity"
+            android:label="Чат" />
+        <service android:name=".MessageService"/>
+        <receiver android:name=".RebootService">
+            <intent-filter >
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

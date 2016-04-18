@@ -289,7 +289,7 @@ public class AddActivity extends AppCompatActivity {
                 return 0;
             }
             user.score += 20;
-            user.updateUser();;
+            user.updateUser(true);
             return 1;
         }
 

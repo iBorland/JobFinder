@@ -37,10 +37,15 @@ public class User implements Parcelable{
     String phone;
     String city;
     int age;
+    int lost_msg;
 
     boolean loaded = false;
+    boolean security = true;
 
-    User(int db_id, String db_buffer){
+    int d_id;
+
+    User(int db_id, String db_buffer, boolean off_security, boolean waiting){
+        d_id = db_id;
         if(db_id < 1){
             Log.e("Error", "Неверный ID");
             return;
@@ -50,14 +55,16 @@ public class User implements Parcelable{
             return;
         }
         buffer_Token = db_buffer;
+        if(off_security == true) security = false;
         query = "SELECT * FROM `users` WHERE `id` = '" + db_id + "'";
         LoadUser loadUser = new LoadUser();
-        /*try{
-            loadUser.join(30000);
+        if(waiting == true) {
+            try {
+                loadUser.join(30000);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        catch (Exception e){
-            e.printStackTrace();
-        }*/
     }
 
     class LoadUser extends Thread
@@ -68,11 +75,13 @@ public class User implements Parcelable{
         public void run() {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
+                connection = null;
                 connection = DriverManager.getConnection("jdbc:mysql://" + MainActivity.db_ip, MainActivity.db_login,
                         MainActivity.db_password);
                 statement = null;
                 rs = null;
                 statement = connection.createStatement();
+                query = "SELECT * FROM `users` WHERE `id` = '" + d_id + "'";
                 rs = statement.executeQuery(query);
                 while (rs.next()) {
                     id = rs.getInt("id");
@@ -89,10 +98,12 @@ public class User implements Parcelable{
                     phone = rs.getString("phone");
                     city = rs.getString("City");
                     age = rs.getInt("Age");
-                    if(!token.equals(buffer_Token))
-                    {
-                        Log.e("Error:", "Ошибка. Несоответствие токена");
-                        return;
+                    lost_msg = rs.getInt("LostMessage");
+                    if(security == true) {
+                        if (!token.equals(buffer_Token)) {
+                            Log.e("Error:", "Ошибка. Несоответствие токена");
+                            return;
+                        }
                     }
                     loaded = true;
                     Log.e("Loaded", "User " + login + " был загружен");
@@ -131,6 +142,7 @@ public class User implements Parcelable{
         parcel.writeString(phone);
         parcel.writeString(city);
         parcel.writeInt(age);
+        parcel.writeInt(lost_msg);
 
     }
 
@@ -166,25 +178,28 @@ public class User implements Parcelable{
         phone = parcel.readString();
         city = parcel.readString();
         age = parcel.readInt();
+        lost_msg = parcel.readInt();
         Log.e("Parcel", "User " + login + "был распакован из Parcel");
         loaded = true;
     }
 
-    public void updateUser(){
+    public void updateUser(boolean wait){
         UpdateUserInfo updateUserInfo = new UpdateUserInfo();
-        try{
-            updateUserInfo.join(30000);
-        }
-        catch (Exception e){
-            e.printStackTrace();
+        if(wait == true) {
+            try {
+                updateUserInfo.join(30000);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         LoadUser loadUser = new LoadUser();
-        try{
-            loadUser.join(30000);
-        }
-        catch (Exception e){
-            e.printStackTrace();
+        if(wait == true) {
+            try {
+                loadUser.join(30000);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -201,14 +216,16 @@ public class User implements Parcelable{
                     ",`Token` = '" + token + "'" +
                     ",`Phone` = '" + phone + "'" +
                     ",`City` = '" + city + "'" +
-                    ",`Age` = '" + age + "' WHERE `id` = '" + id + "'";
+                    ",`Age` = '" + age + "'" +
+                    ",`LostMessage` = '" + lost_msg + "' WHERE `id` = '" + id + "'";
             Log.w("QUERY - UPDATE", queryyy);
             try{
+                connection = null;
+                statement = null;
+                rs = null;
                 Class.forName("com.mysql.jdbc.Driver");
                 connection = DriverManager.getConnection("jdbc:mysql://" + MainActivity.db_ip, MainActivity.db_login,
                         MainActivity.db_password);
-                statement = null;
-                rs = null;
                 statement = connection.createStatement();
                 statement.executeUpdate(queryyy);
             }

@@ -8,5 +8,6 @@
     <color name="materialBackground">#DEDBDB</color>
     <color name="white">#FFFF</color>
     <color name="buttonbackground">#52475cd4</color>
-    <color name="RED">#FF00</color>
+    <color name="RED">#ff0000</color>
+    <color name="left_message_back">#86ff56</color>
 </resources>

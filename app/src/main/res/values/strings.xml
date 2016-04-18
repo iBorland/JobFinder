@@ -141,6 +141,15 @@
     <string name="selected_city">Выберите ваш город:</string>
     <string name="enter_city">Введине название вашего города</string>
     <string name="messages_not_found">У вас пока-что нету сообщений</string>
-    <string name="error_connection">Ошибка соединения с серверов. Попробуйте чуточку позже</string>
+    <string name="error_connection">Ошибка соединения с сервером. Попробуйте чуточку позже</string>
+    <string name="your_text">Ваш текст</string>
+    <string name="nextt">next</string>
+    <string name="send">Send</string>
+    <string name="sending">Отправляем ваше сообщение...</string>
+    <string name="update">Обнлвление...</string>
+    <string name="messages">Сообщения</string>
+    <string name="new_ticker">У вас новое сообщение на JobFinder</string>
+    <string name="new_message">Новое сообщение:</string>
+    <string name="message_text">Сообщение от </string>
 
 </resources>

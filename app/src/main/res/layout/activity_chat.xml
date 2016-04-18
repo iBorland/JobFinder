@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/scroll_chat"
+        android:layout_above="@+id/row_Chat">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/linear_chat"></LinearLayout>
+    </ScrollView>
+
+    <EditText
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/row_Chat"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentBottom="true"
+        android:hint="@string/your_text"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp" />
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progress_chat"
+        android:layout_centerInParent="true" />
+
+    <ImageButton
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_chat"
+        android:src="@drawable/ic_menu_send"
+        android:contentDescription="@string/send"
+        android:layout_alignTop="@+id/row_Chat"
+        android:layout_toRightOf="@+id/row_Chat"
+        android:layout_alignParentEnd="true" />
+
+</RelativeLayout>

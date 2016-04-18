@@ -102,6 +102,8 @@ public class MainActivity extends AppCompatActivity
         categories = getResources().getStringArray(R.array.categories);
         listView = (ListView)findViewById(R.id.listView);
         message = (TextView)findViewById(R.id.message);
+        Intent Check_msg = new Intent(MainActivity.this, MessageService.class);
+        startService(Check_msg);
         LoadMenu();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -185,7 +187,7 @@ public class MainActivity extends AppCompatActivity
                 Toast.makeText(MainActivity.this, getString(R.string.try_again), Toast.LENGTH_SHORT).show();
                 return false;
             }
-            Intent intent = new Intent(MainActivity.this, MessagesActivity.class);
+            Intent intent = new Intent(MainActivity.this, DialogsActivity.class);
             intent.putExtra("User", user);
             startActivity(intent);
         }
@@ -243,7 +245,7 @@ public class MainActivity extends AppCompatActivity
         else{
             Log.e("Authorition", "Пользователь авторизован");
             cursor.moveToFirst();
-            user = new User(cursor.getInt(cursor.getColumnIndex("id")), cursor.getString(cursor.getColumnIndex("Token")));
+            user = new User(cursor.getInt(cursor.getColumnIndex("id")), cursor.getString(cursor.getColumnIndex("Token")), false, false);
         }
     }
 
