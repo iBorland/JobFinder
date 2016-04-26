@@ -144,7 +144,7 @@ public class DialogsActivity extends AppCompatActivity{
             HashMap<String, Object> map;
 
             user.lost_msg = dialogs[0].id;
-            user.updateUser(false);
+            user.update(new String[] {User.DB_LOST_MESSAGE}, new Object[] {user.lost_msg});
 
             String[] from = {"Author", "Text"};
             int[] to = {R.id.name_author, R.id.text_message};

@@ -107,7 +107,6 @@
      и повторите попытку позже.</string>
     <string name="exit">Выйти</string>
     <string name="posts_not_found">В данной категории пока-что нету объявлений :(</string>
-    <string name="create_post">Создать новое объявление</string>
     <string name="small_login">Слишком короткий логин</string>
     <string name="small_password">Слишком короткий пароль</string>
     <string name="long_password">Слишком длинный пароль</string>
@@ -146,10 +145,28 @@
     <string name="nextt">next</string>
     <string name="send">Send</string>
     <string name="sending">Отправляем ваше сообщение...</string>
-    <string name="update">Обнлвление...</string>
+    <string name="update">Обновление...</string>
     <string name="messages">Сообщения</string>
     <string name="new_ticker">У вас новое сообщение на JobFinder</string>
     <string name="new_message">Новое сообщение:</string>
     <string name="message_text">Сообщение от </string>
-
+    <string name="actions">Действия:</string>
+    <string name="action_sending">Связаться с автором</string>
+    <string name="action_accept">Принять работу</string>
+    <string name="developed">В разработке</string>
+    <string name="post_amount_executed">Проверяем сколько заданий вы выполняете...</string>
+    <string name="post_check_executing">Проверяем, не выполняет-ли это задание другой человек</string>
+    <string name="post_making">Назначаем вам задание</string>
+    <string name="success">Успешно</string>
+    <string name="unsuccess">Неуспешно</string>
+    <string name="post_executed">Вы успешно приняли это задание.\nПодробности выполнения вы можете найти в меню "Мои задания"</string>
+    <string name="post_error_too_mach_executing">Вы уже выполняете пять или более заданий</string>
+    <string name="post_occupied">Задание уже выполняет кто-то другой</string>
+    <string name="t_Service">Бытовые услуги</string>
+    <string name="t_Postal">Услуги курьера</string>
+    <string name="t_IT">IT Услуги</string>
+    <string name="t_Securyty">Охранные услуги</string>
+    <string name="t_Repair">Ремонтные услуги</string>
+    <string name="t_Other">Другое</string>
+    <string name="create_post">Создать своё объявление</string>
 </resources>

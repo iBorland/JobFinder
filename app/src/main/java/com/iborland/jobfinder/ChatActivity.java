@@ -14,6 +14,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -335,5 +336,11 @@ public class ChatActivity extends AppCompatActivity {
         super.onResume();
         IntentFilter intFilt = new IntentFilter(DialogsActivity.BROADCAST_ACTION);
         registerReceiver(br, intFilt);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home)finish();
+        return super.onOptionsItemSelected(item);
     }
 }

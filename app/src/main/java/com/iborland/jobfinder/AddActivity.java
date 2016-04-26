@@ -6,9 +6,11 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -48,6 +50,7 @@ public class AddActivity extends AppCompatActivity {
     Snackbar mSnackbar;
     View snackbarView;
     TextView snackTextView;
+    ActionBar actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +68,9 @@ public class AddActivity extends AppCompatActivity {
         pCost = (EditText)findViewById(R.id.pCost);
         pCategory = (TextView)findViewById(R.id.pCategory);
         pCity = (EditText)findViewById(R.id.pCity);
+        actionBar = getSupportActionBar();
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         pCity.setText(user.city);
 
@@ -73,6 +79,12 @@ public class AddActivity extends AppCompatActivity {
         snackTextView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
 
         snackTextView.setTextColor(getResources().getColor(R.color.colorText));
+        category = getIntent().getIntExtra("Category", 0);
+        if(category != 0){
+            pCategory.setText(categories[category - 1]);
+            pCategory.setTextColor(getResources().getColor(R.color.colorBlackText));
+            pCategory.setTextSize(18);
+        }
         pCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -171,6 +183,7 @@ public class AddActivity extends AppCompatActivity {
                     intent.putExtra("Text", pText.getText().toString());
                     intent.putExtra("Cost", pCost.getText().toString());
                     intent.putExtra("Amount", amount);
+                    intent.putExtra("Category", category);
                     intent.putExtra("User", user);
                     if (amount > 0) {
                         for (int i = 0; i != amount; i++) {
@@ -231,7 +244,7 @@ public class AddActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            button.startAnimation(return_top);
+            button.startAnimation(top);
             ll.removeAllViews();
             loadtext = new TextView(getApplicationContext());
             loadtext.setText("Загрузка...");
@@ -259,40 +272,52 @@ public class AddActivity extends AppCompatActivity {
             for(int i = 0; i != coords.size(); i++) Coordinates += coords.get(i) + "split";
             //int amount;
 
-            String query = "INSERT INTO `posts` (`ownerID`,`ownerLogin`,`ownerName`,`postName`,`postText`," +
-                    "`cost`,`status`,`Category`,`createtime`,`Adresses`,`Coordinates`,`Amount`,`City`)" +
-                    " VALUES ('" + ownerID + "', '" + ownerLogin + "', '" + ownerName + "','" + postName + "'," +
-                    "'" + postText + "','" + cost + "','" + status + "','" + category + "'" +
-                    ",'" + createtime + "','" + Adresses + "','" + Coordinates + "','" + amount + "','" + city + "')";
-            String rightquery = "";
-            try{
-                rightquery = new String(query.getBytes("utf-8"), "utf-8");
-            }
-            catch (Exception e)
-            {
+            String[] keys = new String[] {"ownerID","ownerLogin","ownerName","postName","postText","cost","status","Category","createtime","Adresses","Coordinates","Amount","City"};
+            Object[] objects = new Object[] {ownerID, ownerLogin, ownerName, postName, postText, cost, status, category, createtime, Adresses, Coordinates, amount, city};
+
+            MySQL mysql = new MySQL("posts", false);
+            mysql.insert(keys, objects);
+            try {
+                mysql.join(30000);
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            mysql.close();
+            mysql = null;
 
-            Log.e("QUERY", rightquery);
-
-            try{
-                Class.forName("com.mysql.jdbc.Driver");
-                connection = DriverManager.getConnection("jdbc:mysql://" + MainActivity.db_ip, MainActivity.db_login,
-                        MainActivity.db_password);
-                statement = connection.createStatement();
-                statement.executeUpdate(rightquery);
-                statement.close();
-                connection.close();
-            }
-            catch (Exception e){
-                e.printStackTrace();
-                return 0;
-            }
-            user.score += 20;
-            user.updateUser(true);
+            user.score += 10;
+            user.ad_amount++;
+            user.update(new String[] {User.DB_SCORE, User.DB_AMOUNT_POSTS}, new Object[] {user.score, user.ad_amount});
             return 1;
         }
 
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home){
+            android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(AddActivity.this);
+            builder.setTitle(getString(R.string.exit));
+            builder.setMessage(getString(R.string.accept_exit_post));
+            builder.setCancelable(false);
+            builder.setNegativeButton("Нет", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+            builder.setPositiveButton("Да", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent(AddActivity.this, MainActivity.class);
+                    finish();
+                    startActivity(intent);
+                }
+            });
+            android.support.v7.app.AlertDialog dialog = builder.create();
+            dialog.show();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

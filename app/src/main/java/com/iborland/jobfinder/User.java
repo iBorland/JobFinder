@@ -1,5 +1,6 @@
 package com.iborland.jobfinder;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
@@ -16,6 +17,23 @@ import java.sql.Statement;
  * Created by iborland on 19.03.16.
  */
 public class User implements Parcelable{
+
+    static final String DB_ID = "id";
+    static final String DB_LOGIN = "Login";
+    static final String DB_PASSWORD = "Password";
+    static final String DB_SURNAME= "Surname";
+    static final String DB_NAME = "Name";
+    static final String DB_EMAIL = "Email";
+    static final String DB_SCORE = "Score";
+    static final String DB_STATUS = "Status";
+    static final String DB_AMOUNT_POSTS = "AmountPosts";
+    static final String DB_DATE_REGISTRATION = "DateRegistration";
+    static final String DB_TOKEN = "Token";
+    static final String DB_PHONE = "phone";
+    static final String DB_CITY = "City";
+    static final String DB_AGE = "Age";
+    static final String DB_LOST_MESSAGE = "LostMessage";
+    static final String DB_ADMIN = "admin";
 
     Connection connection = null;
     Statement statement = null;
@@ -38,9 +56,13 @@ public class User implements Parcelable{
     String city;
     int age;
     int lost_msg;
+    int admin;
 
     boolean loaded = false;
     boolean security = true;
+
+    String update_sql = "";
+    UpdateUserInfo upd;
 
     int d_id;
 
@@ -84,21 +106,22 @@ public class User implements Parcelable{
                 query = "SELECT * FROM `users` WHERE `id` = '" + d_id + "'";
                 rs = statement.executeQuery(query);
                 while (rs.next()) {
-                    id = rs.getInt("id");
-                    login = rs.getString("Login");
-                    password = rs.getString("Password");
-                    surname = rs.getString("Surname");
-                    name = rs.getString("Name");
-                    email = rs.getString("Email");
-                    score = rs.getInt("Score");
-                    status = rs.getInt("Status");
-                    ad_amount = rs.getInt("AmountPosts");
-                    regdata = rs.getString("DateRegistration");
-                    token = rs.getString("Token");
-                    phone = rs.getString("phone");
-                    city = rs.getString("City");
-                    age = rs.getInt("Age");
-                    lost_msg = rs.getInt("LostMessage");
+                    id = rs.getInt(DB_ID);
+                    login = rs.getString(DB_LOGIN);
+                    password = rs.getString(DB_PASSWORD);
+                    surname = rs.getString(DB_SURNAME);
+                    name = rs.getString(DB_NAME);
+                    email = rs.getString(DB_EMAIL);
+                    score = rs.getInt(DB_SCORE);
+                    status = rs.getInt(DB_STATUS);
+                    ad_amount = rs.getInt(DB_AMOUNT_POSTS);
+                    regdata = rs.getString(DB_DATE_REGISTRATION);
+                    token = rs.getString(DB_TOKEN);
+                    phone = rs.getString(DB_PHONE);
+                    city = rs.getString(DB_CITY);
+                    age = rs.getInt(DB_AGE);
+                    lost_msg = rs.getInt(DB_LOST_MESSAGE);
+                    admin = rs.getInt(DB_ADMIN);
                     if(security == true) {
                         if (!token.equals(buffer_Token)) {
                             Log.e("Error:", "Ошибка. Несоответствие токена");
@@ -143,6 +166,7 @@ public class User implements Parcelable{
         parcel.writeString(city);
         parcel.writeInt(age);
         parcel.writeInt(lost_msg);
+        parcel.writeInt(admin);
 
     }
 
@@ -179,46 +203,39 @@ public class User implements Parcelable{
         city = parcel.readString();
         age = parcel.readInt();
         lost_msg = parcel.readInt();
+        admin = parcel.readInt();
         Log.e("Parcel", "User " + login + "был распакован из Parcel");
         loaded = true;
     }
 
-    public void updateUser(boolean wait){
-        UpdateUserInfo updateUserInfo = new UpdateUserInfo();
-        if(wait == true) {
-            try {
-                updateUserInfo.join(30000);
-            } catch (Exception e) {
-                e.printStackTrace();
+    boolean update(String[] row, Object[] value){
+        if(row.length != value.length) return false;
+        int l = row.length;
+        update_sql = "UPDATE `users` SET ";
+        for(int i = 0; i != l; i++){
+            if(i == (l - 1)){
+                String buffer_sql = "`" + row[i] + "` = '" + value[i] + "' ";
+                update_sql += buffer_sql;
+                break;
             }
+            String buffer_sql = "`" + row[i] + "` = '" + value[i] + "', ";
+            update_sql += buffer_sql;
         }
+        update_sql += "WHERE `id` = '" + id + "'";
 
-        LoadUser loadUser = new LoadUser();
-        if(wait == true) {
-            try {
-                loadUser.join(30000);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        if(upd != null && upd.isAlive() == true) return false;
+
+        upd = new UpdateUserInfo();
+        upd.start();
+        return true;
     }
 
     class UpdateUserInfo extends Thread{
 
-        public UpdateUserInfo() { run(); }
+        public void start() { run(); }
 
         public void run(){
-            String queryyy = "UPDATE `users` SET `Login` = '" + login + "',`Password` = '" + password + "'" +
-                    ",`Surname` = '" + surname + "',`Name` = '" + name + "'," +
-                    "`Email` = '" + email + "',`Score` = '" + score + "'" +
-                    ",`Status` = '" + status + "'" +
-                    ",`AmountPosts` = '" + ad_amount + "'" +
-                    ",`Token` = '" + token + "'" +
-                    ",`Phone` = '" + phone + "'" +
-                    ",`City` = '" + city + "'" +
-                    ",`Age` = '" + age + "'" +
-                    ",`LostMessage` = '" + lost_msg + "' WHERE `id` = '" + id + "'";
-            Log.w("QUERY - UPDATE", queryyy);
+            Log.w("QUERY - UPDATE", update_sql);
             try{
                 connection = null;
                 statement = null;
@@ -227,7 +244,7 @@ public class User implements Parcelable{
                 connection = DriverManager.getConnection("jdbc:mysql://" + MainActivity.db_ip, MainActivity.db_login,
                         MainActivity.db_password);
                 statement = connection.createStatement();
-                statement.executeUpdate(queryyy);
+                statement.executeUpdate(update_sql);
             }
             catch (Exception e){
                 e.printStackTrace();

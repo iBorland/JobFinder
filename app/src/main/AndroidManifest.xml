@@ -41,7 +41,7 @@
             android:label="Просмотр карты" />
         <activity
             android:name=".AddActivity"
-            android:label="Добавление объявления"
+            android:label="Создание объявления"
             android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".PostActivity"
@@ -60,11 +60,11 @@
             android:name=".ChatActivity"
             android:label="Чат" />
         <service android:name=".MessageService"/>
-        <receiver android:name=".RebootService">
+        <!--<receiver android:name=".RebootService">
             <intent-filter >
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
-        </receiver>
+        </receiver>-->
     </application>
 
 </manifest>

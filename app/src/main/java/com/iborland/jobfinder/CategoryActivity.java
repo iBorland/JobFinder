@@ -66,6 +66,10 @@ public class CategoryActivity extends AppCompatActivity {
         select_category = getIntent().getIntExtra("Category", -5);
         user = getIntent().getParcelableExtra("User");
 
+        /*Intent intent = new Intent(CategoryActivity.this, MessageService.class);
+        intent.putExtra("User", user);
+        startService(intent);*/
+
         act = getSupportActionBar();
 
         int padding_in_dp = 8;  // 6 dps
@@ -222,7 +226,7 @@ public class CategoryActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        frame.setBackgroundResource(android.R.drawable.dialog_holo_light_frame);
+
         count++;
 
         String text = "";
@@ -259,6 +263,9 @@ public class CategoryActivity extends AppCompatActivity {
         time.setGravity(Gravity.LEFT | Gravity.BOTTOM);
         time.setPadding(padding_in_px, padding_in_px, padding_in_px, padding_in_px);
         time.setTextSize(12);
+
+        //frame.setBackgroundResource(android.R.drawable.dialog_holo_light_frame);
+        frame.setBackgroundResource(R.drawable.shadow_back);
 
         lin.addView(frame);
         frame.startAnimation(left);

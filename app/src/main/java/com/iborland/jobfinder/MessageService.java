@@ -13,7 +13,6 @@ import android.util.Log;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -40,6 +39,7 @@ public class MessageService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        stopSelf();
         user = intent.getParcelableExtra("User");
         if(timer == null) {
             timerTask = new Timertask();
@@ -52,6 +52,7 @@ public class MessageService extends Service {
 
     @Override
     public void onCreate() {
+        stopSelf();
         Log.e("SERVICE", "onCreate");
         super.onCreate();
     }
@@ -84,7 +85,7 @@ public class MessageService extends Service {
                     buffer_id = rs.getInt("id");
                     if(buffer_id != 0 && user.lost_msg != buffer_id){
                         user.lost_msg = buffer_id;
-                        user.updateUser(false);
+                        user.update(new String[] {User.DB_LOST_MESSAGE}, new Object[] {user.lost_msg});
                         Message buffer = new Message(true);
                         buffer.id = rs.getInt("id");
                         buffer.sender_id = rs.getInt("sender_id");

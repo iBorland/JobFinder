@@ -77,21 +77,6 @@
                         android:textColor="@color/colorBlackText"
                         android:textSize="18dp" />
 
-                </RelativeLayout>
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/fCost"
-                android:padding="16dp"
-                android:background="@android:drawable/dialog_holo_light_frame">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/layout_Cost">
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -101,7 +86,8 @@
                         android:padding="4dp"
                         android:textColor="@color/colorBlackText"
                         android:textSize="18dp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:layout_below="@+id/sDate" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -113,6 +99,7 @@
                         android:padding="4dp"
                         android:textColor="@color/colorBlackText"
                         android:textSize="18dp" />
+
                 </RelativeLayout>
             </FrameLayout>
 
@@ -173,6 +160,23 @@
                 android:padding="10dp"
                 android:textColor="@color/colorBlackText"
                 android:textSize="24sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/actions"
+                android:id="@+id/action_header"
+                android:layout_gravity="center"
+                android:paddingTop="10dp"
+                android:textColor="@color/colorBlackText"
+                android:textSize="24sp" />
+
+            <ListView
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:id="@+id/action_list" />
+
         </LinearLayout>
     </ScrollView>
 

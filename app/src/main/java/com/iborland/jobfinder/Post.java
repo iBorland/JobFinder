@@ -31,6 +31,7 @@ public class Post implements Parcelable{
     String[] Coords;
     int amount;
     String city;
+    int executor;
 
     int buffer_id;
 
@@ -78,6 +79,7 @@ public class Post implements Parcelable{
                     String buffer_coords = rs.getString("Coordinates");
                     amount = rs.getInt("Amount");
                     city = rs.getString("City");
+                    executor = rs.getInt("executor");
                     if(buffer_adresses != null) {
                         Adresses = buffer_adresses.split("split");
                         Coords = buffer_coords.split("split");
@@ -118,6 +120,7 @@ public class Post implements Parcelable{
         parcel.writeString(createtime);
         parcel.writeInt(amount);
         parcel.writeString(city);
+        parcel.writeInt(executor);
         if(amount > 0)
         {
             parcel.writeStringArray(Adresses);
@@ -156,6 +159,7 @@ public class Post implements Parcelable{
         createtime = parcel.readString();
         amount = parcel.readInt();
         city = parcel.readString();
+        executor = parcel.readInt();
         if(amount > 0) {
             Adresses = new String[amount];
             Coords = new String[amount];

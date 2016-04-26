@@ -24,6 +24,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile files('libs/mysql-connector-java-5.1.30.jar')
+    compile "com.google.android.gms:play-services-gcm:8.4.0"
     compile 'com.android.support:design:23.2.1'
     compile 'com.google.android.gms:play-services-maps:8.4.0'
 }

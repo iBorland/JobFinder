@@ -14,7 +14,9 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -55,7 +57,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     ArrayList<String> coords = new ArrayList<String>();
     ArrayList<String> adresa = new ArrayList<String>();
     String name, text, cost;
-    int amount;
+    int amount, category;
+    ActionBar bar;
     User user;
 
     int type = 0;
@@ -83,6 +86,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         name = getIntent().getStringExtra("Name");
         text = getIntent().getStringExtra("Text");
         cost = getIntent().getStringExtra("Cost");
+        category = getIntent().getIntExtra("Category", 0);
         amount = getIntent().getIntExtra("Amount", 0);
         if(amount > 0){
             for(int i = 0; i != amount; i++){
@@ -267,6 +271,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         intent.putExtra("qCost", cost);
                         intent.putExtra("qAmount", amount);
                         intent.putExtra("User", user);
+                        intent.putExtra("Category", category);
                         if(amount > 0)
                         {
                             for(int i = 0; i != amount; i++){
@@ -304,6 +309,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         intent.putExtra("qCost", cost);
         intent.putExtra("qAmount", amount);
         intent.putExtra("User", user);
+        intent.putExtra("Category", category);
         if(amount > 0)
         {
             for(int i = 0; i != amount; i++){

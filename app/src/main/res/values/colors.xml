@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimaryDark">#3F51B5</color>
+    <color name="colorAccent">#e8c89f</color>
     <color name="colorText">#bdbdbd</color>
     <color name="colorBlackText">#525252</color>
     <color name="materialBackground">#DEDBDB</color>
     <color name="white">#FFFF</color>
-    <color name="buttonbackground">#52475cd4</color>
+    <color name="buttonbackground">#e8c89f</color>
     <color name="RED">#ff0000</color>
     <color name="left_message_back">#86ff56</color>
+    <color name="orange">#ff5722</color>
+    <!-- 52475cd4 -->
 </resources>

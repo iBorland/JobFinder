@@ -31,6 +31,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -63,16 +64,17 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    static final String db_login = "user17667";
-    static final String db_ip = "62.76.74.169:3306/user17667?characterEncoding=utf8";
+    static final String db_login = "iborlZer";
+    static final String db_ip = "triniti.ru-hoster.com/iborlZer?characterEncoding=utf8";
     static final String db_password = "22599226a";
 
     User user;
-    ListView listView;
     String categories[];
     TextView message;
     RelativeLayout layout;
     ArrayList<Post> Posts = new ArrayList<Post>();
+
+    FrameLayout f_Service, f_Postal, f_IT, f_Security, f_Repair, f_Other;
 
     Connection connection = null;
     Statement statement = null;
@@ -83,6 +85,7 @@ public class MainActivity extends AppCompatActivity
     ScrollView scrollView;
     LinearLayout linearLayout;
     ActionBar act;
+    Button create_post;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,13 +103,39 @@ public class MainActivity extends AppCompatActivity
         return_left = AnimationUtils.loadAnimation(this, R.anim.return_slide_left);
         layout = (RelativeLayout)findViewById(R.id.Layout);
         categories = getResources().getStringArray(R.array.categories);
-        listView = (ListView)findViewById(R.id.listView);
         message = (TextView)findViewById(R.id.message);
+        f_Service = (FrameLayout)findViewById(R.id.f_Service);
+        f_Postal = (FrameLayout)findViewById(R.id.f_Postal);
+        f_IT = (FrameLayout)findViewById(R.id.f_IT);
+        f_Security = (FrameLayout)findViewById(R.id.f_Security);
+        f_Repair = (FrameLayout)findViewById(R.id.f_Repair);
+        f_Repair = (FrameLayout)findViewById(R.id.f_Repair);
         Intent Check_msg = new Intent(MainActivity.this, MessageService.class);
         startService(Check_msg);
-        LoadMenu();
+        message.setText(getString(R.string.select_category));
+        create_post = (Button)findViewById(R.id.button_create_post);
+        //LoadMenu();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        create_post.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(user.loaded != true){
+                    Toast.makeText(MainActivity.this, getString(R.string.try_again), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Log.e("test", user.phone);
+                if(user.phone.equals("none")){
+                    Intent intent = new Intent(MainActivity.this, PhoneActivity.class);
+                    intent.putExtra("User", user);
+                    startActivity(intent);
+                    return;
+                }
+                Intent intent = new Intent(MainActivity.this, AddActivity.class);
+                intent.putExtra("User", user);
+                startActivity(intent);
+            }
+        });
+        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         if (fab != null) {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -127,7 +156,7 @@ public class MainActivity extends AppCompatActivity
                     startActivity(intent);
                 }
             });
-        }
+        }*/
 
         int addresult = getIntent().getIntExtra("AddResult", -5);
         if(addresult != -5){
@@ -183,13 +212,14 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if(id == R.id.nav_messages){
-            if(user.loaded != true){
+            Toast.makeText(MainActivity.this, "В разработке", Toast.LENGTH_SHORT).show();
+            /*if(user.loaded != true){
                 Toast.makeText(MainActivity.this, getString(R.string.try_again), Toast.LENGTH_SHORT).show();
                 return false;
             }
             Intent intent = new Intent(MainActivity.this, DialogsActivity.class);
             intent.putExtra("User", user);
-            startActivity(intent);
+            startActivity(intent);*/
         }
 
         if (id == R.id.nav_main) {
@@ -259,7 +289,7 @@ public class MainActivity extends AppCompatActivity
         return false;
     }
 
-    public void LoadMenu(){
+    /*public void LoadMenu(){
         Posts.clear();
         layout.setBackgroundColor(getResources().getColor(R.color.white));
         Log.e("CLEAR", "Посты очищены");
@@ -308,12 +338,30 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
-    }
+    }*/
 
 
     @Override
     protected void onResume() {
         super.onResume();
         CheckLogin();
+    }
+
+    public void SelectCategory(View view) {
+        switch (view.getId()){
+            case R.id.f_Service: openCategory(1); break;
+            case R.id.f_Postal: openCategory(2); break;
+            case R.id.f_IT: openCategory(3); break;
+            case R.id.f_Security: openCategory(4); break;
+            case R.id.f_Repair: openCategory(5); break;
+            case R.id.f_Other: openCategory(6); break;
+        }
+    }
+
+    public void openCategory(int category){
+        Intent intent = new Intent(MainActivity.this, CategoryActivity.class);
+        intent.putExtra("Category", category);
+        intent.putExtra("User", user);
+        startActivity(intent);
     }
 }
