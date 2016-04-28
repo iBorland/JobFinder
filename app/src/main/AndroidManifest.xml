@@ -59,6 +59,9 @@
         <activity
             android:name=".ChatActivity"
             android:label="Чат" />
+        <activity
+            android:name=".VoteActivity"
+            android:label="Модерация"/>
         <service android:name=".MessageService"/>
         <!--<receiver android:name=".RebootService">
             <intent-filter >

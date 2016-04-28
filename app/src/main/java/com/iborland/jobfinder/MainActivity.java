@@ -109,7 +109,6 @@ public class MainActivity extends AppCompatActivity
         f_IT = (FrameLayout)findViewById(R.id.f_IT);
         f_Security = (FrameLayout)findViewById(R.id.f_Security);
         f_Repair = (FrameLayout)findViewById(R.id.f_Repair);
-        f_Repair = (FrameLayout)findViewById(R.id.f_Repair);
         Intent Check_msg = new Intent(MainActivity.this, MessageService.class);
         startService(Check_msg);
         message.setText(getString(R.string.select_category));
@@ -220,6 +219,15 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(MainActivity.this, DialogsActivity.class);
             intent.putExtra("User", user);
             startActivity(intent);*/
+        }
+        if(id == R.id.nav_test){
+            if(user.loaded != true){
+                Toast.makeText(MainActivity.this, getString(R.string.try_again), Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            Intent intent = new Intent(MainActivity.this, VoteActivity.class);
+            intent.putExtra("User", user);
+            startActivity(intent);
         }
 
         if (id == R.id.nav_main) {

@@ -19,7 +19,7 @@ public class MySQL extends Thread{
     static final Integer ERROR_EXECUTE = -3;
 
 
-    Connection connection = null;
+    Connection connect = null;
     Statement statement = null;
     ResultSet rs = null;
     String table = null;
@@ -31,9 +31,9 @@ public class MySQL extends Thread{
         if(closed == true) autoclosed = true;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://" + MainActivity.db_ip, MainActivity.db_login,
+            connect = DriverManager.getConnection("jdbc:mysql://" + MainActivity.db_ip, MainActivity.db_login,
                     MainActivity.db_password);
-            statement = connection.createStatement();
+            statement = connect.createStatement();
             connected = true;
             table = tab;
         } catch (Exception e) {
@@ -68,7 +68,7 @@ public class MySQL extends Thread{
         String query = str1 + str2;
         Log.e("Query ", query);
 
-        if(connection == null || statement == null) return ERROR_NOT_CONNECTION;
+        if(connect == null || statement == null) return ERROR_NOT_CONNECTION;
 
         try {
             statement.executeUpdate(query);
@@ -102,7 +102,7 @@ public class MySQL extends Thread{
 
         Log.e("Query ", string);
 
-        if(connection == null || statement == null) return ERROR_NOT_CONNECTION;
+        if(connect == null || statement == null) return ERROR_NOT_CONNECTION;
 
         try {
             statement.executeUpdate(string);
@@ -118,12 +118,12 @@ public class MySQL extends Thread{
 
     public Integer close(){
         try {
-            connection.close();
+            connect.close();
             statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        connection = null;
+        connect = null;
         statement = null;
         return ERROR_NONE;
     }

@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="@drawable/gradient_background"
-    android:id="@+id/Rel">
+    android:id="@+id/Rel"
+    android:background="@drawable/patter">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/imageView2"
+        android:src="@drawable/logo_app"
+        android:layout_centerHorizontal="true"
+        android:contentDescription="@string/logo"
+        android:layout_marginTop="20dp" />
 
     <EditText
         android:layout_width="250dp"
@@ -10,15 +19,16 @@
         android:inputType="textPersonName"
         android:ems="10"
         android:id="@+id/rowLogin"
-        android:layout_marginTop="25dp"
         android:singleLine="true"
         android:textAlignment="center"
         android:maxLines="1"
         android:hint="@string/login"
-        android:layout_below="@+id/text_message"
         android:layout_centerHorizontal="true"
         android:maxLength="24"
-        android:lines="1" />
+        android:lines="1"
+        android:textColor="@color/auth_color"
+        android:layout_below="@+id/imageView2"
+        android:layout_marginTop="20dp" />
 
     <EditText
         android:layout_width="250dp"
@@ -34,17 +44,8 @@
         android:layout_centerHorizontal="true"
         android:inputType="textPassword"
         android:lines="1"
-        android:maxLength="32" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/authorization"
-        android:id="@+id/text_message"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="24dp" />
+        android:maxLength="32"
+        android:textColor="@color/auth_color" />
 
     <Button
         android:layout_width="250dp"
@@ -54,7 +55,8 @@
         android:layout_below="@+id/rowPassword"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
-        android:background="#52475cd4" />
+        android:background="@color/buttonbackground"
+        android:textColor="@color/auth_color" />
 
     <Button
         android:layout_width="250dp"
@@ -62,9 +64,10 @@
         android:text="@string/registation"
         android:id="@+id/button_Reg"
         android:layout_marginTop="10dp"
-        android:background="#52475cd4"
+        android:background="@color/buttonbackground"
         android:layout_below="@+id/button_Enter"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/auth_color" />
 
     <ProgressBar
         android:layout_width="wrap_content"

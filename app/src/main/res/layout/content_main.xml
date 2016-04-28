@@ -9,7 +9,8 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.iborland.jobfinder.MainActivity"
     tools:showIn="@layout/app_bar_main"
-    android:id="@+id/Layout">
+    android:id="@+id/Layout"
+    android:background="@drawable/patter">
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -20,289 +21,286 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/linear"></LinearLayout>
-    </ScrollView>
+            android:layout_height="wrap_content"
+            android:id="@+id/linear">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/default_text"
-        android:id="@+id/message"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="false"
-        android:layout_centerInParent="true"
-        android:textAlignment="center"
-        android:textColor="@color/colorBlackText"
-        android:textSize="24sp"
-        android:singleLine="false" />
-
-    <HorizontalScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/scrollCategory"
-        android:layout_below="@+id/message"
-        android:layout_alignParentStart="false"
-        android:layout_marginTop="10dp"
-        android:fillViewport="false"
-        android:scrollbars="none">
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
-
-            <FrameLayout
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@android:drawable/dialog_holo_light_frame"
-                android:id="@+id/f_Service"
-                android:onClick="SelectCategory">
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/default_text"
+                android:id="@+id/message"
+                android:textAlignment="center"
+                android:textColor="@color/colorBlackText"
+                android:textSize="24sp"
+                android:singleLine="false"
+                android:gravity="center"
+                android:layout_gravity="center" />
 
-                <RelativeLayout
-                    android:layout_width="120dp"
-                    android:layout_height="150dp"
-                    android:id="@+id/rel_Service">
-
-                    <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="80dp"
-                        android:id="@+id/img_Service"
-                        android:src="@drawable/icon_service"
-                        android:contentDescription="@string/t_Service"
-                        android:layout_alignParentTop="true"
-                        android:layout_centerHorizontal="true"
-                        android:padding="15dp" />
-
-                    <TextView
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="@string/t_Service"
-                        android:id="@+id/text_Service"
-                        android:padding="10dp"
-                        android:layout_below="@+id/img_Service"
-                        android:textSize="18sp"
-                        android:layout_alignParentEnd="true"
-                        android:textAlignment="center"
-                        android:textColor="@color/colorBlackText" />
-                </RelativeLayout>
-            </FrameLayout>
-
-            <FrameLayout
+            <HorizontalScrollView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/f_Postal"
-                android:background="@android:drawable/dialog_holo_light_frame"
-                android:visibility="visible"
-                android:onClick="SelectCategory">
+                android:id="@+id/scrollCategory"
+                android:layout_marginTop="10dp"
+                android:fillViewport="false"
+                android:scrollbars="none">
 
-                <RelativeLayout
-                    android:layout_width="120dp"
-                    android:layout_height="150dp"
-                    android:id="@+id/rel_Postal">
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
 
-                    <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="80dp"
-                        android:id="@+id/img_Postal"
-                        android:layout_alignParentTop="true"
-                        android:layout_centerHorizontal="true"
-                        android:padding="15dp"
-                        android:src="@drawable/icon_postal"
-                        android:contentDescription="@string/t_Postal" />
-
-                    <TextView
-                        android:layout_width="fill_parent"
+                    <FrameLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="@string/t_Postal"
-                        android:id="@+id/text_Postal"
-                        android:layout_below="@+id/img_Postal"
-                        android:layout_alignParentEnd="true"
-                        android:textAlignment="center"
-                        android:textColor="@color/colorBlackText"
-                        android:textSize="18sp"
-                        android:paddingLeft="15dp"
-                        android:paddingTop="15dp"
-                        android:paddingRight="15dp"/>
-                </RelativeLayout>
-            </FrameLayout>
+                        android:background="@android:drawable/dialog_holo_light_frame"
+                        android:id="@+id/f_Service"
+                        android:onClick="SelectCategory">
 
-            <FrameLayout
-                android:layout_width="wrap_content"
+                        <RelativeLayout
+                            android:layout_width="120dp"
+                            android:layout_height="150dp"
+                            android:id="@+id/rel_Service">
+
+                            <ImageView
+                                android:layout_width="fill_parent"
+                                android:layout_height="80dp"
+                                android:id="@+id/img_Service"
+                                android:src="@drawable/icon_service"
+                                android:contentDescription="@string/t_Service"
+                                android:layout_alignParentTop="true"
+                                android:layout_centerHorizontal="true"
+                                android:padding="15dp" />
+
+                            <TextView
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceLarge"
+                                android:text="@string/t_Service"
+                                android:id="@+id/text_Service"
+                                android:padding="10dp"
+                                android:layout_below="@+id/img_Service"
+                                android:textSize="18sp"
+                                android:layout_alignParentEnd="true"
+                                android:textAlignment="center"
+                                android:textColor="@color/colorBlackText" />
+                        </RelativeLayout>
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/f_Postal"
+                        android:background="@android:drawable/dialog_holo_light_frame"
+                        android:visibility="visible"
+                        android:onClick="SelectCategory">
+
+                        <RelativeLayout
+                            android:layout_width="120dp"
+                            android:layout_height="150dp"
+                            android:id="@+id/rel_Postal">
+
+                            <ImageView
+                                android:layout_width="fill_parent"
+                                android:layout_height="80dp"
+                                android:id="@+id/img_Postal"
+                                android:layout_alignParentTop="true"
+                                android:layout_centerHorizontal="true"
+                                android:padding="15dp"
+                                android:src="@drawable/icon_postal"
+                                android:contentDescription="@string/t_Postal" />
+
+                            <TextView
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceLarge"
+                                android:text="@string/t_Postal"
+                                android:id="@+id/text_Postal"
+                                android:layout_below="@+id/img_Postal"
+                                android:layout_alignParentEnd="true"
+                                android:textAlignment="center"
+                                android:textColor="@color/colorBlackText"
+                                android:textSize="18sp"
+                                android:paddingLeft="15dp"
+                                android:paddingTop="15dp"
+                                android:paddingRight="15dp"/>
+                        </RelativeLayout>
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/f_IT"
+                        android:background="@android:drawable/dialog_holo_light_frame"
+                        android:visibility="visible"
+                        android:onClick="SelectCategory">
+
+                        <RelativeLayout
+                            android:layout_width="120dp"
+                            android:layout_height="150dp"
+                            android:id="@+id/rel_IT">
+
+                            <ImageView
+                                android:layout_width="fill_parent"
+                                android:layout_height="80dp"
+                                android:id="@+id/img_IT"
+                                android:layout_alignParentTop="true"
+                                android:layout_centerHorizontal="true"
+                                android:padding="15dp"
+                                android:src="@drawable/icon_it"
+                                android:contentDescription="@string/t_IT" />
+
+                            <TextView
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceLarge"
+                                android:text="@string/t_IT"
+                                android:id="@+id/text_IT"
+                                android:layout_below="@+id/img_IT"
+                                android:layout_alignParentEnd="true"
+                                android:textAlignment="center"
+                                android:textColor="@color/colorBlackText"
+                                android:textSize="18sp"
+                                android:paddingLeft="15dp"
+                                android:paddingTop="15dp"
+                                android:paddingRight="15dp"
+                                android:paddingBottom="15dp" />
+                        </RelativeLayout>
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/f_Security"
+                        android:background="@android:drawable/dialog_holo_light_frame"
+                        android:visibility="visible"
+                        android:onClick="SelectCategory">
+
+                        <RelativeLayout
+                            android:layout_width="120dp"
+                            android:layout_height="150dp"
+                            android:id="@+id/rel_Security">
+
+                            <ImageView
+                                android:layout_width="fill_parent"
+                                android:layout_height="80dp"
+                                android:id="@+id/img_Security"
+                                android:layout_alignParentTop="true"
+                                android:layout_centerHorizontal="true"
+                                android:padding="15dp"
+                                android:src="@drawable/icon_security"
+                                android:contentDescription="@string/t_Securyty" />
+
+                            <TextView
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceLarge"
+                                android:text="@string/t_Securyty"
+                                android:id="@+id/text_Security"
+                                android:layout_below="@+id/img_Security"
+                                android:layout_alignParentEnd="true"
+                                android:textAlignment="center"
+                                android:textColor="@color/colorBlackText"
+                                android:textSize="18sp"
+                                android:paddingLeft="15dp"
+                                android:paddingTop="10dp"
+                                android:paddingRight="15dp" />
+                        </RelativeLayout>
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/f_Repair"
+                        android:background="@android:drawable/dialog_holo_light_frame"
+                        android:visibility="visible"
+                        android:onClick="SelectCategory">
+
+                        <RelativeLayout
+                            android:layout_width="120dp"
+                            android:layout_height="150dp"
+                            android:id="@+id/rel_Repair">
+
+                            <ImageView
+                                android:layout_width="fill_parent"
+                                android:layout_height="80dp"
+                                android:id="@+id/img_Repair"
+                                android:layout_alignParentTop="true"
+                                android:layout_centerHorizontal="true"
+                                android:padding="15dp"
+                                android:src="@drawable/icon_repair"
+                                android:contentDescription="@string/t_Repair" />
+
+                            <TextView
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceLarge"
+                                android:text="@string/t_Repair"
+                                android:id="@+id/text_Repair"
+                                android:layout_below="@+id/img_Repair"
+                                android:layout_alignParentEnd="true"
+                                android:textAlignment="center"
+                                android:textColor="@color/colorBlackText"
+                                android:textSize="18sp"
+                                android:paddingLeft="15dp"
+                                android:paddingRight="15dp"
+                                android:paddingTop="15dp"/>
+                        </RelativeLayout>
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/f_Other"
+                        android:onClick="SelectCategory"
+                        android:background="@android:drawable/dialog_holo_light_frame">
+
+                        <RelativeLayout
+                            android:layout_width="120dp"
+                            android:layout_height="150dp"
+                            android:id="@+id/rel_Other">
+
+                            <ImageView
+                                android:layout_width="fill_parent"
+                                android:layout_height="80dp"
+                                android:id="@+id/img_Other"
+                                android:layout_alignParentTop="true"
+                                android:layout_centerHorizontal="true"
+                                android:padding="15dp"
+                                android:src="@drawable/icon_default"
+                                android:contentDescription="@string/t_Other" />
+
+                            <TextView
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceLarge"
+                                android:text="@string/t_Other"
+                                android:id="@+id/text_Other"
+                                android:layout_below="@+id/img_Other"
+                                android:layout_alignParentEnd="true"
+                                android:textAlignment="center"
+                                android:textColor="@color/colorBlackText"
+                                android:textSize="18sp"
+                                android:paddingLeft="15dp"
+                                android:paddingTop="15dp"
+                                android:paddingRight="15dp"
+                                android:paddingBottom="15dp"/>
+                        </RelativeLayout>
+                    </FrameLayout>
+
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <Button
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/f_IT"
-                android:background="@android:drawable/dialog_holo_light_frame"
-                android:visibility="visible"
-                android:onClick="SelectCategory">
-
-                <RelativeLayout
-                    android:layout_width="120dp"
-                    android:layout_height="150dp"
-                    android:id="@+id/rel_IT">
-
-                    <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="80dp"
-                        android:id="@+id/img_IT"
-                        android:layout_alignParentTop="true"
-                        android:layout_centerHorizontal="true"
-                        android:padding="15dp"
-                        android:src="@drawable/icon_it"
-                        android:contentDescription="@string/t_IT" />
-
-                    <TextView
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="@string/t_IT"
-                        android:id="@+id/text_IT"
-                        android:layout_below="@+id/img_IT"
-                        android:layout_alignParentEnd="true"
-                        android:textAlignment="center"
-                        android:textColor="@color/colorBlackText"
-                        android:textSize="18sp"
-                        android:paddingLeft="15dp"
-                        android:paddingTop="15dp"
-                        android:paddingRight="15dp"
-                        android:paddingBottom="15dp" />
-                </RelativeLayout>
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/f_Security"
-                android:background="@android:drawable/dialog_holo_light_frame"
-                android:visibility="visible"
-                android:onClick="SelectCategory">
-
-                <RelativeLayout
-                    android:layout_width="120dp"
-                    android:layout_height="150dp"
-                    android:id="@+id/rel_Security">
-
-                    <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="80dp"
-                        android:id="@+id/img_Security"
-                        android:layout_alignParentTop="true"
-                        android:layout_centerHorizontal="true"
-                        android:padding="15dp"
-                        android:src="@drawable/icon_security"
-                        android:contentDescription="@string/t_Securyty" />
-
-                    <TextView
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="@string/t_Securyty"
-                        android:id="@+id/text_Security"
-                        android:layout_below="@+id/img_Security"
-                        android:layout_alignParentEnd="true"
-                        android:textAlignment="center"
-                        android:textColor="@color/colorBlackText"
-                        android:textSize="18sp"
-                        android:paddingLeft="15dp"
-                        android:paddingTop="10dp"
-                        android:paddingRight="15dp" />
-                </RelativeLayout>
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/f_Repair"
-                android:background="@android:drawable/dialog_holo_light_frame"
-                android:visibility="visible"
-                android:onClick="SelectCategory">
-
-                <RelativeLayout
-                    android:layout_width="120dp"
-                    android:layout_height="150dp"
-                    android:id="@+id/rel_Repair">
-
-                    <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="80dp"
-                        android:id="@+id/img_Repair"
-                        android:layout_alignParentTop="true"
-                        android:layout_centerHorizontal="true"
-                        android:padding="15dp"
-                        android:src="@drawable/icon_repair"
-                        android:contentDescription="@string/t_Repair" />
-
-                    <TextView
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="@string/t_Repair"
-                        android:id="@+id/text_Repair"
-                        android:layout_below="@+id/img_Repair"
-                        android:layout_alignParentEnd="true"
-                        android:textAlignment="center"
-                        android:textColor="@color/colorBlackText"
-                        android:textSize="18sp"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="15dp"
-                        android:paddingTop="15dp"/>
-                </RelativeLayout>
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/f_Other"
-                android:onClick="SelectCategory"
-                android:background="@android:drawable/dialog_holo_light_frame">
-
-                <RelativeLayout
-                    android:layout_width="120dp"
-                    android:layout_height="150dp"
-                    android:id="@+id/rel_Other">
-
-                    <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="80dp"
-                        android:id="@+id/img_Other"
-                        android:layout_alignParentTop="true"
-                        android:layout_centerHorizontal="true"
-                        android:padding="15dp"
-                        android:src="@drawable/icon_default"
-                        android:contentDescription="@string/t_Other" />
-
-                    <TextView
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="@string/t_Other"
-                        android:id="@+id/text_Other"
-                        android:layout_below="@+id/img_Other"
-                        android:layout_alignParentEnd="true"
-                        android:textAlignment="center"
-                        android:textColor="@color/colorBlackText"
-                        android:textSize="18sp"
-                        android:paddingLeft="15dp"
-                        android:paddingTop="15dp"
-                        android:paddingRight="15dp"
-                        android:paddingBottom="15dp"/>
-                </RelativeLayout>
-            </FrameLayout>
-
+                android:text="@string/create_post"
+                android:id="@+id/button_create_post"
+                android:background="@color/buttonbackground"
+                android:textColor="@color/colorBlackText"
+                android:textSize="16sp"
+                android:layout_marginTop="10dp" />
         </LinearLayout>
-    </HorizontalScrollView>
-
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/create_post"
-        android:id="@+id/button_create_post"
-        android:layout_below="@+id/scrollCategory"
-        android:background="@color/buttonbackground"
-        android:textColor="@color/colorBlackText"
-        android:textSize="16sp"
-        android:layout_marginTop="10dp" />
+    </ScrollView>
 
 </RelativeLayout>

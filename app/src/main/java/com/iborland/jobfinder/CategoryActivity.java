@@ -86,6 +86,7 @@ public class CategoryActivity extends AppCompatActivity {
         return_left = AnimationUtils.loadAnimation(this, R.anim.return_slide_left);
 
         if(select_category == -5){
+            if(progressBar.isShown() == true) linearLayout.removeView(progressBar);
             TextView mess = new TextView(this);
             mess.setText(getString(R.string.error_loaded));
             mess.setGravity(Gravity.CENTER);

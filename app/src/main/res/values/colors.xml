@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#3F51B5</color>
-    <color name="colorAccent">#e8c89f</color>
+    <color name="colorPrimary">#a6a8ab</color>
+    <color name="colorPrimaryDark">#a6a8ab</color>
+    <color name="colorAccent">#58595b</color>
     <color name="colorText">#bdbdbd</color>
-    <color name="colorBlackText">#525252</color>
+    <color name="colorBlackText">#808184</color>
     <color name="materialBackground">#DEDBDB</color>
     <color name="white">#FFFF</color>
-    <color name="buttonbackground">#e8c89f</color>
+    <color name="buttonbackground">#dddddd</color>
     <color name="RED">#ff0000</color>
     <color name="left_message_back">#86ff56</color>
     <color name="orange">#ff5722</color>
+    <color name="background">#fafafa</color>
+    <color name="auth_color">#58595b</color>
     <!-- 52475cd4 -->
 </resources>

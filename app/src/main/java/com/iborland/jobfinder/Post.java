@@ -32,6 +32,10 @@ public class Post implements Parcelable{
     int amount;
     String city;
     int executor;
+    String reason;
+    int vote_id;
+
+    boolean moderation = false;
 
     int buffer_id;
 
@@ -80,6 +84,8 @@ public class Post implements Parcelable{
                     amount = rs.getInt("Amount");
                     city = rs.getString("City");
                     executor = rs.getInt("executor");
+                    reason = rs.getString("reason");
+                    vote_id = rs.getInt("vote_id");
                     if(buffer_adresses != null) {
                         Adresses = buffer_adresses.split("split");
                         Coords = buffer_coords.split("split");
@@ -121,6 +127,8 @@ public class Post implements Parcelable{
         parcel.writeInt(amount);
         parcel.writeString(city);
         parcel.writeInt(executor);
+        parcel.writeString(reason);
+        parcel.writeInt(vote_id);
         if(amount > 0)
         {
             parcel.writeStringArray(Adresses);
@@ -160,6 +168,8 @@ public class Post implements Parcelable{
         amount = parcel.readInt();
         city = parcel.readString();
         executor = parcel.readInt();
+        reason = parcel.readString();
+        vote_id = parcel.readInt();
         if(amount > 0) {
             Adresses = new String[amount];
             Coords = new String[amount];

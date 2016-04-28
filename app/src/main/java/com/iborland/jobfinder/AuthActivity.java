@@ -28,7 +28,6 @@ import java.sql.Statement;
  */
 public class AuthActivity extends AppCompatActivity {
 
-    TextView text;
     EditText rowLogin;
     EditText rowPassword;
     Button enter;
@@ -63,7 +62,6 @@ public class AuthActivity extends AppCompatActivity {
             android.support.v7.app.AlertDialog dialog = builder.create();
             dialog.show();
         }
-        text = (TextView)findViewById(R.id.text_message);
         rowLogin = (EditText)findViewById(R.id.rowLogin);
         rowPassword = (EditText)findViewById(R.id.rowPassword);
         enter = (Button)findViewById(R.id.button_Enter);
@@ -149,8 +147,8 @@ public class AuthActivity extends AppCompatActivity {
                     "' AND `Password` = '" + rowPassword.getText().toString() + "'";
             rl.removeAllViews();
             rl.addView(progressBar);
-            text.setText(getString(R.string.loaded));
-            rl.addView(text);
+            /*text.setText(getString(R.string.loaded));
+            rl.addView(text);*/
             progressBar.setVisibility(View.VISIBLE);
         }
 
@@ -179,8 +177,8 @@ public class AuthActivity extends AppCompatActivity {
                 rl.addView(rowPassword);
                 rl.addView(enter);
                 rl.addView(reg);
-                text.setText(getString(R.string.authorization));
-                rl.addView(text);
+                //text.setText(getString(R.string.authorization));
+                //rl.addView(text);
                 snackTextView.setText(getString(R.string.error_auth));
                 mSnackbar.show();
             }
