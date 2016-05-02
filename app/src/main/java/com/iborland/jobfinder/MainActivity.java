@@ -1,8 +1,11 @@
 package com.iborland.jobfinder;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
@@ -10,8 +13,10 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.Gravity;
@@ -41,6 +46,9 @@ import android.widget.ScrollView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -86,14 +94,30 @@ public class MainActivity extends AppCompatActivity
     LinearLayout linearLayout;
     ActionBar act;
     Button create_post;
+    boolean checkmail = false;
+
+    int padding_in_dp = 10;
+    int padding_in_px;
+    BroadcastReceiver broadcastReceiver;
+
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+    private static final String TAG = "MainActivity";
+
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
+    private ProgressBar mRegistrationProgressBar;
+    private TextView mInformationTextView;
+    private boolean isReceiverRegistered;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CheckLogin();
 
         setContentView(R.layout.activity_main);
+
+        final float scale = getResources().getDisplayMetrics().density;
+        padding_in_px = (int) (padding_in_dp * scale + 0.5f);
         linearLayout = (LinearLayout)findViewById(R.id.linear);
+        CheckLogin();
         scrollView = (ScrollView)findViewById(R.id.scrollView);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -134,28 +158,6 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        if (fab != null) {
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(user.loaded != true){
-                        Toast.makeText(MainActivity.this, getString(R.string.try_again), Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    Log.e("test", user.phone);
-                    if(user.phone.equals("none")){
-                        Intent intent = new Intent(MainActivity.this, PhoneActivity.class);
-                        intent.putExtra("User", user);
-                        startActivity(intent);
-                        return;
-                    }
-                    Intent intent = new Intent(MainActivity.this, AddActivity.class);
-                    intent.putExtra("User", user);
-                    startActivity(intent);
-                }
-            });
-        }*/
 
         int addresult = getIntent().getIntExtra("AddResult", -5);
         if(addresult != -5){
@@ -175,6 +177,32 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                checkMail();
+            }
+        };
+        IntentFilter intentFilter = new IntentFilter(User.USER_CREATED_ACTION);
+        registerReceiver(broadcastReceiver, intentFilter);
+
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                SharedPreferences sharedPreferences =
+                        PreferenceManager.getDefaultSharedPreferences(context);
+            }
+        };
+
+        // Registering BroadcastReceiver
+        registerReceiver();
+
+        if (checkPlayServices()) {
+            // Start IntentService to register this application with GCM.
+            Intent intent = new Intent(this, RegistrationIntentService.class);
+            startService(intent);
+        }
 
     }
 
@@ -283,7 +311,7 @@ public class MainActivity extends AppCompatActivity
         else{
             Log.e("Authorition", "Пользователь авторизован");
             cursor.moveToFirst();
-            user = new User(cursor.getInt(cursor.getColumnIndex("id")), cursor.getString(cursor.getColumnIndex("Token")), false, false);
+            user = new User(cursor.getInt(cursor.getColumnIndex("id")), cursor.getString(cursor.getColumnIndex("Token")), false, false, MainActivity.this);
         }
     }
 
@@ -297,62 +325,12 @@ public class MainActivity extends AppCompatActivity
         return false;
     }
 
-    /*public void LoadMenu(){
-        Posts.clear();
-        layout.setBackgroundColor(getResources().getColor(R.color.white));
-        Log.e("CLEAR", "Посты очищены");
-        int padding_in_dp = 16;  // 6 dps
-        final float scale = getResources().getDisplayMetrics().density;
-        int padding_in_px = (int) (padding_in_dp * scale + 0.5f);
-        layout.setPadding(padding_in_px,padding_in_px,padding_in_px,padding_in_px);
-        layout.removeAllViews();
-        layout.addView(message);
-        layout.addView(listView);
-        message.setText(getString(R.string.select_category));
-
-        Object[] icons = {R.drawable.icon_service,
-                            R.drawable.icon_postal,
-                            R.drawable.icon_it,
-                            R.drawable.icon_security,
-                            R.drawable.icon_repair,
-                            R.drawable.icon_default};
-
-        ArrayList<HashMap<String, Object>> data = new ArrayList<HashMap<String, Object>>(6);
-        HashMap<String, Object> buffer;
-
-        for(int i = 0; i != 6; i++){
-            buffer = new HashMap<String, Object>();
-            buffer.put("Name", categories[i]);
-            buffer.put("Icon", icons[i]);
-            data.add(buffer);
-        }
-
-        String[] from = {"Name", "Icon"};
-        int[] to = {R.id.name, R.id.icon};
-
-        SimpleAdapter adapter = new SimpleAdapter(this, data, R.layout.list_category, from, to);
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(user.loaded != true){
-                    Toast.makeText(MainActivity.this, getString(R.string.try_again), Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                int select_category = position + 1;
-                Intent intent = new Intent(MainActivity.this, CategoryActivity.class);
-                intent.putExtra("Category", select_category);
-                intent.putExtra("User", user);
-                startActivity(intent);
-            }
-        });
-    }*/
-
 
     @Override
     protected void onResume() {
         super.onResume();
         CheckLogin();
+        registerReceiver();
     }
 
     public void SelectCategory(View view) {
@@ -371,5 +349,73 @@ public class MainActivity extends AppCompatActivity
         intent.putExtra("Category", category);
         intent.putExtra("User", user);
         startActivity(intent);
+    }
+
+    public void checkMail(){
+        if(user.loaded == false) return;
+        if(checkmail == true) return;
+        if(user.email.equals("null")){
+            checkmail = true;
+            Button btn = new Button(MainActivity.this);
+            btn.setText(getString(R.string.mail_created));
+            btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this, EmailActivity.class);
+                    intent.putExtra("User", user);
+                    finish();
+                    startActivity(intent);
+                }
+            });
+            linearLayout.addView(btn, 0);
+
+            TextView text = new TextView(MainActivity.this);
+            text.setText(getString(R.string.mail_not_found));
+            text.setTextColor(getResources().getColor(R.color.colorBlackText));
+            text.setTextSize(16);
+            text.setGravity(Gravity.CENTER);
+            linearLayout.addView(text, 0);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(broadcastReceiver);
+    }
+
+    @Override
+    protected void onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
+        isReceiverRegistered = false;
+        super.onPause();
+    }
+
+    private void registerReceiver(){
+        if(!isReceiverRegistered) {
+            LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                    new IntentFilter(QuickstartPreferences.REGISTRATION_COMPLETE));
+            isReceiverRegistered = true;
+        }
+    }
+    /**
+     * Check the device to make sure it has the Google Play Services APK. If
+     * it doesn't, display a dialog that allows users to download the APK from
+     * the Google Play Store or enable it in the device's system settings.
+     */
+    private boolean checkPlayServices() {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (apiAvailability.isUserResolvableError(resultCode)) {
+                apiAvailability.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
+                        .show();
+            } else {
+                Log.i(TAG, "This device is not supported.");
+                finish();
+            }
+            return false;
+        }
+        return true;
     }
 }

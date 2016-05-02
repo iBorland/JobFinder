@@ -1,5 +1,6 @@
 package com.iborland.jobfinder;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -34,6 +35,7 @@ public class User implements Parcelable{
     static final String DB_AGE = "Age";
     static final String DB_LOST_MESSAGE = "LostMessage";
     static final String DB_ADMIN = "admin";
+    static final String USER_CREATED_ACTION = "com.iborland.jobfinder.u_created";
 
     Connection connection = null;
     Statement statement = null;
@@ -65,9 +67,11 @@ public class User implements Parcelable{
     UpdateUserInfo upd;
 
     int d_id;
+    Context context;
 
-    User(int db_id, String db_buffer, boolean off_security, boolean waiting){
+    User(int db_id, String db_buffer, boolean off_security, boolean waiting, Context con){
         d_id = db_id;
+        context = con;
         if(db_id < 1){
             Log.e("Error", "Неверный ID");
             return;
@@ -130,6 +134,9 @@ public class User implements Parcelable{
                     }
                     loaded = true;
                     Log.e("Loaded", "User " + login + " был загружен");
+                    Intent broadcast = new Intent(USER_CREATED_ACTION);
+                    broadcast.putExtra("id", id);
+                    context.sendBroadcast(broadcast);
                     break;
                 }
             }

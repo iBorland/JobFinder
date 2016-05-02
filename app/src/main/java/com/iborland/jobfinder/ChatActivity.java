@@ -102,7 +102,7 @@ public class ChatActivity extends AppCompatActivity {
             return;
         }
         Log.e("Partner ID", "" + partner_id);
-        partner = new User(partner_id, "123", true, true);
+        partner = new User(partner_id, "123", true, true, ChatActivity.this);
         Log.e("Partner name", "" + partner.login);
         bar.setTitle(partner.login);
         bar.setHomeButtonEnabled(true);

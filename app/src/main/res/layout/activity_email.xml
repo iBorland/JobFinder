@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content" android:layout_height="match_parent"
+    android:id="@+id/mail_relative"
+    android:background="@drawable/patter">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/mail_header"
+        android:id="@+id/mail_header"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:padding="8dp"
+        android:textColor="@color/button_material_dark" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/mail_enter"
+        android:id="@+id/mail_enter"
+        android:layout_below="@+id/mail_header"
+        android:padding="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/button_material_dark"
+        android:textAlignment="center"
+        android:textSize="18sp" />
+
+    <EditText
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:ems="10"
+        android:id="@+id/mail_row"
+        android:layout_below="@+id/mail_enter"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:hint="@string/mail_hint"
+        android:lines="1"
+        android:maxLength="128"
+        android:maxLines="1"
+        android:singleLine="true" />
+
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="@string/next"
+        android:id="@+id/mail_next"
+        android:layout_below="@+id/mail_row"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:background="@color/buttonbackground" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/mail_text"
+        android:id="@+id/mail_text"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/mail_next"
+        android:layout_centerHorizontal="true"
+        android:textAlignment="center"
+        android:textColor="@color/button_material_dark"
+        android:textSize="16sp"
+        android:paddingLeft="16dp"
+        android:paddingTop="8dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="8dp" />
+
+</RelativeLayout>

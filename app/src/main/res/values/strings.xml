@@ -183,5 +183,15 @@
 
     <string name="not_money">На вашем счету недостаточно баллов.\n\nСтоимость одной модерации - 20 баллов.\n\nБаллы можно заработать создавая или выполняя объявления.</string>
 
+    <string name="mail_header">Привязка Email</string>
+    <string name="mail_enter">Введите в поле ниже ваш настоящий адрес электронной почты</string>
+    <string name="mail_ented_code">Введите в поле ниже код, отправленный на Ваш адрес электронной почты</string>
+    <string name="mail_hint">Ваш адрес электронной почты</string>
+    <string name="mail_hint_code">Код из письма</string>
+    <string name="mail_text">Адрес электронной почты необходим чтобы Вы всегда были в курсе новостей и
+    вовремя получали полезную информацию.</string>
+    <string name="mail_not_found">У вас не указан Email адрес</string>
+    <string name="mail_created">Привязать почту</string>
+    <string name="gcm_project_id">credible-tesla-125915</string>
 
 </resources>
