@@ -156,7 +156,7 @@ public class PostActivity extends AppCompatActivity {
             btn.setTextSize(12);
             btn.setPadding(padding_in_px, padding_in_px, padding_in_px, padding_in_px);
             btn.setBackgroundColor(getResources().getColor(R.color.buttonbackground));
-            lin.addView(btn, 5);
+            lin.addView(btn, 4);
             btn.startAnimation(left);
         }
 
@@ -166,10 +166,17 @@ public class PostActivity extends AppCompatActivity {
         HashMap<String, Object> buffer;
 
         for(int i = 0; i != 2; i++) {
-            buffer = new HashMap<String, Object>();
+            buffer = new HashMap<>();
             if(i == 0) buffer.put("Name", getString(R.string.action_sending));
             else buffer.put("Name", getString(R.string.action_accept));
             buffer.put("Icon", icons[i]);
+            info.add(buffer);
+        }
+
+        if(user.id == Post.ownerID){
+            buffer = new HashMap<>();
+            buffer.put("Name", getString(R.string.delete));
+            buffer.put("Icon", R.drawable.delete);
             info.add(buffer);
         }
 
@@ -179,10 +186,18 @@ public class PostActivity extends AppCompatActivity {
         SimpleAdapter adapter = new SimpleAdapter(this, info, R.layout.list_category, from, to);
         list.setAdapter(adapter);
 
+        MainActivity.setListViewHeightBasedOnChildren(list);
+
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(position == 0) Toast.makeText(PostActivity.this, getString(R.string.developed), Toast.LENGTH_SHORT).show();
+                if(position == 0) {
+                    Intent chat = new Intent(PostActivity.this, ChatActivity.class);
+                    chat.putExtra("User", user);
+                    chat.putExtra("Partner", Post.ownerID);
+                    startActivity(chat);
+                    return;
+                }
                 if(position == 1){
                     CheckExecutor check = new CheckExecutor();
                     check.execute();

@@ -199,6 +199,8 @@
     <string name="mail_created">Привязать почту</string>
     <string name="gcm_project_id">credible-tesla-125915</string>
     <string name="load_more">Загрузить больше</string>
+    <string name="delete">Удалить</string>
+    <string name="not_yourself">Извините, но вы не можете писать самому себе :(</string>
 
     <string name="token_loaded">com.iborland.jobfinder.token_loaded</string>
 

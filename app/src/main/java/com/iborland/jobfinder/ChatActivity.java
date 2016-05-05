@@ -41,30 +41,17 @@ import java.util.TimerTask;
  */
 public class ChatActivity extends AppCompatActivity {
 
-    Connection connection = null;
-    Statement statement = null;
-    ResultSet rs = null;
-
     User user, partner;
-    boolean loaded = false;
     ProgressDialog progressDialog;
     boolean sending = false;
-    ActionBar bar;
-    LinkedList<Message> messages = new LinkedList<Message>();
-    ArrayList<Integer> ids = new ArrayList<Integer>();
+    LinkedList<Message> messages = new LinkedList<>();
+    ArrayList<Integer> ids = new ArrayList<>();
 
-    ScrollView scroll;
     LinearLayout rel;
     EditText row;
-    ImageButton send;
-    ProgressBar progressBar;
-    int padding_in_dp = 10;
-    int padding_in_px;
 
     LoadMsgs loadMsgs;
     SendMessage sendMessage;
-    Timer update_msg;
-    TimerTask update_task;
     BroadcastReceiver br;
 
     @Override
@@ -72,30 +59,29 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        final float scale = getResources().getDisplayMetrics().density;
-        padding_in_px = (int) (padding_in_dp * scale + 0.5f);
         rel = (LinearLayout) findViewById(R.id.linear_chat);
-        scroll = (ScrollView)findViewById(R.id.scroll_chat);
         row = (EditText)findViewById(R.id.row_Chat);
-        send = (ImageButton)findViewById(R.id.button_chat);
 
-        send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(row.length() < 1) return;
-                if(row.length() > 512){
-                    Toast.makeText(ChatActivity.this, "Слишком длинный текст", Toast.LENGTH_SHORT).show();
-                    return;
+        ImageButton send = (ImageButton)findViewById(R.id.button_chat);
+
+        if (send != null) {
+            send.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(row.length() < 1) return;
+                    if(row.length() > 512){
+                        Toast.makeText(ChatActivity.this, "Слишком длинный текст", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    sendMessage = new SendMessage();
+                    sendMessage.execute();
                 }
-                sendMessage = new SendMessage();
-                sendMessage.execute();
-            }
-        });
+            });
+        }
 
-        progressBar = (ProgressBar)findViewById(R.id.progress_chat);
+        ProgressBar progressBar = (ProgressBar)findViewById(R.id.progress_chat);
 
         user = getIntent().getParcelableExtra("User");
-        bar = getSupportActionBar();
         final int partner_id = getIntent().getIntExtra("Partner", -5);
         if(partner_id == -5 || user == null) {
             ErrorMessage(getString(R.string.error_connection));
@@ -104,27 +90,39 @@ public class ChatActivity extends AppCompatActivity {
         Log.e("Partner ID", "" + partner_id);
         partner = new User(partner_id, "123", true, true, ChatActivity.this);
         Log.e("Partner name", "" + partner.login);
-        bar.setTitle(partner.login);
-        bar.setHomeButtonEnabled(true);
-        bar.setDisplayHomeAsUpEnabled(true);
-
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(partner.login);
+            getSupportActionBar().setHomeButtonEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         br = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                User buffer_user = intent.getParcelableExtra("User");
-                Message buffer_message = intent.getParcelableExtra("Message");
-                if(buffer_user.id == user.id && buffer_message.sender_id == partner_id) {
-                    addMessage(buffer_message);
+                int user_id = intent.getIntExtra("Sender_ID", 0);
+
+                if(user_id == partner_id) {
                     NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                    notificationManager.cancel(77);
-                    Timer timer = new Timer();
-                    TimerTask task = new ScrollUpdated();
-                    timer.schedule(task, 10);
+                    notificationManager.cancel(2259);
+                    loadMsgs = new LoadMsgs();
+                    loadMsgs.execute();
                 }
             }
         };
 
-        progressDialog = new ProgressDialog(ChatActivity.this);
+        if(partner_id == user.id){
+            int padding_in_px = (int) (10 * getResources().getDisplayMetrics().density + 0.5f);
+            TextView start_msg = new TextView(ChatActivity.this);
+            start_msg.setText(getString(R.string.not_yourself));
+            start_msg.setTextColor(getResources().getColor(R.color.colorBlackText));
+            start_msg.setTextSize(16);
+            start_msg.setGravity(Gravity.CENTER);
+            start_msg.setPadding(padding_in_px, padding_in_px, padding_in_px, padding_in_px);
+            progressBar.setVisibility(View.GONE);
+            rel.addView(start_msg);
+            row.setEnabled(false);
+            return;
+        }
+
         loadMsgs = new LoadMsgs();
         loadMsgs.execute();
     }
@@ -149,6 +147,7 @@ public class ChatActivity extends AppCompatActivity {
         for(int i = 0; i != ids.size(); i++){
             if(message.id == ids.get(i)) return false;
         }
+        int padding_in_px = (int) (10 * getResources().getDisplayMetrics().density + 0.5f);
         TextView msg = new TextView(ChatActivity.this);
         msg.setText(message.text);
         msg.setTextColor(getResources().getColor(R.color.white));
@@ -183,6 +182,7 @@ public class ChatActivity extends AppCompatActivity {
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
             if(sending == true && progressDialog.isShowing() == true) progressDialog.hide();
+            ProgressBar progressBar = (ProgressBar)findViewById(R.id.progress_chat);
             progressBar.setVisibility(View.INVISIBLE);
             if(integer == -4){
                 TextView start_msg = new TextView(ChatActivity.this);
@@ -190,6 +190,7 @@ public class ChatActivity extends AppCompatActivity {
                 start_msg.setTextColor(getResources().getColor(R.color.colorBlackText));
                 start_msg.setTextSize(16);
                 start_msg.setGravity(Gravity.CENTER);
+                int padding_in_px = (int) (10 * getResources().getDisplayMetrics().density + 0.5f);
                 start_msg.setPadding(padding_in_px, padding_in_px, padding_in_px, padding_in_px);
                 rel.addView(start_msg);
             }
@@ -213,6 +214,9 @@ public class ChatActivity extends AppCompatActivity {
                 String query = "SELECT * FROM `messages` WHERE `sender_id` = '" + user.id + "' AND `recipient_id` = " +
                         "'" + partner.id + "'";
                 Class.forName("com.mysql.jdbc.Driver");
+                Connection connection = null;
+                Statement statement = null;
+                ResultSet rs = null;
                 connection = DriverManager.getConnection("jdbc:mysql://" + getString(R.string.db_ip), getString(R.string.db_login),
                         getString(R.string.db_password));
                 statement = connection.createStatement();
@@ -280,6 +284,9 @@ public class ChatActivity extends AppCompatActivity {
         @Override
         protected Integer doInBackground(Void... params) {
             try {
+                Connection connection = null;
+                Statement statement = null;
+                ResultSet rs = null;
                 long date = System.currentTimeMillis() / 1000;
                 String query = "INSERT INTO `messages` (`sender_id`, `sender_login`,`recipient_id`,`recipient_login`,`text`,`date`" +
                         ") VALUES ('" + user.id + "', '" + user.login + "','" + partner.id + "'," +
@@ -289,6 +296,12 @@ public class ChatActivity extends AppCompatActivity {
                         getString(R.string.db_password));
                 statement = connection.createStatement();
                 statement.executeUpdate(query);
+
+                APILoader gcm = new APILoader("http://api.jobfinder.ru.com/gcm.php");
+                gcm.addParams(new String[] {"regID", "type", "sender_id", "sender_name", "text"},
+                        new String[] {partner.msg_id, "1", "" + user.id, user.login, text});
+                gcm.execute();
+                gcm = null;
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -303,7 +316,7 @@ public class ChatActivity extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    scroll.scrollTo(0, rel.getHeight());
+                    findViewById(R.id.scroll_chat).scrollTo(0, rel.getHeight());
                 }
             });
         }

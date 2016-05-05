@@ -18,8 +18,8 @@ class Message implements Comparable, Parcelable{
     public int compareTo(Object obj)
     {
         Message tmp = (Message)obj;
-        if(this.date < tmp.date) return 1;
-        else if(this.date > tmp.date) return -1;
+        if(this.id < tmp.id) return 1;
+        else if(this.id > tmp.id) return -1;
         return 0;
     }
 

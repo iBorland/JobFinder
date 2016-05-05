@@ -34,6 +34,7 @@ public class Post implements Parcelable{
     int executor;
     String reason;
     int vote_id;
+    int deleted;
 
     boolean moderation = false;
 
@@ -86,6 +87,7 @@ public class Post implements Parcelable{
                     executor = rs.getInt("executor");
                     reason = rs.getString("reason");
                     vote_id = rs.getInt("vote_id");
+                    deleted = rs.getInt("deleted");
                     if(buffer_adresses != null) {
                         Adresses = buffer_adresses.split("split");
                         Coords = buffer_coords.split("split");
@@ -129,6 +131,7 @@ public class Post implements Parcelable{
         parcel.writeInt(executor);
         parcel.writeString(reason);
         parcel.writeInt(vote_id);
+        parcel.writeInt(deleted);
         if(amount > 0)
         {
             parcel.writeStringArray(Adresses);
@@ -170,6 +173,7 @@ public class Post implements Parcelable{
         executor = parcel.readInt();
         reason = parcel.readString();
         vote_id = parcel.readInt();
+        deleted = parcel.readInt();
         if(amount > 0) {
             Adresses = new String[amount];
             Coords = new String[amount];

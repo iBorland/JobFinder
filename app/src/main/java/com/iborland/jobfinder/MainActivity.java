@@ -121,14 +121,14 @@ public class MainActivity extends AppCompatActivity
         categories = getResources().getStringArray(R.array.categories);
         TextView message;
         message = (TextView)findViewById(R.id.message);
-        Intent Check_msg = new Intent(MainActivity.this, MessageService.class);
-        startService(Check_msg);
         if (message != null) {
             message.setText(getString(R.string.select_category));
         }
         Button create_post;
         create_post = (Button)findViewById(R.id.button_create_post);
         //LoadMenu();
+
+        String test = "sms/2/Текст";
 
         recipient_token = new BroadcastReceiver() {
             @Override
@@ -237,7 +237,13 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if(id == R.id.nav_messages){
-            Toast.makeText(MainActivity.this, "В разработке", Toast.LENGTH_SHORT).show();
+            if(!user.loaded){
+                Toast.makeText(MainActivity.this, getString(R.string.try_again), Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            Intent intent = new Intent(MainActivity.this, DialogsActivity.class);
+            intent.putExtra("User", user);
+            startActivity(intent);
         }
         if(id == R.id.nav_test){
             if(!user.loaded){
@@ -391,11 +397,7 @@ public class MainActivity extends AppCompatActivity
             isReceiverRegistered = true;
         }
     }
-    /**
-     * Check the device to make sure it has the Google Play Services APK. If
-     * it doesn't, display a dialog that allows users to download the APK from
-     * the Google Play Store or enable it in the device's system settings.
-     */
+
     private boolean checkPlayServices() {
         GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
         int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
@@ -458,14 +460,15 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
+            linearLayout.removeView(bar);
             if(integer <= 0) return;
 
             ArrayList<HashMap<String, Object>> data = new ArrayList<>(5);
             HashMap<String, Object> map;
 
             final String[] status = new String[] {"Ожидает модерации", "Отклонено: ", "Ожидает исполнителя"};
-            final String[] from = new String[] {"Name", "Status"};
-            final int[] to = new int[] {R.id.posts_name, R.id.posts_status};
+            final String[] from = new String[] {"Name", "Status", "Date", "Login", "Text"};
+            final int[] to = new int[] {R.id.main_name, R.id.main_status, R.id.main_date, R.id.main_login, R.id.main_text};
 
             for(int i = 0; i != posts.size(); i++){
                 map = new HashMap<>();
@@ -473,12 +476,14 @@ public class MainActivity extends AppCompatActivity
                 if(posts.get(i).status == 1) map.put(from[1], status[0]);
                 if(posts.get(i).status == 5) map.put(from[1], status[2]);
                 map.put(from[0], posts.get(i).postName);
+                map.put(from[2], new SimpleDateFormat("dd.MM.yy 'в' HH:mm").format(new Date((long) Integer.parseInt(posts.get(i).createtime)*1000)));
+                map.put(from[3], posts.get(i).ownerLogin);
+                map.put(from[4], posts.get(i).postText);
                 data.add(map);
             }
 
             SimpleAdapter adapter = new SimpleAdapter(MainActivity.this, data, R.layout.list_main_posts, from, to);
             mail_list.setAdapter(adapter);
-            linearLayout.removeView(bar);
 
             TextView text = new TextView(MainActivity.this);
             text.setText("Ваши объявления:");
@@ -489,6 +494,16 @@ public class MainActivity extends AppCompatActivity
             linearLayout.addView(text);
             linearLayout.addView(mail_list);
             setListViewHeightBasedOnChildren(mail_list);
+
+            mail_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent post = new Intent(MainActivity.this, PostActivity.class);
+                    post.putExtra("User", user);
+                    post.putExtra("Post", posts.get(position));
+                    startActivity(post);
+                }
+            });
         }
     }
 

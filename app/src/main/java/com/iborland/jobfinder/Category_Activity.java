@@ -155,8 +155,10 @@ public class Category_Activity extends AppCompatActivity {
             //frame.setBackgroundResource(android.R.drawable.dialog_holo_light_frame);
             frame.setBackgroundResource(R.drawable.shadow_back);
 
-            linearLayout.addView(frame);
-            frame.startAnimation(AnimationUtils.loadAnimation(Category_Activity.this, R.anim.slide_left));
+            if(values[0].deleted == 0){
+                linearLayout.addView(frame);
+                frame.startAnimation(AnimationUtils.loadAnimation(Category_Activity.this, R.anim.slide_left));
+            }
         }
 
         @Override

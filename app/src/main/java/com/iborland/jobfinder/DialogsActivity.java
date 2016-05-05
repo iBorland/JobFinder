@@ -67,10 +67,6 @@ public class DialogsActivity extends AppCompatActivity{
         rel = (RelativeLayout)findViewById(R.id.messages_relative);
         bar = getSupportActionBar();
 
-        Intent intent = new Intent(DialogsActivity.this, MessageService.class);
-        intent.putExtra("User", user);
-        startService(intent);
-
         rel.removeView(list);
 
         if(user == null){
@@ -144,7 +140,6 @@ public class DialogsActivity extends AppCompatActivity{
             HashMap<String, Object> map;
 
             user.lost_msg = dialogs[0].id;
-            user.update(new String[] {User.DB_LOST_MESSAGE}, new Object[] {user.lost_msg});
 
             String[] from = {"Author", "Text"};
             int[] to = {R.id.name_author, R.id.text_message};
@@ -287,6 +282,8 @@ public class DialogsActivity extends AppCompatActivity{
     @Override
     protected void onResume() {
         super.onResume();
+        loadedMessage = new LoadedMessage();
+        loadedMessage.execute();
         IntentFilter intFilt = new IntentFilter(DialogsActivity.BROADCAST_ACTION);
         registerReceiver(broadcastReceiver, intFilt);
     }
