@@ -303,7 +303,7 @@ public class MainActivity extends AppCompatActivity
                 null, null, null) ;
         if(cursor.getCount() < 1){
             Log.e("Authorition", "Пользователь не авторизован. Открываю авторизацию");
-            Intent intent = new Intent(MainActivity.this, AuthActivity.class);
+            Intent intent = new Intent(MainActivity.this, Auth_Activity.class);
             finish();
             startActivity(intent);
         }

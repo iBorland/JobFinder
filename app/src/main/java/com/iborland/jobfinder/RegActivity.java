@@ -262,7 +262,7 @@ public class RegActivity extends AppCompatActivity {
                 ErrorMessage("Введённый вами логин уже занят.\n\nНам очень жаль :(");
                 return;
             }
-            Intent intent = new Intent(RegActivity.this, AuthActivity.class);
+            Intent intent = new Intent(RegActivity.this, Auth_Activity.class);
             intent.putExtra("key", integer);
             finish();
             startActivity(intent);
@@ -339,7 +339,7 @@ public class RegActivity extends AppCompatActivity {
         builder.setPositiveButton("Выйти", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(RegActivity.this, AuthActivity.class);
+                Intent intent = new Intent(RegActivity.this, Auth_Activity.class);
                 finish();
                 startActivity(intent);
             }

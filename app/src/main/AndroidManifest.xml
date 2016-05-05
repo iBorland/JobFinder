@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AuthActivity"
+            android:name=".Auth_Activity"
             android:label="Авторизация" />
         <activity
             android:name=".RegActivity"
@@ -68,7 +68,6 @@
         <activity
             android:name=".EmailActivity"
             android:label="Привязка Email"/>
-        <service android:name=".MessageService"/>
         <!--<receiver android:name=".RebootService">
             <intent-filter >
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
