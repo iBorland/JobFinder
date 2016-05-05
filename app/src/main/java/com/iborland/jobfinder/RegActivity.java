@@ -230,8 +230,8 @@ public class RegActivity extends AppCompatActivity {
         protected Integer doInBackground(Void... params) {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
-                connection = DriverManager.getConnection("jdbc:mysql://" + MainActivity.db_ip, MainActivity.db_login,
-                        MainActivity.db_password);
+                connection = DriverManager.getConnection("jdbc:mysql://" + getString(R.string.db_ip), getString(R.string.db_login),
+                        getString(R.string.db_password));
                 statement = connection.createStatement();
                 String query = "SELECT * FROM `users` WHERE `Login` = '" + login + "'";
                 rs = statement.executeQuery(query);

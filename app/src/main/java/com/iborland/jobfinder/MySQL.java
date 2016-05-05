@@ -31,8 +31,8 @@ public class MySQL extends Thread{
         if(closed == true) autoclosed = true;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            connect = DriverManager.getConnection("jdbc:mysql://" + MainActivity.db_ip, MainActivity.db_login,
-                    MainActivity.db_password);
+            connect = DriverManager.getConnection("jdbc:mysql://" + "triniti.ru-hoster.com/iborlZer?characterEncoding=utf8", "iborlZer",
+                    "22599226a");
             statement = connect.createStatement();
             connected = true;
             table = tab;

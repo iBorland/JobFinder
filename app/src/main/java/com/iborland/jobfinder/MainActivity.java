@@ -1,5 +1,6 @@
 package com.iborland.jobfinder;
 
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -16,8 +17,10 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBar;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -32,6 +35,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
@@ -39,6 +43,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -50,6 +55,8 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
+import org.w3c.dom.Text;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -60,89 +67,82 @@ import java.net.URLConnection;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    static final String db_login = "iborlZer";
-    static final String db_ip = "triniti.ru-hoster.com/iborlZer?characterEncoding=utf8";
-    static final String db_password = "22599226a";
-
     User user;
     String categories[];
-    TextView message;
     RelativeLayout layout;
-    ArrayList<Post> Posts = new ArrayList<Post>();
 
-    FrameLayout f_Service, f_Postal, f_IT, f_Security, f_Repair, f_Other;
-
-    Connection connection = null;
-    Statement statement = null;
-    ResultSet rs = null;
-    Animation top;
-    Animation left;
-    Animation return_left;
     ScrollView scrollView;
     LinearLayout linearLayout;
     ActionBar act;
-    Button create_post;
     boolean checkmail = false;
+    ListView mail_list;
 
     int padding_in_dp = 10;
     int padding_in_px;
-    BroadcastReceiver broadcastReceiver;
 
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
-    private static final String TAG = "MainActivity";
 
     private BroadcastReceiver mRegistrationBroadcastReceiver;
-    private ProgressBar mRegistrationProgressBar;
-    private TextView mInformationTextView;
     private boolean isReceiverRegistered;
+    boolean posts_loaded = false;
+    String token;
+    BroadcastReceiver broadcastReceiver;
+    BroadcastReceiver recipient_token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
-
         final float scale = getResources().getDisplayMetrics().density;
         padding_in_px = (int) (padding_in_dp * scale + 0.5f);
         linearLayout = (LinearLayout)findViewById(R.id.linear);
+        mail_list = (ListView)findViewById(R.id.main_list);
+        linearLayout.removeView(mail_list);
         CheckLogin();
         scrollView = (ScrollView)findViewById(R.id.scrollView);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         act = getSupportActionBar();
-        top = AnimationUtils.loadAnimation(this, android.support.design.R.anim.abc_slide_in_top);
-        left = AnimationUtils.loadAnimation(this, R.anim.slide_left);
-        return_left = AnimationUtils.loadAnimation(this, R.anim.return_slide_left);
         layout = (RelativeLayout)findViewById(R.id.Layout);
         categories = getResources().getStringArray(R.array.categories);
+        TextView message;
         message = (TextView)findViewById(R.id.message);
-        f_Service = (FrameLayout)findViewById(R.id.f_Service);
-        f_Postal = (FrameLayout)findViewById(R.id.f_Postal);
-        f_IT = (FrameLayout)findViewById(R.id.f_IT);
-        f_Security = (FrameLayout)findViewById(R.id.f_Security);
-        f_Repair = (FrameLayout)findViewById(R.id.f_Repair);
         Intent Check_msg = new Intent(MainActivity.this, MessageService.class);
         startService(Check_msg);
-        message.setText(getString(R.string.select_category));
+        if (message != null) {
+            message.setText(getString(R.string.select_category));
+        }
+        Button create_post;
         create_post = (Button)findViewById(R.id.button_create_post);
         //LoadMenu();
 
+        recipient_token = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                token = intent.getStringExtra("Token");
+            }
+        };
+        registerReceiver(recipient_token, new IntentFilter(getString(R.string.token_loaded)));
+
+        assert create_post != null;
         create_post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(user.loaded != true){
+                if(!user.loaded){
                     Toast.makeText(MainActivity.this, getString(R.string.try_again), Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -172,26 +172,41 @@ public class MainActivity extends AppCompatActivity
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        if (drawer != null) {
+            drawer.setDrawerListener(toggle);
+        }
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        if (navigationView != null) {
+            navigationView.setNavigationItemSelectedListener(this);
+        }
 
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 checkMail();
+                if (!posts_loaded)
+                {
+                    posts_loaded = true;
+                    MyPosts m = new MyPosts();
+                    m.execute(intent.getIntExtra("id", -5));
+                    if(user == null) Log.e("USER", "USER = null");
+                    if(user.msg_id == null || !user.msg_id.equals(token)){
+                        if(user.msg_id != null) Log.e("MSG_ID", user.msg_id);
+                        else Log.e("MSG_ID", "null");
+                        Log.e("Token", token);
+                        UpdateToken updateToken = new UpdateToken();
+                        updateToken.execute();
+                    }
+                }
             }
         };
-        IntentFilter intentFilter = new IntentFilter(User.USER_CREATED_ACTION);
-        registerReceiver(broadcastReceiver, intentFilter);
+        registerReceiver(broadcastReceiver, new IntentFilter(User.USER_CREATED_ACTION));
 
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                SharedPreferences sharedPreferences =
-                        PreferenceManager.getDefaultSharedPreferences(context);
             }
         };
 
@@ -209,47 +224,23 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
+        if (drawer != null && drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
             return;
         }
         super.onBackPressed();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        MenuInflater inflater = getMenuInflater();
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        return super.onOptionsItemSelected(item);
-    }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if(id == R.id.nav_messages){
             Toast.makeText(MainActivity.this, "В разработке", Toast.LENGTH_SHORT).show();
-            /*if(user.loaded != true){
-                Toast.makeText(MainActivity.this, getString(R.string.try_again), Toast.LENGTH_SHORT).show();
-                return false;
-            }
-            Intent intent = new Intent(MainActivity.this, DialogsActivity.class);
-            intent.putExtra("User", user);
-            startActivity(intent);*/
         }
         if(id == R.id.nav_test){
-            if(user.loaded != true){
+            if(!user.loaded){
                 Toast.makeText(MainActivity.this, getString(R.string.try_again), Toast.LENGTH_SHORT).show();
                 return false;
             }
@@ -274,7 +265,9 @@ public class MainActivity extends AppCompatActivity
             CheckLogin();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        if (drawer != null) {
+            drawer.closeDrawer(GravityCompat.START);
+        }
         return true;
     }
 
@@ -311,18 +304,17 @@ public class MainActivity extends AppCompatActivity
         else{
             Log.e("Authorition", "Пользователь авторизован");
             cursor.moveToFirst();
-            user = new User(cursor.getInt(cursor.getColumnIndex("id")), cursor.getString(cursor.getColumnIndex("Token")), false, false, MainActivity.this);
+            if(user == null)
+                user = new User(cursor.getInt(cursor.getColumnIndex("id")), cursor.getString(cursor.getColumnIndex("Token")), false, false, MainActivity.this);
         }
+        cursor.close();
     }
 
     public static boolean isOnline(Context context) {
         ConnectivityManager cm =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
-            return true;
-        }
-        return false;
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
 
@@ -345,15 +337,15 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void openCategory(int category){
-        Intent intent = new Intent(MainActivity.this, CategoryActivity.class);
+        Intent intent = new Intent(MainActivity.this, Category_Activity.class);
         intent.putExtra("Category", category);
         intent.putExtra("User", user);
         startActivity(intent);
     }
 
     public void checkMail(){
-        if(user.loaded == false) return;
-        if(checkmail == true) return;
+        if(!user.loaded) return;
+        if(checkmail) return;
         if(user.email.equals("null")){
             checkmail = true;
             Button btn = new Button(MainActivity.this);
@@ -371,7 +363,7 @@ public class MainActivity extends AppCompatActivity
 
             TextView text = new TextView(MainActivity.this);
             text.setText(getString(R.string.mail_not_found));
-            text.setTextColor(getResources().getColor(R.color.colorBlackText));
+            text.setTextColor(ContextCompat.getColor(MainActivity.this ,R.color.colorBlackText));
             text.setTextSize(16);
             text.setGravity(Gravity.CENTER);
             linearLayout.addView(text, 0);
@@ -382,6 +374,7 @@ public class MainActivity extends AppCompatActivity
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(broadcastReceiver);
+        unregisterReceiver(recipient_token);
     }
 
     @Override
@@ -411,11 +404,154 @@ public class MainActivity extends AppCompatActivity
                 apiAvailability.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
                         .show();
             } else {
-                Log.i(TAG, "This device is not supported.");
+                Log.i("MainActivity", "This device is not supported.");
                 finish();
             }
             return false;
         }
         return true;
     }
+
+    class MyPosts extends AsyncTask<Integer, Void, Integer>{
+
+        ProgressBar bar = new ProgressBar(MainActivity.this);
+        ArrayList<Post> posts = new ArrayList<>(5);
+
+        @Override
+        protected Integer doInBackground(Integer... params) {
+            if(user == null) return -1;
+            int amount = 0;
+            try{
+                Connection connection;
+                Statement statement;
+                ResultSet rs;
+                String query = "SELECT * FROM `posts` WHERE `ownerID` = '" + params[0] + "' ORDER BY `id` DESC LIMIT 5";
+                Class.forName("com.mysql.jdbc.Driver");
+                connection = DriverManager.getConnection("jdbc:mysql://" + getString(R.string.db_ip), getString(R.string.db_login),
+                        getString(R.string.db_password));
+                statement = connection.createStatement();
+                rs = statement.executeQuery(query);
+                while (rs.next()){
+                    int id = rs.getInt("id");
+                    Post post = new Post(id);
+                    posts.add(post);
+                    amount++;
+                }
+                connection.close();
+                statement.close();
+                rs.close();
+            }
+            catch (Exception e){
+                e.printStackTrace();
+                return -2;
+            }
+            return amount;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            linearLayout.addView(bar);
+            bar.setPadding(padding_in_px, padding_in_px, padding_in_px, padding_in_px);
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
+            if(integer <= 0) return;
+
+            ArrayList<HashMap<String, Object>> data = new ArrayList<>(5);
+            HashMap<String, Object> map;
+
+            final String[] status = new String[] {"Ожидает модерации", "Отклонено: ", "Ожидает исполнителя"};
+            final String[] from = new String[] {"Name", "Status"};
+            final int[] to = new int[] {R.id.posts_name, R.id.posts_status};
+
+            for(int i = 0; i != posts.size(); i++){
+                map = new HashMap<>();
+                if(posts.get(i).status == -1) map.put(from[1], status[1] + posts.get(i).reason);
+                if(posts.get(i).status == 1) map.put(from[1], status[0]);
+                if(posts.get(i).status == 5) map.put(from[1], status[2]);
+                map.put(from[0], posts.get(i).postName);
+                data.add(map);
+            }
+
+            SimpleAdapter adapter = new SimpleAdapter(MainActivity.this, data, R.layout.list_main_posts, from, to);
+            mail_list.setAdapter(adapter);
+            linearLayout.removeView(bar);
+
+            TextView text = new TextView(MainActivity.this);
+            text.setText("Ваши объявления:");
+            text.setTextSize(22);
+            text.setTextColor(getResources().getColor(R.color.colorBlackText));
+            text.setPadding(padding_in_px * 2, padding_in_px * 3, padding_in_px, padding_in_px);
+
+            linearLayout.addView(text);
+            linearLayout.addView(mail_list);
+            setListViewHeightBasedOnChildren(mail_list);
+        }
+    }
+
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null)
+            return;
+
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+        int totalHeight = 0;
+        View view = null;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            view = listAdapter.getView(i, view, listView);
+            if (i == 0)
+                view.setLayoutParams(new ViewGroup.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += view.getMeasuredHeight();
+        }
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
+        listView.requestLayout();
+    }
+
+    class UpdateToken extends AsyncTask<Void, Void, Void>{
+
+        ProgressDialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(MainActivity.this);
+            progressDialog.setMessage(getString(R.string.loaded));
+            progressDialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            progressDialog.dismiss();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                user.msg_id = token;
+                Connection connection;
+                Statement statement;
+                String query = "UPDATE `users` SET `msg_id` = '" + token + "' WHERE `id` = '" + user.id + "'";
+                Class.forName("com.mysql.jdbc.Driver");
+                connection = DriverManager.getConnection("jdbc:mysql://" + getString(R.string.db_ip), getString(R.string.db_login),
+                        getString(R.string.db_password));
+                statement = connection.createStatement();
+                statement.executeUpdate(query);
+                connection.close();
+                statement.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+
 }

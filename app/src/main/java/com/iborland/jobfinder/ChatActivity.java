@@ -213,8 +213,8 @@ public class ChatActivity extends AppCompatActivity {
                 String query = "SELECT * FROM `messages` WHERE `sender_id` = '" + user.id + "' AND `recipient_id` = " +
                         "'" + partner.id + "'";
                 Class.forName("com.mysql.jdbc.Driver");
-                connection = DriverManager.getConnection("jdbc:mysql://" + MainActivity.db_ip, MainActivity.db_login,
-                        MainActivity.db_password);
+                connection = DriverManager.getConnection("jdbc:mysql://" + getString(R.string.db_ip), getString(R.string.db_login),
+                        getString(R.string.db_password));
                 statement = connection.createStatement();
                 rs = statement.executeQuery(query);
                 while (rs.next()){
@@ -285,8 +285,8 @@ public class ChatActivity extends AppCompatActivity {
                         ") VALUES ('" + user.id + "', '" + user.login + "','" + partner.id + "'," +
                         "'" + partner.login + "','" + text + "','" + date + "')";
                 Class.forName("com.mysql.jdbc.Driver");
-                connection = DriverManager.getConnection("jdbc:mysql://" + MainActivity.db_ip, MainActivity.db_login,
-                        MainActivity.db_password);
+                connection = DriverManager.getConnection("jdbc:mysql://" + getString(R.string.db_ip), getString(R.string.db_login),
+                        getString(R.string.db_password));
                 statement = connection.createStatement();
                 statement.executeUpdate(query);
             } catch (Exception e) {

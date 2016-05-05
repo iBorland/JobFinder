@@ -53,7 +53,7 @@
             android:label="Добавление номера"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".CategoryActivity"
+            android:name=".Category_Activity"
             android:label="Объявления" />
         <activity
             android:name=".DialogsActivity"

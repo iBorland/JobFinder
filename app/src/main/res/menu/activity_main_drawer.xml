@@ -16,7 +16,7 @@
             android:title="Настройки"/>
         <item
             android:id="@+id/nav_test"
-            android:title="Тест"/>
+            android:title="Модерация"/>
         <item
             android:id="@+id/nav_exit"
             android:title="Выйти" />

@@ -59,6 +59,7 @@ public class User implements Parcelable{
     int age;
     int lost_msg;
     int admin;
+    String msg_id;
 
     boolean loaded = false;
     boolean security = true;
@@ -68,6 +69,7 @@ public class User implements Parcelable{
 
     int d_id;
     Context context;
+    boolean first_loaded = false;
 
     User(int db_id, String db_buffer, boolean off_security, boolean waiting, Context con){
         d_id = db_id;
@@ -102,8 +104,8 @@ public class User implements Parcelable{
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 connection = null;
-                connection = DriverManager.getConnection("jdbc:mysql://" + MainActivity.db_ip, MainActivity.db_login,
-                        MainActivity.db_password);
+                connection = DriverManager.getConnection("jdbc:mysql://" + "triniti.ru-hoster.com/iborlZer?characterEncoding=utf8", "iborlZer",
+                        "22599226a");
                 statement = null;
                 rs = null;
                 statement = connection.createStatement();
@@ -126,6 +128,7 @@ public class User implements Parcelable{
                     age = rs.getInt(DB_AGE);
                     lost_msg = rs.getInt(DB_LOST_MESSAGE);
                     admin = rs.getInt(DB_ADMIN);
+                    msg_id = rs.getString("msg_id");
                     if(security == true) {
                         if (!token.equals(buffer_Token)) {
                             Log.e("Error:", "Ошибка. Несоответствие токена");
@@ -134,9 +137,13 @@ public class User implements Parcelable{
                     }
                     loaded = true;
                     Log.e("Loaded", "User " + login + " был загружен");
-                    Intent broadcast = new Intent(USER_CREATED_ACTION);
-                    broadcast.putExtra("id", id);
-                    context.sendBroadcast(broadcast);
+                    Log.e("Loaded", "admin = " + admin);
+                    if(first_loaded == false) {
+                        Intent broadcast = new Intent(USER_CREATED_ACTION);
+                        broadcast.putExtra("id", id);
+                        context.sendBroadcast(broadcast);
+                        first_loaded = true;
+                    }
                     break;
                 }
             }
@@ -174,7 +181,7 @@ public class User implements Parcelable{
         parcel.writeInt(age);
         parcel.writeInt(lost_msg);
         parcel.writeInt(admin);
-
+        parcel.writeString(msg_id);
     }
 
     public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
@@ -211,6 +218,7 @@ public class User implements Parcelable{
         age = parcel.readInt();
         lost_msg = parcel.readInt();
         admin = parcel.readInt();
+        msg_id = parcel.readString();
         Log.e("Parcel", "User " + login + "был распакован из Parcel");
         loaded = true;
     }
@@ -248,8 +256,8 @@ public class User implements Parcelable{
                 statement = null;
                 rs = null;
                 Class.forName("com.mysql.jdbc.Driver");
-                connection = DriverManager.getConnection("jdbc:mysql://" + MainActivity.db_ip, MainActivity.db_login,
-                        MainActivity.db_password);
+                connection = DriverManager.getConnection("jdbc:mysql://" + "triniti.ru-hoster.com/iborlZer?characterEncoding=utf8", "iborlZer",
+                        "22599226a");
                 statement = connection.createStatement();
                 statement.executeUpdate(update_sql);
             }

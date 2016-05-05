@@ -149,8 +149,8 @@ public class PhoneActivity extends AppCompatActivity {
 
             try {
                 Class.forName("com.mysql.jdbc.Driver");
-                connection = DriverManager.getConnection("jdbc:mysql://" + MainActivity.db_ip, MainActivity.db_login,
-                        MainActivity.db_password);
+                connection = DriverManager.getConnection("jdbc:mysql://" + getString(R.string.db_ip), getString(R.string.db_login),
+                        getString(R.string.db_password));
                 statement = connection.createStatement();
                 String query = "SELECT * FROM `users` WHERE `phone` = '" + number + "'";
                 rs = statement.executeQuery(query);
@@ -217,8 +217,8 @@ public class PhoneActivity extends AppCompatActivity {
         protected Void doInBackground(Void... params) {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
-                connection = DriverManager.getConnection("jdbc:mysql://" + MainActivity.db_ip, MainActivity.db_login,
-                        MainActivity.db_password);
+                connection = DriverManager.getConnection("jdbc:mysql://" + getString(R.string.db_ip), getString(R.string.db_login),
+                        getString(R.string.db_password));
                 statement = connection.createStatement();
                 String query = "UPDATE `users` SET `phone` = '" + number + "' WHERE `id` = '" + User.id + "'";
                 Log.e("Запрос", query);

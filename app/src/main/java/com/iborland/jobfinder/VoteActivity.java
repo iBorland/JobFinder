@@ -1,5 +1,6 @@
 package com.iborland.jobfinder;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -83,7 +84,7 @@ public class VoteActivity extends AppCompatActivity {
 
     public void vote(View view) {
         if(loaded != true) return;
-        if(user.score < 20){
+        if(user.score < 20 && user.admin == 0){
             android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(VoteActivity.this);
             builder.setTitle(getString(R.string.error));
             builder.setMessage(getString(R.string.not_money));
@@ -127,7 +128,7 @@ public class VoteActivity extends AppCompatActivity {
             dialog.show();
         }
         loaded = false;
-        user.score -= 20;
+        if(user.admin == 0) user.score -= 20;
         new UpdateBalance().execute();
     }
 
@@ -165,8 +166,8 @@ public class VoteActivity extends AppCompatActivity {
             try{
                 String query = "SELECT * FROM `posts` WHERE `status` = '1' AND `vote_id` = '0' ORDER BY RAND() LIMIT 1";
                 Class.forName("com.mysql.jdbc.Driver");
-                connection = DriverManager.getConnection("jdbc:mysql://" + MainActivity.db_ip, MainActivity.db_login,
-                        MainActivity.db_password);
+                connection = DriverManager.getConnection("jdbc:mysql://" + getString(R.string.db_ip), getString(R.string.db_login),
+                        getString(R.string.db_password));
                 statement = connection.createStatement();
                 rs = statement.executeQuery(query);
                 boolean finded = false;
@@ -194,9 +195,21 @@ public class VoteActivity extends AppCompatActivity {
     }
 
     class Vote extends AsyncTask<String, Void, Integer>{
+
+        ProgressDialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(VoteActivity.this);
+            progressDialog.setMessage(getString(R.string.loaded));
+            progressDialog.show();
+        }
+
         @Override
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
+            progressDialog.dismiss();
             if(integer == 1) {
                 frame.startAnimation(hide);
                 loaded = false;
@@ -215,8 +228,8 @@ public class VoteActivity extends AppCompatActivity {
             else
                 query = "UPDATE `posts` SET `status` = '-1', `reason` = '" + reason + "' WHERE `id` = '" + b_id + "'";
             try{
-                connection = DriverManager.getConnection("jdbc:mysql://" + MainActivity.db_ip, MainActivity.db_login,
-                        MainActivity.db_password);
+                connection = DriverManager.getConnection("jdbc:mysql://" + getString(R.string.db_ip), getString(R.string.db_login),
+                        getString(R.string.db_password));
                 statement = connection.createStatement();
                 statement.executeUpdate(query);
                 connection.close(); connection = null;
@@ -245,8 +258,8 @@ public class VoteActivity extends AppCompatActivity {
         protected Void doInBackground(Void... params) {
             String query = "UPDATE `posts` SET `vote_id` = '0' WHERE `id` = '" + b_id + "'";
             try{
-                connection = DriverManager.getConnection("jdbc:mysql://" + MainActivity.db_ip, MainActivity.db_login,
-                        MainActivity.db_password);
+                connection = DriverManager.getConnection("jdbc:mysql://" + getString(R.string.db_ip), getString(R.string.db_login),
+                        getString(R.string.db_password));
                 statement = connection.createStatement();
                 statement.executeUpdate(query);
                 connection.close(); connection = null;
@@ -291,15 +304,19 @@ public class VoteActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            bar.setSubtitle("Баланс: " + user.score + " coins");
+            if(user.admin == 0)
+                bar.setSubtitle("Баланс: " + user.score + " coins");
+            else
+                bar.setSubtitle("Баланс: не ограничено (admin)");
         }
 
         @Override
         protected Void doInBackground(Void... params) {
+            if(user.admin != 0) return null;
             String query = "UPDATE `users` SET `Score` = '" + user.score + "' WHERE `id` = '" + user.id + "'";
             try{
-                connection = DriverManager.getConnection("jdbc:mysql://" + MainActivity.db_ip, MainActivity.db_login,
-                        MainActivity.db_password);
+                connection = DriverManager.getConnection("jdbc:mysql://" + getString(R.string.db_ip), getString(R.string.db_login),
+                        getString(R.string.db_password));
                 statement = connection.createStatement();
                 statement.executeUpdate(query);
                 connection.close(); connection = null;

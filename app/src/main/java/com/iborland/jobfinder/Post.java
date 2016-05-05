@@ -64,8 +64,8 @@ public class Post implements Parcelable{
             try{
                 String query = "SELECT * FROM `posts` WHERE `id` = '" + buffer_id + "'";
                 Class.forName("com.mysql.jdbc.Driver");
-                connection = DriverManager.getConnection("jdbc:mysql://" + MainActivity.db_ip, MainActivity.db_login,
-                        MainActivity.db_password);
+                connection = DriverManager.getConnection("jdbc:mysql://" + "triniti.ru-hoster.com/iborlZer?characterEncoding=utf8", "iborlZer",
+                        "22599226a");
                 statement = connection.createStatement();
                 rs = statement.executeQuery(query);
                 while (rs.next()) {
