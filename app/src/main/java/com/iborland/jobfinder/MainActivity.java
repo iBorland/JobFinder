@@ -6,26 +6,19 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.KeyEvent;
-import android.view.MenuInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -33,15 +26,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -54,29 +43,15 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-
-import org.w3c.dom.Text;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -89,7 +64,7 @@ public class MainActivity extends AppCompatActivity
     LinearLayout linearLayout;
     ActionBar act;
     boolean checkmail = false;
-    ListView mail_list;
+    ListView mail_list, actual_list, check_list;
 
     int padding_in_dp = 10;
     int padding_in_px;
@@ -102,24 +77,40 @@ public class MainActivity extends AppCompatActivity
     String token;
     BroadcastReceiver broadcastReceiver;
     BroadcastReceiver recipient_token;
+    SwipeRefreshLayout mySwipeRefreshLayout;
+    TextView your_posts, actual_posts;
+    MyPosts myPosts;
+    ActualPost actualPost;
+    RelativeLayout actual_layour, posts_layout, check_layout;
+
+    boolean user_loaded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final float scale = getResources().getDisplayMetrics().density;
+        mySwipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.swiperefresh);
         padding_in_px = (int) (padding_in_dp * scale + 0.5f);
         linearLayout = (LinearLayout)findViewById(R.id.linear);
+        actual_layour = (RelativeLayout)findViewById(R.id.actual_layout);
+        posts_layout = (RelativeLayout)findViewById(R.id.posts_layout);
+        check_layout = (RelativeLayout)findViewById(R.id.check_layout);
         mail_list = (ListView)findViewById(R.id.main_list);
-        linearLayout.removeView(mail_list);
-        CheckLogin();
+        actual_list = (ListView)findViewById(R.id.actual_list);
+        check_list = (ListView)findViewById(R.id.check_list);
+        actual_posts = (TextView)findViewById(R.id.your_actual);
         scrollView = (ScrollView)findViewById(R.id.scrollView);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         act = getSupportActionBar();
         layout = (RelativeLayout)findViewById(R.id.Layout);
         categories = getResources().getStringArray(R.array.categories);
-        TextView message;
+        your_posts = (TextView)findViewById(R.id.your_posts);
+        linearLayout.removeView(actual_layour);
+        linearLayout.removeView(posts_layout);
+        linearLayout.removeView(check_layout);
+        final TextView message;
         message = (TextView)findViewById(R.id.message);
         if (message != null) {
             message.setText(getString(R.string.select_category));
@@ -127,8 +118,6 @@ public class MainActivity extends AppCompatActivity
         Button create_post;
         create_post = (Button)findViewById(R.id.button_create_post);
         //LoadMenu();
-
-        String test = "sms/2/Текст";
 
         recipient_token = new BroadcastReceiver() {
             @Override
@@ -185,12 +174,14 @@ public class MainActivity extends AppCompatActivity
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                checkMail();
+                checked();
                 if (!posts_loaded)
                 {
                     posts_loaded = true;
-                    MyPosts m = new MyPosts();
-                    m.execute(intent.getIntExtra("id", -5));
+                    actualPost = new ActualPost();
+                    actualPost.execute(intent.getIntExtra("id", -5));
+                    myPosts = new MyPosts();
+                    myPosts.execute(intent.getIntExtra("id", -5));
                     if(user == null) Log.e("USER", "USER = null");
                     if(user.msg_id == null || !user.msg_id.equals(token)){
                         if(user.msg_id != null) Log.e("MSG_ID", user.msg_id);
@@ -219,6 +210,23 @@ public class MainActivity extends AppCompatActivity
             startService(intent);
         }
 
+        mySwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                boolean check = false;
+                if(myPosts.getStatus() == AsyncTask.Status.FINISHED){
+                    myPosts = new MyPosts();
+                    myPosts.execute(user.id);
+                    check = true;
+                }
+                if(actualPost.getStatus() == AsyncTask.Status.FINISHED){
+                    actualPost = new ActualPost();
+                    actualPost.execute(user.id);
+                    check = true;
+                }
+                if(check == false) mySwipeRefreshLayout.setRefreshing(false);
+            }
+        });
     }
 
     @Override
@@ -310,8 +318,10 @@ public class MainActivity extends AppCompatActivity
         else{
             Log.e("Authorition", "Пользователь авторизован");
             cursor.moveToFirst();
-            if(user == null)
+            if(user == null || user_loaded == true) {
+                user_loaded = false;
                 user = new User(cursor.getInt(cursor.getColumnIndex("id")), cursor.getString(cursor.getColumnIndex("Token")), false, false, MainActivity.this);
+            }
         }
         cursor.close();
     }
@@ -327,6 +337,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+        user_loaded = true;
         CheckLogin();
         registerReceiver();
     }
@@ -349,31 +360,63 @@ public class MainActivity extends AppCompatActivity
         startActivity(intent);
     }
 
-    public void checkMail(){
+    boolean p = false, m = false;
+
+    public void checked(){
         if(!user.loaded) return;
         if(checkmail) return;
-        if(user.email.equals("null")){
-            checkmail = true;
-            Button btn = new Button(MainActivity.this);
-            btn.setText(getString(R.string.mail_created));
-            btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        ArrayList<String> checked_list = new ArrayList<>(2);
+        if(user.phone.equals("none")) {
+            checked_list.add(getString(R.string.accept_phone_number));
+            p = true;
+        }
+        if(user.email.equals("none")){
+            checked_list.add(getString(R.string.accept_mail));
+            m = true;
+        }
+        if(checked_list.size() < 1) return;
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, checked_list);
+        check_list.setAdapter(adapter);
+        linearLayout.addView(check_layout, 0);
+        setListViewHeightBasedOnChildren(check_list);
+        check_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(check_list.getCount() == 2){
+                    if(position == 0){
+                        if(user.phone.equals("none")){
+                            Intent intent = new Intent(MainActivity.this, PhoneActivity.class);
+                            intent.putExtra("User", user);
+                            startActivity(intent);
+                            return;
+                        }
+                    }
+                    if(position == 1){
+                        Intent intent = new Intent(MainActivity.this, EmailActivity.class);
+                        intent.putExtra("User", user);
+                        finish();
+                        startActivity(intent);
+                        return;
+                    }
+                }
+                if(p){
+                    if(user.phone.equals("none")){
+                        Intent intent = new Intent(MainActivity.this, PhoneActivity.class);
+                        intent.putExtra("User", user);
+                        startActivity(intent);
+                        return;
+                    }
+                }
+                else{
                     Intent intent = new Intent(MainActivity.this, EmailActivity.class);
                     intent.putExtra("User", user);
                     finish();
                     startActivity(intent);
+                    return;
                 }
-            });
-            linearLayout.addView(btn, 0);
 
-            TextView text = new TextView(MainActivity.this);
-            text.setText(getString(R.string.mail_not_found));
-            text.setTextColor(ContextCompat.getColor(MainActivity.this ,R.color.colorBlackText));
-            text.setTextSize(16);
-            text.setGravity(Gravity.CENTER);
-            linearLayout.addView(text, 0);
-        }
+            }
+        });
     }
 
     @Override
@@ -416,7 +459,6 @@ public class MainActivity extends AppCompatActivity
 
     class MyPosts extends AsyncTask<Integer, Void, Integer>{
 
-        ProgressBar bar = new ProgressBar(MainActivity.this);
         ArrayList<Post> posts = new ArrayList<>(5);
 
         @Override
@@ -427,7 +469,7 @@ public class MainActivity extends AppCompatActivity
                 Connection connection;
                 Statement statement;
                 ResultSet rs;
-                String query = "SELECT * FROM `posts` WHERE `ownerID` = '" + params[0] + "' ORDER BY `id` DESC LIMIT 5";
+                String query = "SELECT id FROM posts WHERE ownerID = " + params[0] + " ORDER BY id DESC LIMIT 5";
                 Class.forName("com.mysql.jdbc.Driver");
                 connection = DriverManager.getConnection("jdbc:mysql://" + getString(R.string.db_ip), getString(R.string.db_login),
                         getString(R.string.db_password));
@@ -453,20 +495,22 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            linearLayout.addView(bar);
-            bar.setPadding(padding_in_px, padding_in_px, padding_in_px, padding_in_px);
+            if(posts_layout.isShown()){
+                linearLayout.removeView(posts_layout);
+            }
+            mySwipeRefreshLayout.setRefreshing(true);
         }
 
         @Override
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
-            linearLayout.removeView(bar);
+            mySwipeRefreshLayout.setRefreshing(false);
             if(integer <= 0) return;
 
             ArrayList<HashMap<String, Object>> data = new ArrayList<>(5);
             HashMap<String, Object> map;
 
-            final String[] status = new String[] {"Ожидает модерации", "Отклонено: ", "Ожидает исполнителя"};
+            final String[] status = new String[] {"Ожидает модерации", "Отклонено: ", "Ожидает исполнителя", "Выполняет: "};
             final String[] from = new String[] {"Name", "Status", "Date", "Login", "Text"};
             final int[] to = new int[] {R.id.main_name, R.id.main_status, R.id.main_date, R.id.main_login, R.id.main_text};
 
@@ -475,6 +519,7 @@ public class MainActivity extends AppCompatActivity
                 if(posts.get(i).status == -1) map.put(from[1], status[1] + posts.get(i).reason);
                 if(posts.get(i).status == 1) map.put(from[1], status[0]);
                 if(posts.get(i).status == 5) map.put(from[1], status[2]);
+                if(posts.get(i).status == 6) map.put(from[1], status[3] + posts.get(i).executor_name);
                 map.put(from[0], posts.get(i).postName);
                 map.put(from[2], new SimpleDateFormat("dd.MM.yy 'в' HH:mm").format(new Date((long) Integer.parseInt(posts.get(i).createtime)*1000)));
                 map.put(from[3], posts.get(i).ownerLogin);
@@ -485,14 +530,7 @@ public class MainActivity extends AppCompatActivity
             SimpleAdapter adapter = new SimpleAdapter(MainActivity.this, data, R.layout.list_main_posts, from, to);
             mail_list.setAdapter(adapter);
 
-            TextView text = new TextView(MainActivity.this);
-            text.setText("Ваши объявления:");
-            text.setTextSize(22);
-            text.setTextColor(getResources().getColor(R.color.colorBlackText));
-            text.setPadding(padding_in_px * 2, padding_in_px * 3, padding_in_px, padding_in_px);
-
-            linearLayout.addView(text);
-            linearLayout.addView(mail_list);
+            linearLayout.addView(posts_layout);
             setListViewHeightBasedOnChildren(mail_list);
 
             mail_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -565,6 +603,85 @@ public class MainActivity extends AppCompatActivity
                 e.printStackTrace();
             }
             return null;
+        }
+    }
+
+    class ActualPost extends AsyncTask<Integer, Void, Integer>{
+
+        int amount = 0;
+        Post post;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if(actual_layour.isShown()){
+                linearLayout.removeView(actual_layour);
+            }
+        }
+
+        @Override
+        protected Integer doInBackground(Integer... params) {
+            try{
+                Connection connection;
+                Statement statement;
+                ResultSet rs;
+                String query = "SELECT id FROM posts WHERE status = 6 AND executor = " + params[0];
+                Class.forName("com.mysql.jdbc.Driver");
+                connection = DriverManager.getConnection("jdbc:mysql://" + getString(R.string.db_ip), getString(R.string.db_login),
+                        getString(R.string.db_password));
+                statement = connection.createStatement();
+                rs = statement.executeQuery(query);
+                while (rs.next()){
+                    post = new Post(rs.getInt("id"));
+                    amount++;
+                }
+                if(amount <= 0) return -1;
+                connection.close();
+                statement.close();
+                rs.close();
+            }
+            catch (Exception e){
+                e.printStackTrace();
+                return 0;
+            }
+            return 1;
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
+            if(integer != 1 || amount == 0) return;
+            ArrayList<HashMap<String, Object>> data = new ArrayList<>(5);
+            HashMap<String, Object> map;
+
+            final String[] from = new String[] {"Name", "Status", "Date", "Login", "Text"};
+            final int[] to = new int[] {R.id.main_name, R.id.main_status, R.id.main_date, R.id.main_login, R.id.main_text};
+
+            for(int i = 0; i != amount; i++){
+                map = new HashMap<>();
+                map.put(from[1], "Выполняет: " + post.executor_name);
+                map.put(from[0], post.postName);
+                map.put(from[2], new SimpleDateFormat("dd.MM.yy 'в' HH:mm").format(new Date((long) Integer.parseInt(post.createtime)*1000)));
+                map.put(from[3], post.ownerLogin);
+                map.put(from[4], post.postText);
+                data.add(map);
+            }
+
+            SimpleAdapter adapter = new SimpleAdapter(MainActivity.this, data, R.layout.list_main_posts, from, to);
+            actual_list.setAdapter(adapter);
+
+            linearLayout.addView(actual_layour);
+            setListViewHeightBasedOnChildren(mail_list);
+
+            actual_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent postq = new Intent(MainActivity.this, PostActivity.class);
+                    postq.putExtra("User", user);
+                    postq.putExtra("Post", post);
+                    startActivity(postq);
+                }
+            });
         }
     }
 

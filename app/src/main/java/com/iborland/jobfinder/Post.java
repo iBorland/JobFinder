@@ -32,9 +32,11 @@ public class Post implements Parcelable{
     int amount;
     String city;
     int executor;
+    String executor_name;
     String reason;
     int vote_id;
     int deleted;
+    String execute_start;
 
     boolean moderation = false;
 
@@ -85,16 +87,18 @@ public class Post implements Parcelable{
                     amount = rs.getInt("Amount");
                     city = rs.getString("City");
                     executor = rs.getInt("executor");
+                    executor_name = rs.getString("executor_name");
                     reason = rs.getString("reason");
                     vote_id = rs.getInt("vote_id");
                     deleted = rs.getInt("deleted");
+                    execute_start = rs.getString("execute_start");
                     if(buffer_adresses != null) {
                         Adresses = buffer_adresses.split("split");
                         Coords = buffer_coords.split("split");
                     }
 
                     loaded = true;
-                    Log.e("Loaded", "post " + postName + " был загружен");
+                    //Log.e("Loaded", "post " + postName + " был загружен");
                     break;
                 }
             }
@@ -129,9 +133,11 @@ public class Post implements Parcelable{
         parcel.writeInt(amount);
         parcel.writeString(city);
         parcel.writeInt(executor);
+        parcel.writeString(executor_name);
         parcel.writeString(reason);
         parcel.writeInt(vote_id);
         parcel.writeInt(deleted);
+        parcel.writeString(execute_start);
         if(amount > 0)
         {
             parcel.writeStringArray(Adresses);
@@ -171,9 +177,11 @@ public class Post implements Parcelable{
         amount = parcel.readInt();
         city = parcel.readString();
         executor = parcel.readInt();
+        executor_name = parcel.readString();
         reason = parcel.readString();
         vote_id = parcel.readInt();
         deleted = parcel.readInt();
+        execute_start = parcel.readString();
         if(amount > 0) {
             Adresses = new String[amount];
             Coords = new String[amount];

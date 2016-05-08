@@ -59,6 +59,7 @@ public class APILoader {
         public void run() {
             try {
                 String adr = adress.replaceAll(" ", "+");
+                Log.e("ADRESS", "ADRESS: " + adr);
                 URLConnection conn = new URL(adr).openConnection();
                 conn.setRequestProperty("Accept-Charset", "UTF-8");
 

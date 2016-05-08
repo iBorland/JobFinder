@@ -165,7 +165,7 @@
     <string name="success">Успешно</string>
     <string name="unsuccess">Неуспешно</string>
     <string name="post_executed">Вы успешно приняли это задание.\nПодробности выполнения вы можете найти в меню "Мои задания"</string>
-    <string name="post_error_too_mach_executing">Вы уже выполняете пять или более заданий</string>
+    <string name="post_error_too_mach_executing">Вы уже выполняете задание</string>
     <string name="post_occupied">Задание уже выполняет кто-то другой</string>
     <string name="t_Service">Бытовые услуги</string>
     <string name="t_Postal">Услуги курьера</string>
@@ -201,7 +201,19 @@
     <string name="load_more">Загрузить больше</string>
     <string name="delete">Удалить</string>
     <string name="not_yourself">Извините, но вы не можете писать самому себе :(</string>
+    <string name="deleted">Удаление</string>
+    <string name="delete_accept">Вы действительно хотите удалить?</string>
+    <string name="can_not">Вы не можете выполнять своё-же задание</string>
+    <string name="your_posts">Ваши объявления:</string>
+    <string name="search_title">Поиск</string>
+    <string name="search_hint">Поисковый запрос</string>
+    <string name="your_actuallity_post">Ваше задание:</string>
 
     <string name="token_loaded">com.iborland.jobfinder.token_loaded</string>
+
+    <string name="user_checked_text">Дружище, кажется твой аккаунт не до конца зарегистрирован. Тебе осталось кое-что сделать для полного доступа к ресурсам приложения.</string>
+    <string name="accept_mail">Указать адрес электронной почты</string>
+    <string name="accept_phone_number">Указать номер телефона</string>
+    <string name="logo_a">logo</string>
 
 </resources>

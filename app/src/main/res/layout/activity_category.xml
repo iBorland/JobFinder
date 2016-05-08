@@ -3,19 +3,26 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:id="@+id/RelativeInCat">
 
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/scroller"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" >
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/cat_swipe"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/LinearInCat">
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/scroller"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" >
 
-        </LinearLayout>
-    </ScrollView>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/LinearInCat">
+
+            </LinearLayout>
+        </ScrollView>
+        </android.support.v4.widget.SwipeRefreshLayout>
 </RelativeLayout>

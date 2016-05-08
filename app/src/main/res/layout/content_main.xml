@@ -1,316 +1,406 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.iborland.jobfinder.MainActivity"
-    tools:showIn="@layout/app_bar_main"
-    android:id="@+id/Layout"
-    android:background="#FFFF">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context="com.iborland.jobfinder.MainActivity"
+        tools:showIn="@layout/app_bar_main"
+        android:id="@+id/Layout"
+        android:background="#efefef">
 
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/scrollView"
-        android:layout_alignParentTop="false">
-
-        <LinearLayout
-            android:orientation="vertical"
+        <android.support.v4.widget.SwipeRefreshLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/swiperefresh"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/linear">
+            android:layout_height="match_parent">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/default_text"
-                android:id="@+id/message"
-                android:textAlignment="center"
-                android:textColor="@color/colorBlackText"
-                android:textSize="24sp"
-                android:singleLine="false"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:layout_marginTop="16dp" />
-
-            <HorizontalScrollView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/scrollCategory"
-                android:layout_marginTop="10dp"
-                android:fillViewport="false"
-                android:scrollbars="none">
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent">
-
-                    <FrameLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/f_Service"
-                        android:onClick="SelectCategory"
-                        android:layout_margin="8dp"
-                        android:background="@drawable/shadow_frame">
-
-                        <RelativeLayout
-                            android:layout_width="120dp"
-                            android:layout_height="150dp"
-                            android:id="@+id/rel_Service">
-
-                            <ImageView
-                                android:layout_width="fill_parent"
-                                android:layout_height="80dp"
-                                android:id="@+id/img_Service"
-                                android:src="@drawable/icon_service"
-                                android:contentDescription="@string/t_Service"
-                                android:layout_alignParentTop="true"
-                                android:layout_centerHorizontal="true"
-                                android:padding="15dp" />
-
-                            <TextView
-                                android:layout_width="fill_parent"
-                                android:layout_height="wrap_content"
-                                android:textAppearance="?android:attr/textAppearanceLarge"
-                                android:text="@string/t_Service"
-                                android:id="@+id/text_Service"
-                                android:padding="10dp"
-                                android:layout_below="@+id/img_Service"
-                                android:textSize="18sp"
-                                android:layout_alignParentEnd="true"
-                                android:textAlignment="center"
-                                android:textColor="@color/colorBlackText" />
-                        </RelativeLayout>
-                    </FrameLayout>
-
-                    <FrameLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/f_Postal"
-                        android:background="@drawable/shadow_frame"
-                        android:visibility="visible"
-                        android:onClick="SelectCategory"
-                        android:layout_margin="8dp">
-
-                        <RelativeLayout
-                            android:layout_width="120dp"
-                            android:layout_height="150dp"
-                            android:id="@+id/rel_Postal">
-
-                            <ImageView
-                                android:layout_width="fill_parent"
-                                android:layout_height="80dp"
-                                android:id="@+id/img_Postal"
-                                android:layout_alignParentTop="true"
-                                android:layout_centerHorizontal="true"
-                                android:padding="15dp"
-                                android:src="@drawable/icon_postal"
-                                android:contentDescription="@string/t_Postal" />
-
-                            <TextView
-                                android:layout_width="fill_parent"
-                                android:layout_height="wrap_content"
-                                android:textAppearance="?android:attr/textAppearanceLarge"
-                                android:text="@string/t_Postal"
-                                android:id="@+id/text_Postal"
-                                android:layout_below="@+id/img_Postal"
-                                android:layout_alignParentEnd="true"
-                                android:textAlignment="center"
-                                android:textColor="@color/colorBlackText"
-                                android:textSize="18sp"
-                                android:paddingLeft="15dp"
-                                android:paddingTop="15dp"
-                                android:paddingRight="15dp"/>
-                        </RelativeLayout>
-                    </FrameLayout>
-
-                    <FrameLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/f_IT"
-                        android:background="@drawable/shadow_frame"
-                        android:visibility="visible"
-                        android:onClick="SelectCategory"
-                        android:layout_margin="8dp">
-
-                        <RelativeLayout
-                            android:layout_width="120dp"
-                            android:layout_height="150dp"
-                            android:id="@+id/rel_IT">
-
-                            <ImageView
-                                android:layout_width="fill_parent"
-                                android:layout_height="80dp"
-                                android:id="@+id/img_IT"
-                                android:layout_alignParentTop="true"
-                                android:layout_centerHorizontal="true"
-                                android:padding="15dp"
-                                android:src="@drawable/icon_it"
-                                android:contentDescription="@string/t_IT" />
-
-                            <TextView
-                                android:layout_width="fill_parent"
-                                android:layout_height="wrap_content"
-                                android:textAppearance="?android:attr/textAppearanceLarge"
-                                android:text="@string/t_IT"
-                                android:id="@+id/text_IT"
-                                android:layout_below="@+id/img_IT"
-                                android:layout_alignParentEnd="true"
-                                android:textAlignment="center"
-                                android:textColor="@color/colorBlackText"
-                                android:textSize="18sp"
-                                android:paddingLeft="15dp"
-                                android:paddingTop="15dp"
-                                android:paddingRight="15dp"
-                                android:paddingBottom="15dp" />
-                        </RelativeLayout>
-                    </FrameLayout>
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/f_Security"
-                        android:background="@drawable/shadow_frame"
-                        android:visibility="visible"
-                        android:onClick="SelectCategory"
-                        android:layout_margin="8dp">
-
-                        <RelativeLayout
-                            android:layout_width="120dp"
-                            android:layout_height="150dp"
-                            android:id="@+id/rel_Security">
-
-                            <ImageView
-                                android:layout_width="fill_parent"
-                                android:layout_height="80dp"
-                                android:id="@+id/img_Security"
-                                android:layout_alignParentTop="true"
-                                android:layout_centerHorizontal="true"
-                                android:padding="15dp"
-                                android:src="@drawable/icon_security"
-                                android:contentDescription="@string/t_Securyty" />
-
-                            <TextView
-                                android:layout_width="fill_parent"
-                                android:layout_height="wrap_content"
-                                android:textAppearance="?android:attr/textAppearanceLarge"
-                                android:text="@string/t_Securyty"
-                                android:id="@+id/text_Security"
-                                android:layout_below="@+id/img_Security"
-                                android:layout_alignParentEnd="true"
-                                android:textAlignment="center"
-                                android:textColor="@color/colorBlackText"
-                                android:textSize="18sp"
-                                android:paddingLeft="15dp"
-                                android:paddingTop="10dp"
-                                android:paddingRight="15dp" />
-                        </RelativeLayout>
-                    </FrameLayout>
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/f_Repair"
-                        android:background="@drawable/shadow_frame"
-                        android:visibility="visible"
-                        android:onClick="SelectCategory"
-                        android:layout_margin="8dp">
-
-                        <RelativeLayout
-                            android:layout_width="120dp"
-                            android:layout_height="150dp"
-                            android:id="@+id/rel_Repair">
-
-                            <ImageView
-                                android:layout_width="fill_parent"
-                                android:layout_height="80dp"
-                                android:id="@+id/img_Repair"
-                                android:layout_alignParentTop="true"
-                                android:layout_centerHorizontal="true"
-                                android:padding="15dp"
-                                android:src="@drawable/icon_repair"
-                                android:contentDescription="@string/t_Repair" />
-
-                            <TextView
-                                android:layout_width="fill_parent"
-                                android:layout_height="wrap_content"
-                                android:textAppearance="?android:attr/textAppearanceLarge"
-                                android:text="@string/t_Repair"
-                                android:id="@+id/text_Repair"
-                                android:layout_below="@+id/img_Repair"
-                                android:layout_alignParentEnd="true"
-                                android:textAlignment="center"
-                                android:textColor="@color/colorBlackText"
-                                android:textSize="18sp"
-                                android:paddingLeft="15dp"
-                                android:paddingRight="15dp"
-                                android:paddingTop="15dp"/>
-                        </RelativeLayout>
-                    </FrameLayout>
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/f_Other"
-                        android:onClick="SelectCategory"
-                        android:background="@drawable/shadow_frame"
-                        android:layout_margin="8dp">
-
-                        <RelativeLayout
-                            android:layout_width="120dp"
-                            android:layout_height="150dp"
-                            android:id="@+id/rel_Other">
-
-                            <ImageView
-                                android:layout_width="fill_parent"
-                                android:layout_height="80dp"
-                                android:id="@+id/img_Other"
-                                android:layout_alignParentTop="true"
-                                android:layout_centerHorizontal="true"
-                                android:padding="15dp"
-                                android:src="@drawable/icon_default"
-                                android:contentDescription="@string/t_Other" />
-
-                            <TextView
-                                android:layout_width="fill_parent"
-                                android:layout_height="wrap_content"
-                                android:textAppearance="?android:attr/textAppearanceLarge"
-                                android:text="@string/t_Other"
-                                android:id="@+id/text_Other"
-                                android:layout_below="@+id/img_Other"
-                                android:layout_alignParentEnd="true"
-                                android:textAlignment="center"
-                                android:textColor="@color/colorBlackText"
-                                android:textSize="18sp"
-                                android:paddingLeft="15dp"
-                                android:paddingTop="15dp"
-                                android:paddingRight="15dp"
-                                android:paddingBottom="15dp"/>
-                        </RelativeLayout>
-                    </FrameLayout>
-
-                </LinearLayout>
-            </HorizontalScrollView>
-
-            <Button
+            <ScrollView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/create_post"
-                android:id="@+id/button_create_post"
-                android:background="@color/buttonbackground"
-                android:textColor="@color/colorBlackText"
-                android:textSize="16sp"
-                android:layout_marginTop="10dp" />
+                android:id="@+id/scrollView"
+                android:layout_alignParentTop="false">
 
-            <ListView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/main_list" />
-        </LinearLayout>
-    </ScrollView>
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/linear">
 
-</RelativeLayout>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/check_layout"
+                        android:background="@drawable/shadow_frame"
+                        android:layout_marginBottom="5dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/user_checked_text"
+                            android:id="@+id/check_text"
+                            android:padding="16dp"
+                            android:textColor="@color/colorBlackText" />
+
+                        <ListView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/check_list"
+                            android:layout_below="@+id/check_text" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/shadow_frame"
+                        android:id="@+id/select_layout"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:text="@string/default_text"
+                            android:id="@+id/message"
+                            android:textAlignment="center"
+                            android:textColor="@color/colorBlackText"
+                            android:textSize="24sp"
+                            android:singleLine="false"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="16dp"
+                            android:layout_centerHorizontal="true" />
+
+                        <HorizontalScrollView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/scrollCategory"
+                            android:layout_marginTop="10dp"
+                            android:fillViewport="false"
+                            android:scrollbars="none"
+                            android:layout_below="@+id/message">
+
+                            <LinearLayout
+                                android:orientation="horizontal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent">
+
+                                <FrameLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/f_Service"
+                                    android:onClick="SelectCategory"
+                                    android:layout_margin="8dp"
+                                    android:background="@drawable/shadow_frame">
+
+                                    <RelativeLayout
+                                        android:layout_width="120dp"
+                                        android:layout_height="150dp"
+                                        android:id="@+id/rel_Service">
+
+                                        <ImageView
+                                            android:layout_width="fill_parent"
+                                            android:layout_height="80dp"
+                                            android:id="@+id/img_Service"
+                                            android:src="@drawable/icon_service"
+                                            android:contentDescription="@string/t_Service"
+                                            android:layout_alignParentTop="true"
+                                            android:layout_centerHorizontal="true"
+                                            android:padding="15dp" />
+
+                                        <TextView
+                                            android:layout_width="fill_parent"
+                                            android:layout_height="wrap_content"
+                                            android:textAppearance="?android:attr/textAppearanceLarge"
+                                            android:text="@string/t_Service"
+                                            android:id="@+id/text_Service"
+                                            android:padding="10dp"
+                                            android:layout_below="@+id/img_Service"
+                                            android:textSize="18sp"
+                                            android:layout_alignParentEnd="true"
+                                            android:textAlignment="center"
+                                            android:textColor="@color/colorBlackText" />
+                                    </RelativeLayout>
+                                </FrameLayout>
+
+                                <FrameLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/f_Postal"
+                                    android:background="@drawable/shadow_frame"
+                                    android:visibility="visible"
+                                    android:onClick="SelectCategory"
+                                    android:layout_margin="8dp">
+
+                                    <RelativeLayout
+                                        android:layout_width="120dp"
+                                        android:layout_height="150dp"
+                                        android:id="@+id/rel_Postal">
+
+                                        <ImageView
+                                            android:layout_width="fill_parent"
+                                            android:layout_height="80dp"
+                                            android:id="@+id/img_Postal"
+                                            android:layout_alignParentTop="true"
+                                            android:layout_centerHorizontal="true"
+                                            android:padding="15dp"
+                                            android:src="@drawable/icon_postal"
+                                            android:contentDescription="@string/t_Postal" />
+
+                                        <TextView
+                                            android:layout_width="fill_parent"
+                                            android:layout_height="wrap_content"
+                                            android:textAppearance="?android:attr/textAppearanceLarge"
+                                            android:text="@string/t_Postal"
+                                            android:id="@+id/text_Postal"
+                                            android:layout_below="@+id/img_Postal"
+                                            android:layout_alignParentEnd="false"
+                                            android:textAlignment="center"
+                                            android:textColor="@color/colorBlackText"
+                                            android:textSize="18sp"
+                                            android:paddingLeft="15dp"
+                                            android:paddingTop="15dp"
+                                            android:paddingRight="15dp"/>
+                                    </RelativeLayout>
+                                </FrameLayout>
+
+                                <FrameLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/f_IT"
+                                    android:background="@drawable/shadow_frame"
+                                    android:visibility="visible"
+                                    android:onClick="SelectCategory"
+                                    android:layout_margin="8dp">
+
+                                    <RelativeLayout
+                                        android:layout_width="120dp"
+                                        android:layout_height="150dp"
+                                        android:id="@+id/rel_IT">
+
+                                        <ImageView
+                                            android:layout_width="fill_parent"
+                                            android:layout_height="80dp"
+                                            android:id="@+id/img_IT"
+                                            android:layout_alignParentTop="true"
+                                            android:layout_centerHorizontal="true"
+                                            android:padding="15dp"
+                                            android:src="@drawable/icon_it"
+                                            android:contentDescription="@string/t_IT" />
+
+                                        <TextView
+                                            android:layout_width="fill_parent"
+                                            android:layout_height="wrap_content"
+                                            android:textAppearance="?android:attr/textAppearanceLarge"
+                                            android:text="@string/t_IT"
+                                            android:id="@+id/text_IT"
+                                            android:layout_below="@+id/img_IT"
+                                            android:layout_alignParentEnd="true"
+                                            android:textAlignment="center"
+                                            android:textColor="@color/colorBlackText"
+                                            android:textSize="18sp"
+                                            android:paddingLeft="15dp"
+                                            android:paddingTop="15dp"
+                                            android:paddingRight="15dp"
+                                            android:paddingBottom="15dp" />
+                                    </RelativeLayout>
+                                </FrameLayout>
+
+                                <FrameLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:id="@+id/f_Security"
+                                    android:background="@drawable/shadow_frame"
+                                    android:visibility="visible"
+                                    android:onClick="SelectCategory"
+                                    android:layout_margin="8dp">
+
+                                    <RelativeLayout
+                                        android:layout_width="120dp"
+                                        android:layout_height="150dp"
+                                        android:id="@+id/rel_Security">
+
+                                        <ImageView
+                                            android:layout_width="fill_parent"
+                                            android:layout_height="80dp"
+                                            android:id="@+id/img_Security"
+                                            android:layout_alignParentTop="true"
+                                            android:layout_centerHorizontal="true"
+                                            android:padding="15dp"
+                                            android:src="@drawable/icon_security"
+                                            android:contentDescription="@string/t_Securyty" />
+
+                                        <TextView
+                                            android:layout_width="fill_parent"
+                                            android:layout_height="wrap_content"
+                                            android:textAppearance="?android:attr/textAppearanceLarge"
+                                            android:text="@string/t_Securyty"
+                                            android:id="@+id/text_Security"
+                                            android:layout_below="@+id/img_Security"
+                                            android:layout_alignParentEnd="true"
+                                            android:textAlignment="center"
+                                            android:textColor="@color/colorBlackText"
+                                            android:textSize="18sp"
+                                            android:paddingLeft="15dp"
+                                            android:paddingTop="10dp"
+                                            android:paddingRight="15dp" />
+                                    </RelativeLayout>
+                                </FrameLayout>
+
+                                <FrameLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:id="@+id/f_Repair"
+                                    android:background="@drawable/shadow_frame"
+                                    android:visibility="visible"
+                                    android:onClick="SelectCategory"
+                                    android:layout_margin="8dp">
+
+                                    <RelativeLayout
+                                        android:layout_width="120dp"
+                                        android:layout_height="150dp"
+                                        android:id="@+id/rel_Repair">
+
+                                        <ImageView
+                                            android:layout_width="fill_parent"
+                                            android:layout_height="80dp"
+                                            android:id="@+id/img_Repair"
+                                            android:layout_alignParentTop="true"
+                                            android:layout_centerHorizontal="true"
+                                            android:padding="15dp"
+                                            android:src="@drawable/icon_repair"
+                                            android:contentDescription="@string/t_Repair" />
+
+                                        <TextView
+                                            android:layout_width="fill_parent"
+                                            android:layout_height="wrap_content"
+                                            android:textAppearance="?android:attr/textAppearanceLarge"
+                                            android:text="@string/t_Repair"
+                                            android:id="@+id/text_Repair"
+                                            android:layout_below="@+id/img_Repair"
+                                            android:layout_alignParentEnd="true"
+                                            android:textAlignment="center"
+                                            android:textColor="@color/colorBlackText"
+                                            android:textSize="18sp"
+                                            android:paddingLeft="15dp"
+                                            android:paddingRight="15dp"
+                                            android:paddingTop="15dp"/>
+                                    </RelativeLayout>
+                                </FrameLayout>
+
+                                <FrameLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:id="@+id/f_Other"
+                                    android:onClick="SelectCategory"
+                                    android:background="@drawable/shadow_frame"
+                                    android:layout_margin="8dp">
+
+                                    <RelativeLayout
+                                        android:layout_width="120dp"
+                                        android:layout_height="150dp"
+                                        android:id="@+id/rel_Other">
+
+                                        <ImageView
+                                            android:layout_width="fill_parent"
+                                            android:layout_height="80dp"
+                                            android:id="@+id/img_Other"
+                                            android:layout_alignParentTop="true"
+                                            android:layout_centerHorizontal="true"
+                                            android:padding="15dp"
+                                            android:src="@drawable/icon_default"
+                                            android:contentDescription="@string/t_Other" />
+
+                                        <TextView
+                                            android:layout_width="fill_parent"
+                                            android:layout_height="wrap_content"
+                                            android:textAppearance="?android:attr/textAppearanceLarge"
+                                            android:text="@string/t_Other"
+                                            android:id="@+id/text_Other"
+                                            android:layout_below="@+id/img_Other"
+                                            android:layout_alignParentEnd="true"
+                                            android:textAlignment="center"
+                                            android:textColor="@color/colorBlackText"
+                                            android:textSize="18sp"
+                                            android:paddingLeft="15dp"
+                                            android:paddingTop="15dp"
+                                            android:paddingRight="15dp"
+                                            android:paddingBottom="15dp"/>
+                                    </RelativeLayout>
+                                </FrameLayout>
+
+                            </LinearLayout>
+                        </HorizontalScrollView>
+
+                        <Button
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/create_post"
+                            android:id="@+id/button_create_post"
+                            android:textSize="16sp"
+                            android:layout_marginTop="10dp"
+                            android:layout_below="@+id/scrollCategory"
+                            android:background="#FFFF"
+                            android:textColor="@color/colorBlackText" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/actual_layout"
+                        android:background="@drawable/shadow_frame"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:text="@string/your_actuallity_post"
+                            android:id="@+id/your_actual"
+                            android:paddingLeft="20dp"
+                            android:paddingTop="20dp"
+                            android:paddingRight="20dp"
+                            android:paddingBottom="5dp"
+                            android:textColor="@color/colorBlackText" />
+
+                        <ListView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/actual_list"
+                            android:layout_below="@+id/your_actual" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/posts_layout"
+                        android:background="@drawable/shadow_frame"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:text="@string/your_posts"
+                            android:id="@+id/your_posts"
+                            android:paddingLeft="20dp"
+                            android:paddingTop="20dp"
+                            android:paddingRight="20dp"
+                            android:paddingBottom="5dp" />
+
+                        <ListView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:id="@+id/main_list"
+                            android:layout_below="@+id/your_posts" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+            </ScrollView>
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+    </RelativeLayout>

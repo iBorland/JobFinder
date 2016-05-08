@@ -202,6 +202,28 @@ public class PostActivity extends AppCompatActivity {
                     CheckExecutor check = new CheckExecutor();
                     check.execute();
                 }
+                if(position == 2){
+                    android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(PostActivity.this);
+                    builder.setTitle(getString(R.string.deleted));
+                    builder.setMessage(getString(R.string.delete_accept));
+                    builder.setCancelable(true);
+                    builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                            DeletePost delete = new DeletePost();
+                            delete.execute();
+                        }
+                    });
+                    builder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    android.support.v7.app.AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
             }
         });
 
@@ -227,7 +249,8 @@ public class PostActivity extends AppCompatActivity {
         @Override
         protected Integer doInBackground(Void... params) {
             try {
-                String query = "SELECT * FROM `posts` WHERE `Status` = '1' AND `executor` = " +
+                if(Post.ownerID == user.id) return -3;
+                String query = "SELECT * FROM `posts` WHERE `Status` = '6' AND `executor` = " +
                         "'" + user.id + "'";
                 Class.forName("com.mysql.jdbc.Driver");
                 connection = DriverManager.getConnection("jdbc:mysql://" + getString(R.string.db_ip), getString(R.string.db_login),
@@ -236,7 +259,7 @@ public class PostActivity extends AppCompatActivity {
                 rs = statement.executeQuery(query);
                 while (rs.next()) amount++;
 
-                if(amount >= 5) return -1;
+                if(amount >= 1) return -1;
 
                 rs = null;
 
@@ -245,20 +268,32 @@ public class PostActivity extends AppCompatActivity {
                 while(rs.next()){
                     if(rs.getInt("executor") != 0) return -2;
                 }
+                if(Post.status != 5) return -2;
 
             } catch (Exception e) {
                 e.printStackTrace();
                 return -5;
             }
 
+            Post.status = 6;
+            Post.execute_start = "" + System.currentTimeMillis() / 1000;
+            Post.executor_name = user.login;
             MySQL mysql = new MySQL("posts", true);
-            mysql.update(new String[] {"executor"}, new Object[] {user.id}, Post.id);
+            mysql.update(new String[] {"executor", "executor_name", "status", "execute_start"}, new Object[] {user.id, Post.executor_name,  Post.status, Post.execute_start}, Post.id);
             try{
                 mysql.join(30000);
             }
             catch (Exception e){
                 e.printStackTrace();
             }
+
+            User partner = new User(Post.ownerID, "123", true, true, PostActivity.this);
+
+            APILoader gcm = new APILoader("http://api.jobfinder.ru.com/gcm.php");
+            gcm.addParams(new String[] {"regID", "type", "sender_name"},
+                    new String[] {partner.msg_id, "2", user.login});
+            gcm.execute();
+            gcm = null;
 
             user.score += 5;
             user.update(new String[] {User.DB_SCORE}, new Object[] {user.score});
@@ -281,6 +316,7 @@ public class PostActivity extends AppCompatActivity {
             if(integer == -5) sendMessage(PostActivity.this, getString(R.string.error), getString(R.string.error_connection));
             if(integer == -1) sendMessage(PostActivity.this, getString(R.string.error), getString(R.string.post_error_too_mach_executing));
             if(integer == -2) sendMessage(PostActivity.this, getString(R.string.error), getString(R.string.post_occupied));
+            if(integer == -3) sendMessage(PostActivity.this, getString(R.string.error), getString(R.string.can_not));
         }
     }
 
@@ -297,5 +333,52 @@ public class PostActivity extends AppCompatActivity {
         });
         android.support.v7.app.AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    class DeletePost extends AsyncTask<Void, Void, Integer>{
+
+        ProgressDialog dialog;
+
+        @Override
+        protected Integer doInBackground(Void... params) {
+            try{
+                Connection connection;
+                Statement statement;
+                String query = "UPDATE `posts` SET `deleted` = '1' WHERE `id` = '" + Post.id + "'";
+                Class.forName("com.mysql.jdbc.Driver");
+                connection = DriverManager.getConnection("jdbc:mysql://" + getString(R.string.db_ip), getString(R.string.db_login),
+                        getString(R.string.db_password));
+                statement = connection.createStatement();
+                statement.executeUpdate(query);
+                connection.close();
+                statement.close();
+            }
+            catch (Exception e){
+                e.printStackTrace();
+                return 0;
+            }
+            return 1;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog = new ProgressDialog(PostActivity.this);
+            dialog.setMessage(getString(R.string.loaded));
+            dialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
+            dialog.dismiss();
+            if(integer == 1) Toast.makeText(PostActivity.this, "Удалено", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(PostActivity.this, Category_Activity.class);
+            i.putExtra("User",user);
+            i.putExtra("Category", Post.category);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            finish();
+            startActivity(i);
+        }
     }
 }

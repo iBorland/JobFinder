@@ -298,8 +298,8 @@ public class ChatActivity extends AppCompatActivity {
                 statement.executeUpdate(query);
 
                 APILoader gcm = new APILoader("http://api.jobfinder.ru.com/gcm.php");
-                gcm.addParams(new String[] {"regID", "type", "sender_id", "sender_name", "text"},
-                        new String[] {partner.msg_id, "1", "" + user.id, user.login, text});
+                gcm.addParams(new String[] {"regID", "type", "sender_id", "sender_name"},
+                        new String[] {partner.msg_id, "1", "" + user.id, user.login});
                 gcm.execute();
                 gcm = null;
             } catch (Exception e) {

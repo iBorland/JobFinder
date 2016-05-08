@@ -1,5 +1,6 @@
 package com.iborland.jobfinder;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -234,7 +235,10 @@ public class PhoneActivity extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             Toast.makeText(PhoneActivity.this, getString(R.string.number_is_saved), Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(PhoneActivity.this, MainActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             finish();
+            startActivity(i);
         }
 
         @Override
