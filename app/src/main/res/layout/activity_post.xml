@@ -8,7 +8,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/scrollView3"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" >
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/accept_post">
 
         <LinearLayout
             android:orientation="vertical"
@@ -179,5 +180,18 @@
 
         </LinearLayout>
     </ScrollView>
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/accept_o"
+        android:id="@+id/accept_post"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        android:textSize="12sp"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

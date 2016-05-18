@@ -7,8 +7,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
@@ -37,7 +39,14 @@ public class MyGcmListenerService extends GcmListenerService {
         }
         if(type == 2){
             String sender_name = data.getString("sender_name");
-
+            sendNotification(type, sender_name);
+        }
+        if(type == 3){
+            String sender_name = data.getString("executor_name");
+            sendNotification(type, sender_name);
+        }
+        if(type == 4){
+            String sender_name = data.getString("sender_name");
             sendNotification(type, sender_name);
         }
     }
@@ -61,6 +70,16 @@ public class MyGcmListenerService extends GcmListenerService {
                 notificationBuilder.setContentText(params[0] + " принял ваше задание");
                 break;
             }
+            case 3: {
+                notificationBuilder.setContentTitle("JobFinder");
+                notificationBuilder.setContentText(params[0] + " выполнил ваше задание");
+                break;
+            }
+            case 4: {
+                notificationBuilder.setContentTitle("JobFinder");
+                notificationBuilder.setContentText(params[0] + "подтвердил выполнение заказа");
+                break;
+            }
 
         }
         notificationBuilder.setAutoCancel(true);
@@ -70,8 +89,13 @@ public class MyGcmListenerService extends GcmListenerService {
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        if(type == 1) notificationManager.notify(2259, notificationBuilder.build());
-        if(type == 2) notificationManager.notify(2258, notificationBuilder.build());
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            notificationManager.notify(2260 - type, notificationBuilder.build());
+        }
+        else{
+            NotificationManagerCompat notify = NotificationManagerCompat.from(this);
+            notify.notify(2260 - type, notificationBuilder.getNotification());
+        }
     }
 
 

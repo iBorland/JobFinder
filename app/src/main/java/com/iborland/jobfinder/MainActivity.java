@@ -365,6 +365,7 @@ public class MainActivity extends AppCompatActivity
     public void checked(){
         if(!user.loaded) return;
         if(checkmail) return;
+        checkmail = true;
         ArrayList<String> checked_list = new ArrayList<>(2);
         if(user.phone.equals("none")) {
             checked_list.add(getString(R.string.accept_phone_number));

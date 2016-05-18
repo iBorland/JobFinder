@@ -62,6 +62,7 @@
     <string name="add_Text">Текст вашего объявления:</string>
     <string name="add_Cost">Оплата:</string>
     <string name="add_Adress">Адреса:</string>
+    <string name="close">Закрыть</string>
 
     <string name="phone_text">Для того чтобы получить возможность пользоваться всеми функциями приложения, вам необходимо
     указать свой номер телефона</string>
@@ -104,7 +105,7 @@
     <string name="default_text">Text</string>
     <string name="icon">icon</string>
     <string name="try_again">Попробуйте через несколько секунд</string>
-    <string name="succesfull_created">Ваше объявление успешно создано</string>
+    <string name="succesfull_created">Ваше объявление отправлено на модерацию</string>
     <string name="error_created">Ошибка. Ваше объявление не было создано</string>
     <string name="error">Ошибка</string>
     <string name="error_loaded">Ошибка загрузки. Попробуйте позже</string>
@@ -215,5 +216,20 @@
     <string name="accept_mail">Указать адрес электронной почты</string>
     <string name="accept_phone_number">Указать номер телефона</string>
     <string name="logo_a">logo</string>
+    <string name="accept_o">Подтвердить статус выполнения задания</string>
+    <string name="accept_owner">Ожидайте пока заказчик подтвердит выполнение заказа</string>
+    <string name="accept_executor">Ожидайте пока исполнитель подтвердит выполнение заказа</string>
+
+    <string name="rate">Оценка</string>
+    <string name="rating_text">Пожалуйста, выберите оценку исполнителю:</string>
+    <string-array name="ratings">
+        <item>Превосходно</item>
+        <item>Хорошо</item>
+        <item>Средне</item>
+        <item>Плохо</item>
+        <item>Отвратительно</item>
+    </string-array>
+
+    <string name="error_finish">Вы не можете завершить созданное объявление пока исполнитель не укажет что объявление выполнено, или пока не пройдёт 24 часа с момента создания объявления</string>
 
 </resources>

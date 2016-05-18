@@ -54,8 +54,8 @@
         android:layout_below="@+id/rowPassword"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
-        android:background="@color/buttonbackground"
-        android:textColor="@color/auth_color" />
+        android:background="@color/colorPrimary"
+        android:textColor="@color/white" />
 
     <Button
         android:layout_width="250dp"
@@ -63,9 +63,9 @@
         android:text="@string/registation"
         android:id="@+id/button_Reg"
         android:layout_marginTop="10dp"
-        android:background="@color/buttonbackground"
+        android:background="@color/colorPrimary"
         android:layout_below="@+id/button_Enter"
         android:layout_centerHorizontal="true"
-        android:textColor="@color/auth_color" />
+        android:textColor="@color/white" />
 
 </RelativeLayout>

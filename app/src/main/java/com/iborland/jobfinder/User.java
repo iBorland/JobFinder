@@ -52,6 +52,7 @@ public class User implements Parcelable{
     int score;
     int status;
     int ad_amount;
+    int ex_amount;
     String regdata;
     String token;
     String phone;
@@ -121,6 +122,7 @@ public class User implements Parcelable{
                     score = rs.getInt(DB_SCORE);
                     status = rs.getInt(DB_STATUS);
                     ad_amount = rs.getInt(DB_AMOUNT_POSTS);
+                    ex_amount = rs.getInt("AmountExecuted");
                     regdata = rs.getString(DB_DATE_REGISTRATION);
                     token = rs.getString(DB_TOKEN);
                     phone = rs.getString(DB_PHONE);
@@ -174,6 +176,7 @@ public class User implements Parcelable{
         parcel.writeInt(score);
         parcel.writeInt(status);
         parcel.writeInt(ad_amount);
+        parcel.writeInt(ex_amount);
         parcel.writeString(regdata);
         parcel.writeString(token);
         parcel.writeString(phone);
@@ -211,6 +214,7 @@ public class User implements Parcelable{
         score = parcel.readInt();
         status = parcel.readInt();
         ad_amount = parcel.readInt();
+        ex_amount = parcel.readInt();
         regdata = parcel.readString();
         token = parcel.readString();
         phone = parcel.readString();

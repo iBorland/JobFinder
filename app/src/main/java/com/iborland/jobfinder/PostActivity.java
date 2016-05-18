@@ -18,6 +18,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -54,6 +55,8 @@ public class PostActivity extends AppCompatActivity {
     int padding_in_px;
     ActionBar bar;
     ProgressDialog dialog;
+    Button accept;
+    String[] ratings;
 
     Connection connection = null;
     Statement statement = null;
@@ -66,12 +69,14 @@ public class PostActivity extends AppCompatActivity {
 
         final float scale = getResources().getDisplayMetrics().density;
         padding_in_px = (int) (padding_in_dp * scale + 0.5f);
+        ratings = getResources().getStringArray(R.array.ratings);
 
         bar = getSupportActionBar();
 
         user = getIntent().getParcelableExtra("User");
 
         lin = (LinearLayout)findViewById(R.id.LinearinPost);
+        accept = (Button)findViewById(R.id.accept_post);
         sName = (TextView)findViewById(R.id.sName);
         sText = (TextView)findViewById(R.id.sText);
         sCost = (TextView)findViewById(R.id.sCost);
@@ -223,6 +228,97 @@ public class PostActivity extends AppCompatActivity {
                     });
                     android.support.v7.app.AlertDialog dialog = builder.create();
                     dialog.show();
+                }
+            }
+        });
+
+        if(Post.status == 6) {
+            if (user.id == Post.executor) { // если исполнитель
+                if (Post.accept_post[0] == 0) {
+                    accept.setVisibility(View.VISIBLE);
+                    accept.startAnimation(left);
+                } else {
+                    accept.setVisibility(View.VISIBLE);
+                    accept.startAnimation(left);
+                    accept.setEnabled(false);
+                    accept.setText(getString(R.string.accept_owner));
+                }
+            }
+            if(user.id == Post.ownerID){ // если заказчик
+                if (Post.accept_post[1] == 0) {
+                    accept.setVisibility(View.VISIBLE);
+                    accept.startAnimation(left);
+                } else {
+                    accept.setVisibility(View.VISIBLE);
+                    accept.startAnimation(left);
+                    accept.setEnabled(false);
+                    accept.setText(getString(R.string.accept_executor));
+                }
+            }
+        }
+
+        accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(user.id == Post.executor){
+                    Post.accept_post[0] = 1;
+                    AnyThread anyThread = new AnyThread();
+                    anyThread.execute(0);
+                    accept.startAnimation(left);
+                    accept.setEnabled(false);
+                    accept.setText(getString(R.string.accept_owner));
+                    return;
+                }
+                if(user.id == Post.ownerID){
+                    if(Post.accept_post[0] == 1){
+                        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(PostActivity.this);
+                        builder.setTitle(getString(R.string.rating_text));
+                        builder.setCancelable(false);
+                        builder.setItems(ratings, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                                FinishPost finishPost = new FinishPost();
+                                finishPost.execute(which);
+                            }
+                        });
+                        android.support.v7.app.AlertDialog dialog = builder.create();
+                        dialog.show();
+                    }
+                    else {
+                        long diff = Math.abs(System.currentTimeMillis() / 1000 - Long.parseLong(Post.execute_start));
+                        if (diff > 86400) {
+                            Post.accept_post[1] = 1;
+                            android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(PostActivity.this);
+                            builder.setTitle(getString(R.string.rating_text));
+                            builder.setCancelable(false);
+                            builder.setItems(ratings, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                    FinishPost finishPost = new FinishPost();
+                                    finishPost.execute(which);
+                                }
+                            });
+                            android.support.v7.app.AlertDialog dialog = builder.create();
+                            dialog.show();
+                        }
+                        else{
+                            android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(PostActivity.this);
+                            builder.setTitle(getString(R.string.error));
+                            builder.setCancelable(false);
+                            builder.setMessage(getString(R.string.error_finish));
+                            builder.setPositiveButton(getString(R.string.close), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                         dialog.cancel();
+                                }
+                            });
+                            android.support.v7.app.AlertDialog dialog = builder.create();
+                            dialog.show();
+                        }
+                    }
+                    return;
                 }
             }
         });
@@ -379,6 +475,76 @@ public class PostActivity extends AppCompatActivity {
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             finish();
             startActivity(i);
+        }
+    }
+
+    class AnyThread extends AsyncTask<Integer, Void, Void>{
+        @Override
+        protected Void doInBackground(Integer... params) {
+            if(params[0] == 0){
+                MySQL m = new MySQL("posts", true);
+                m.update(new String[] {"accept_executor"}, new Object[] {1}, Post.id);
+                User owner = new User(Post.ownerID, "123", true, true, PostActivity.this);
+                APILoader gcm = new APILoader("http://api.jobfinder.ru.com/gcm.php");
+                gcm.addParams(new String[] {"regID", "type", "executor_name"},
+                        new String[] {owner.msg_id, "3", user.login});
+                gcm.execute();
+                gcm = null;
+            }
+            if(params[0] == 1){
+                MySQL m = new MySQL("posts", true);
+                m.update(new String[] {"accept_owner"}, new Object[] {1}, Post.id);
+            }
+            return null;
+        }
+    }
+
+    class FinishPost extends AsyncTask<Integer, Void, Integer>{
+
+        ProgressDialog progressDialog;
+
+        @Override
+        protected Integer doInBackground(Integer... params) {
+            User executor = new User(Post.executor, "123", true, true, PostActivity.this);
+            int change_status = 0;
+            if(params[0] == 0) change_status = 50;
+            if(params[0] == 1) change_status = 25;
+            if(params[0] == 2) change_status = 0;
+            if(params[0] == 3) change_status = -25;
+            if(params[0] == 4) change_status = -50;
+            executor.score += change_status;
+            if(executor.score < 0) executor.score = 0;
+            executor.ex_amount++;
+            APILoader gcm = new APILoader("http://api.jobfinder.ru.com/gcm.php");
+            gcm.addParams(new String[] {"regID", "type"},
+                    new String[] {executor.msg_id, "4"});
+            gcm.execute();
+            gcm = null;
+            executor.update(new String[] {"Score", "AmountExecuted"}, new Object[] {executor.score, executor.ex_amount});
+
+            Post.status = 10;
+            MySQL m = new MySQL("posts", true);
+            m.update(new String[] {"status"}, new Object[] {Post.status}, Post.id);
+
+            return 1;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(PostActivity.this);
+            progressDialog.setMessage(getString(R.string.loaded));
+            progressDialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
+            progressDialog.dismiss();
+            Intent intent = new Intent(PostActivity.this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            finish();
+            startActivity(intent);
         }
     }
 }
