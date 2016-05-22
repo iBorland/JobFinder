@@ -82,13 +82,16 @@ public class ChatActivity extends AppCompatActivity {
         ProgressBar progressBar = (ProgressBar)findViewById(R.id.progress_chat);
 
         user = getIntent().getParcelableExtra("User");
+        if(getIntent().getParcelableExtra("Partner_User") != null){
+            partner = getIntent().getParcelableExtra("Partner_User");
+        }
         final int partner_id = getIntent().getIntExtra("Partner", -5);
-        if(partner_id == -5 || user == null) {
+        if((partner_id == -5 && partner == null) || user == null) {
             ErrorMessage(getString(R.string.error_connection));
             return;
         }
         Log.e("Partner ID", "" + partner_id);
-        partner = new User(partner_id, "123", true, true, ChatActivity.this);
+        if(partner == null) partner = new User(partner_id, "123", true, true, ChatActivity.this);
         Log.e("Partner name", "" + partner.login);
         if(getSupportActionBar() != null) {
             getSupportActionBar().setTitle(partner.login);
@@ -109,7 +112,7 @@ public class ChatActivity extends AppCompatActivity {
             }
         };
 
-        if(partner_id == user.id){
+        if(partner.id == user.id){
             int padding_in_px = (int) (10 * getResources().getDisplayMetrics().density + 0.5f);
             TextView start_msg = new TextView(ChatActivity.this);
             start_msg.setText(getString(R.string.not_yourself));

@@ -136,7 +136,7 @@ public class Category_Activity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(Category_Activity.this, PostActivity.class);
-                    intent.putExtra("Post", values[0]);
+                    intent.putExtra("Post", values[0].id);
                     intent.putExtra("User", user);
                     finish();
                     startActivity(intent);

@@ -41,7 +41,6 @@
         android:id="@+id/row_Chat"
         android:layout_toLeftOf="@+id/button_chat"
         android:layout_alignBottom="@+id/button_chat"
-        android:layout_alignTop="@+id/button_chat"
         android:hint="@string/your_text"
         android:paddingLeft="8dp" />
 

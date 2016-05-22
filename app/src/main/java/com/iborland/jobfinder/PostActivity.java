@@ -48,6 +48,7 @@ public class PostActivity extends AppCompatActivity {
     ListView list;
     FrameLayout fText, fInfo;
     LinearLayout lin;
+    int post_id;
     Post Post;
     User user;
     Animation top, left, return_left;
@@ -61,6 +62,7 @@ public class PostActivity extends AppCompatActivity {
     Connection connection = null;
     Statement statement = null;
     ResultSet rs = null;
+    User partner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,17 +95,27 @@ public class PostActivity extends AppCompatActivity {
         left = AnimationUtils.loadAnimation(this, R.anim.slide_left);
         return_left = AnimationUtils.loadAnimation(this, R.anim.return_slide_left);
 
+        Log.e("ДИАЛОГ", "Показываю " + System.currentTimeMillis() / 1000);
+        final ProgressDialog progressDialog = new ProgressDialog(PostActivity.this);
+        progressDialog.setMessage(getString(R.string.loaded));
+        progressDialog.show();
+
         try{
-            Post = getIntent().getParcelableExtra("Post");
+            post_id = getIntent().getIntExtra("Post", -5);
+            if(post_id != 5) Post = new Post(post_id);
+
         }
         catch (Exception e){
             sName.setText(getString(R.string.error_loaded));
             lin.removeAllViews();
             lin.addView(sName);
             e.printStackTrace();
+            progressDialog.dismiss();
             return;
         }
+        Log.e("ДИАЛОГ", "Показал " + System.currentTimeMillis() / 1000);
 
+        progressDialog.dismiss();
         sText.setText(Post.postText);
         sName.setText(Post.postName);
         sCost.setText(Post.cost);
@@ -124,6 +136,14 @@ public class PostActivity extends AppCompatActivity {
         Date data = new Date(unix*1000);
 
         sDate.setText("Создано " + date.format(data));
+
+        fInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoadUzver l = new LoadUzver();
+                l.execute();
+            }
+        });
 
         if(Post.amount > 0){
             //lin.addView(sAdresses);
@@ -545,6 +565,35 @@ public class PostActivity extends AppCompatActivity {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             finish();
             startActivity(intent);
+        }
+    }
+
+    class LoadUzver extends AsyncTask<Void, Void, Void>{
+
+        ProgressDialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(PostActivity.this);
+            progressDialog.setMessage(getString(R.string.loaded));
+            progressDialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            progressDialog.dismiss();
+            Intent userInfo = new Intent(PostActivity.this, ProfileActivity.class);
+            userInfo.putExtra("User", user);
+            userInfo.putExtra("Profile", partner);
+            startActivity(userInfo);
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            partner = new User(Post.ownerID, "123", true, true, PostActivity.this);
+            return null;
         }
     }
 }

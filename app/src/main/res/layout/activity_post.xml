@@ -148,6 +148,7 @@
                         android:textColor="@color/colorBlackText"
                         android:textSize="18dp"
                         android:layout_below="@+id/zName" />
+
                 </RelativeLayout>
             </FrameLayout>
 

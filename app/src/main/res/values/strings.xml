@@ -64,17 +64,15 @@
     <string name="add_Adress">Адреса:</string>
     <string name="close">Закрыть</string>
 
-    <string name="phone_text">Для того чтобы получить возможность пользоваться всеми функциями приложения, вам необходимо
-    указать свой номер телефона</string>
+    <string name="phone_text">Для использования функций приложения в полном объеме укажите номер Вашего телефона</string>
 
-    <string name="phone_accept">Подтверждая свой номер вы соглашаетесь с тем, что мы можем отправлять СМС сообщения
-    на ваш номер.</string>
+    <string name="phone_accept">Подтверждая номер телефона Вы соглашаетесь с условиями смс-рассылки</string>
     <string name="title_activity_asfgasg">Map</string>
     <string name="title_activity_ashg">Map</string>
     <string name="pName">Название объявления</string>
     <string name="pText">Текст объявления</string>
     <string name="pCost">Оплата за выполнение</string>
-    <string name="select_category">Выберите категорию:</string>
+    <string name="select_category">Выберете категорию:</string>
     <string name="pCategory">Нажмите чтобы выбрать категорию</string>
     <string name="select_sity">Населённый пункт:</string>
     <string name="pCity">Населённый пункт</string>
@@ -99,6 +97,7 @@
     <string name="yourPassword">Ваш пароль:</string>
     <string name="yourPassword_hint">Ваш пароль</string>
     <string name="yourAge">Ваш возраст:</string>
+    <string name="info_age">Возраст: </string>
     <string name="yourAge_hint">Ваш возраст</string>
     <string name="yourCity">Ваш город:</string>
     <string name="select_city">Нажмите для выбора города</string>
@@ -112,7 +111,7 @@
     <string name="not_found_internet">Ошибка. У вас отсутствует подключение к сети Интернет. Проверьте ваше соединение
      и повторите попытку позже.</string>
     <string name="exit">Выйти</string>
-    <string name="posts_not_found">В данной категории пока-что нету объявлений :(</string>
+    <string name="posts_not_found">В данной категории нет объявлений :(</string>
     <string name="small_login">Слишком короткий логин</string>
     <string name="small_password">Слишком короткий пароль</string>
     <string name="long_password">Слишком длинный пароль</string>
@@ -120,7 +119,7 @@
     <string name="small_textPost">Текст объявления должен содержать минимум 32 символа</string>
     <string name="small_costPost">Слишком короткое описание оплаты</string>
     <string name="category_no_selected">Вы не выбрали категорию</string>
-    <string name="add_adress">+ добавить адрес</string>
+    <string name="add_adress">+ Добавить адрес</string>
     <string name="accept_exit_post">Вы действительно хотите завершить создание объявления?\n\nВнимение: Если вы покините создание нового объявления, все введённые вами данные будут потеряны.</string>
     <string name="login_used">Данный логин уже занят</string>
     <string name="email_used">Данный адрес электронной почты уже занят</string>
@@ -128,7 +127,7 @@
     <string name="long_login">Слишком длинный логин</string>
     <string name="error_internet">Ошибка подключения к интернету</string>
     <string name="loaded">Загрузка данных\nОдну минуточку...</string>
-    <string name="error_auth">Логин с таким логином и паролем не найден</string>
+    <string name="error_auth">Аккаунт с таким логином и паролем не найден</string>
     <string name="select_adress">Выбранный адрес:</string>
     <string name="adres">Адрес:</string>
     <string name="loaded_info">Загрузка данных:</string>
@@ -140,17 +139,17 @@
     <string name="false_code">Неверное введён код</string>
     <string name="phone_used">Данный номер телефона уже используется другим пользователем</string>
     <string name="sending_sms">Отправка смс...</string>
-    <string name="code_in_sms">Код из СМС</string>
+    <string name="code_in_sms">Код СМС</string>
     <string name="number_is_saved">Номер привязан</string>
     <string name="checked">Проверка...</string>
     <string name="selected_city">Выберите ваш город:</string>
-    <string name="enter_city">Введине название вашего города</string>
-    <string name="messages_not_found">У вас пока-что нету сообщений</string>
-    <string name="error_connection">Ошибка соединения с сервером. Попробуйте чуточку позже</string>
+    <string name="enter_city">Введите название вашего города</string>
+    <string name="messages_not_found">Для Вас нет сообщений</string>
+    <string name="error_connection">Ошибка соединения с сервером. Попробуйте немного позже</string>
     <string name="your_text">Ваш текст</string>
     <string name="nextt">next</string>
     <string name="send">Send</string>
-    <string name="sending">Отправляем ваше сообщение...</string>
+    <string name="sending">Отправляем Ваше сообщение...</string>
     <string name="update">Обновление...</string>
     <string name="messages">Сообщения</string>
     <string name="new_ticker">У вас новое сообщение на JobFinder</string>
@@ -178,33 +177,32 @@
     <string name="logo">logo</string>
     <string name="vote_information">Информация</string>
 
-    <string name="vote_info">Вы находитесь в режиме модерации новых объявлений.\nПеред вами список самых новых объявлений, и вы должны его промодерировать.\n\n
-    Пожалуйста, отклоняйте те объявления, которые не соответствуют правилам проекта, в которых
-        присутствуют нецензурные слова или которые не имеют смысла.\n\n
-    За одно промодерированое объявление с вашего счёта снимается 20 очков.\nОчки можно заработать выполняя или создавая объявления.\n\n
-    Для вынесения решения по модерации объявления - передвиньте текст влево и нажмите +, если объявление
-    удовлетворяет криериям, или -, если не удовлетворяет.</string>
+    <string name="vote_info">Вы находитесь в режиме модерации новых объявлений.\nПеред вами список самых новых объявлений,который Вы должны промодерировать.\n\n
+    Пожалуйста, отклоняйте объявления не соответствующие правилам проекта\n\n
+    За одно модерированое объявление с вашего счёта снимается 20 очков.\nОчки можно заработать выполняя или создавая объявления.\n\n
+    Для вынесения решения по модерации объявления - передвиньте текст влево и нажмите + Если объявление
+    удовлетворяет критериям и -, если не удовлетворяет</string>
 
-    <string name="votess_not_found">В данный момент нету постов нуждающихся в модерации</string>
+    <string name="votess_not_found">В данный момент нет постов нуждающихся в модерации</string>
 
-    <string name="not_money">На вашем счету недостаточно баллов.\n\nСтоимость одной модерации - 20 баллов.\n\nБаллы можно заработать создавая или выполняя объявления.</string>
+    <string name="not_money">На вашем счету недостаточно баллов.\n\nСтоимость одной модерации - 20 баллов.\n\nБаллы можно заработать создавая объявления или выполняя задания</string>
 
     <string name="mail_header">Привязка Email</string>
-    <string name="mail_enter">Введите в поле ниже ваш настоящий адрес электронной почты</string>
-    <string name="mail_ented_code">Введите в поле ниже код, отправленный на Ваш адрес электронной почты</string>
+    <string name="mail_enter">Введите в поле Ваш настоящий адрес электронной почты</string>
+    <string name="mail_ented_code">Введите в поле код, отправленный на Ваш адрес электронной почты</string>
     <string name="mail_hint">Ваш адрес электронной почты</string>
     <string name="mail_hint_code">Код из письма</string>
-    <string name="mail_text">Адрес электронной почты необходим чтобы Вы всегда были в курсе новостей и
-    вовремя получали полезную информацию.</string>
-    <string name="mail_not_found">У вас не указан Email адрес</string>
+    <string name="mail_text">Адрес электронной почты необходим для того, чтобы Вы всегда были в курсе новостей и
+    вовремя получали полезную информацию</string>
+    <string name="mail_not_found">Адрес Вашей электронной почты не указанс</string>
     <string name="mail_created">Привязать почту</string>
     <string name="gcm_project_id">credible-tesla-125915</string>
     <string name="load_more">Загрузить больше</string>
     <string name="delete">Удалить</string>
-    <string name="not_yourself">Извините, но вы не можете писать самому себе :(</string>
+    <string name="not_yourself">Извините, но Вы не можете писать самому себе :(</string>
     <string name="deleted">Удаление</string>
     <string name="delete_accept">Вы действительно хотите удалить?</string>
-    <string name="can_not">Вы не можете выполнять своё-же задание</string>
+    <string name="can_not">Вы не можете выполнять своё задание</string>
     <string name="your_posts">Ваши объявления:</string>
     <string name="search_title">Поиск</string>
     <string name="search_hint">Поисковый запрос</string>
@@ -217,11 +215,11 @@
     <string name="accept_phone_number">Указать номер телефона</string>
     <string name="logo_a">logo</string>
     <string name="accept_o">Подтвердить статус выполнения задания</string>
-    <string name="accept_owner">Ожидайте пока заказчик подтвердит выполнение заказа</string>
-    <string name="accept_executor">Ожидайте пока исполнитель подтвердит выполнение заказа</string>
+    <string name="accept_owner">Ожидайте подтверждения выполнения заказа</string>
+    <string name="accept_executor">Ожидайте подтверждение исполнителя</string>
 
     <string name="rate">Оценка</string>
-    <string name="rating_text">Пожалуйста, выберите оценку исполнителю:</string>
+    <string name="rating_text">Пожалуйста, оцените работу исполнителя:</string>
     <string-array name="ratings">
         <item>Превосходно</item>
         <item>Хорошо</item>
@@ -230,6 +228,23 @@
         <item>Отвратительно</item>
     </string-array>
 
-    <string name="error_finish">Вы не можете завершить созданное объявление пока исполнитель не укажет что объявление выполнено, или пока не пройдёт 24 часа с момента создания объявления</string>
+    <string name="error_finish">Вы не можете завершить созданное объявление пока исполнитель не укажет, что объявление выполнено, или пока не пройдёт 24 часа с момента создания объявления</string>
+    <string name="open_message">Сообщение</string>
+    <string name="info_score">ОЧКИ:</string>
+    <string name="score">score</string>
+    <string name="city">city</string>
+    <string name="info_city">Город: </string>
+    <string name="age">age</string>
+    <string name="posts_add">posts_add</string>
+    <string name="info_posts_add">Создано объявлений: </string>
+    <string name="info_posts_execute">Выполнено объявлений: </string>
+    <string name="posts_execute">posts_execute</string>
+    <string name="contact_mail">contact_mail</string>
+    <string name="iinfo_contact_mail">Почта: </string>
+    <string name="iinfo_contact_phone">Телефон: </string>
+    <string name="contact_phone">contact_phone</string>
+    <string name="img_status">img_status</string>
+    <string name="last_online">Был в сети:</string>
+    <string name="online">Онлайн</string>
 
 </resources>

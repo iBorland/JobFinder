@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#010d28</color>
-    <color name="colorPrimaryDark">#010d28</color>
+    <color name="colorPrimaryDark">#00091d</color>
     <color name="colorAccent">#010d28</color>
     <color name="colorText">#bdbdbd</color>
     <color name="colorBlackText">#010d28</color>
@@ -13,5 +13,7 @@
     <color name="orange">#ff5722</color>
     <color name="background">#fafafa</color>
     <color name="auth_color">#58595b</color>
+    <color name="little_red">#df554a</color>
+    <color name="green_online">#42b455</color>
     <!-- 52475cd4 -->
 </resources>

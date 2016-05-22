@@ -5,6 +5,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import org.json.JSONObject;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -63,7 +65,40 @@ public class Post implements Parcelable{
 
         public void run() {
             try{
-                String query = "SELECT * FROM `posts` WHERE `id` = '" + buffer_id + "'";
+                APILoader apiLoader = new APILoader("http://api.jobfinder.ru.com/select_post.php");
+                apiLoader.addParams(new String[]{"id"}, new String[]{"" + buffer_id});
+                String str = apiLoader.execute();
+                JSONObject jsonObject = new JSONObject(str);
+                id = jsonObject.getInt("id");
+                ownerID = jsonObject.getInt("ownerID");
+                ownerLogin = jsonObject.getString("ownerLogin");
+                ownerName = jsonObject.getString("ownerName");
+                postName = jsonObject.getString("postName");
+                postText = jsonObject.getString("postText");
+                cost = jsonObject.getString("cost");
+                status = jsonObject.getInt("status");
+                category = jsonObject.getInt("Category");
+                createtime = jsonObject.getString("createtime");
+                String buffer_adresses = jsonObject.getString("Adresses");
+                String buffer_coords = jsonObject.getString("Coordinates");
+                amount = jsonObject.getInt("Amount");
+                city = jsonObject.getString("City");
+                executor = jsonObject.getInt("executor");
+                executor_name = jsonObject.getString("executor_name");
+                reason = jsonObject.getString("reason");
+                vote_id = jsonObject.getInt("vote_id");
+                deleted = jsonObject.getInt("deleted");
+                execute_start = jsonObject.getString("execute_start");
+                accept_post[0] = jsonObject.getInt("accept_executor");
+                accept_post[1] = jsonObject.getInt("accept_owner");
+                if(buffer_adresses != null) {
+                    Adresses = buffer_adresses.split("split");
+                    Coords = buffer_coords.split("split");
+                }
+
+                loaded = true;
+                //Log.e("Loaded", "post " + postName + " был загружен");
+                /*String query = "SELECT * FROM `posts` WHERE `id` = '" + buffer_id + "'";
                 Class.forName("com.mysql.jdbc.Driver");
                 connection = DriverManager.getConnection("jdbc:mysql://" + "triniti.ru-hoster.com/iborlZer?characterEncoding=utf8", "iborlZer",
                         "22599226a");
@@ -100,7 +135,7 @@ public class Post implements Parcelable{
                     loaded = true;
                     //Log.e("Loaded", "post " + postName + " был загружен");
                     break;
-                }
+                }*/
             }
             catch (Exception e)
             {

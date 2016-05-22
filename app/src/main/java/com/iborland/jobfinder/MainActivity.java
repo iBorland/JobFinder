@@ -266,6 +266,14 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_main) {
             // Handle the camera action
         } else if (id == R.id.nav_profile) {
+            if(!user.loaded){
+                Toast.makeText(MainActivity.this, getString(R.string.try_again), Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+            intent.putExtra("User", user);
+            intent.putExtra("Profile", user);
+            startActivity(intent);
 
         } else if (id == R.id.nav_setting) {
 
@@ -340,6 +348,12 @@ public class MainActivity extends AppCompatActivity
         user_loaded = true;
         CheckLogin();
         registerReceiver();
+        if(user != null) {
+            actualPost = new ActualPost();
+            actualPost.execute(user.id);
+            myPosts = new MyPosts();
+            myPosts.execute(user.id);
+        }
     }
 
     public void SelectCategory(View view) {
@@ -531,6 +545,7 @@ public class MainActivity extends AppCompatActivity
             SimpleAdapter adapter = new SimpleAdapter(MainActivity.this, data, R.layout.list_main_posts, from, to);
             mail_list.setAdapter(adapter);
 
+            if(posts_layout.isShown() == true) linearLayout.removeView(posts_layout);
             linearLayout.addView(posts_layout);
             setListViewHeightBasedOnChildren(mail_list);
 
@@ -539,7 +554,7 @@ public class MainActivity extends AppCompatActivity
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Intent post = new Intent(MainActivity.this, PostActivity.class);
                     post.putExtra("User", user);
-                    post.putExtra("Post", posts.get(position));
+                    post.putExtra("Post", posts.get(position).id);
                     startActivity(post);
                 }
             });
@@ -618,6 +633,7 @@ public class MainActivity extends AppCompatActivity
             if(actual_layour.isShown()){
                 linearLayout.removeView(actual_layour);
             }
+            mySwipeRefreshLayout.setRefreshing(true);
         }
 
         @Override
@@ -671,7 +687,12 @@ public class MainActivity extends AppCompatActivity
             SimpleAdapter adapter = new SimpleAdapter(MainActivity.this, data, R.layout.list_main_posts, from, to);
             actual_list.setAdapter(adapter);
 
-            linearLayout.addView(actual_layour);
+            if(actual_layour.isShown() == true) linearLayout.removeView(actual_layour);
+            try {
+                linearLayout.addView(actual_layour);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             setListViewHeightBasedOnChildren(mail_list);
 
             actual_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -679,7 +700,7 @@ public class MainActivity extends AppCompatActivity
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Intent postq = new Intent(MainActivity.this, PostActivity.class);
                     postq.putExtra("User", user);
-                    postq.putExtra("Post", post);
+                    postq.putExtra("Post", post.id);
                     startActivity(postq);
                 }
             });

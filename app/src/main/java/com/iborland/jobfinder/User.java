@@ -9,6 +9,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.google.gson.Gson;
+
+import org.json.JSONObject;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -61,12 +65,12 @@ public class User implements Parcelable{
     int lost_msg;
     int admin;
     String msg_id;
+    String lostOnline;
 
     boolean loaded = false;
-    boolean security = true;
+    int security = 1;
 
     String update_sql = "";
-    UpdateUserInfo upd;
 
     int d_id;
     Context context;
@@ -84,7 +88,7 @@ public class User implements Parcelable{
             return;
         }
         buffer_Token = db_buffer;
-        if(off_security == true) security = false;
+        if(off_security == true) security = 0;
         query = "SELECT * FROM `users` WHERE `id` = '" + db_id + "'";
         LoadUser loadUser = new LoadUser();
         if(waiting == true) {
@@ -103,7 +107,46 @@ public class User implements Parcelable{
 
         public void run() {
             try {
-                Class.forName("com.mysql.jdbc.Driver");
+                APILoader apiLoader = new APILoader("http://api.jobfinder.ru.com/select_user.php"); // это круто
+                apiLoader.addParams(new String[]{"id"}, new String[]{"" + d_id});
+                String str = apiLoader.execute();
+                JSONObject jsonObject = new JSONObject(str);
+                id = jsonObject.getInt(DB_ID);
+                login = jsonObject.getString(DB_LOGIN);
+                password = jsonObject.getString(DB_PASSWORD);
+                surname = jsonObject.getString(DB_SURNAME);
+                name = jsonObject.getString(DB_NAME);
+                email = jsonObject.getString(DB_EMAIL);
+                score = jsonObject.getInt(DB_SCORE);
+                status = jsonObject.getInt(DB_STATUS);
+                ad_amount = jsonObject.getInt(DB_AMOUNT_POSTS);
+                ex_amount = jsonObject.getInt("AmountExecuted");
+                regdata = jsonObject.getString(DB_DATE_REGISTRATION);
+                token = jsonObject.getString(DB_TOKEN);
+                phone = jsonObject.getString(DB_PHONE);
+                city = jsonObject.getString(DB_CITY);
+                age = jsonObject.getInt(DB_AGE);
+                lost_msg = jsonObject.getInt(DB_LOST_MESSAGE);
+                admin = jsonObject.getInt(DB_ADMIN);
+                msg_id = jsonObject.getString("msg_id");
+                lostOnline = jsonObject.getString("LostOnline");
+                if(security == 1) {
+                    if (!token.equals(buffer_Token)) {
+                        Log.e("Error:", "Ошибка. Несоответствие токена");
+                        return;
+                    }
+                }
+                loaded = true;
+                Log.e("Loaded", "User " + login + " был загружен");
+                Log.e("Loaded", "admin = " + admin);
+                if(first_loaded == false) {
+                    Intent broadcast = new Intent(USER_CREATED_ACTION);
+                    broadcast.putExtra("id", id);
+                    context.sendBroadcast(broadcast);
+                    first_loaded = true;
+                }
+                if(security == 1) update(new String[] {"LostOnline"}, new Object[] {System.currentTimeMillis() / 1000});
+                /*Class.forName("com.mysql.jdbc.Driver"); - это не круто
                 connection = null;
                 connection = DriverManager.getConnection("jdbc:mysql://" + "triniti.ru-hoster.com/iborlZer?characterEncoding=utf8", "iborlZer",
                         "22599226a");
@@ -131,7 +174,8 @@ public class User implements Parcelable{
                     lost_msg = rs.getInt(DB_LOST_MESSAGE);
                     admin = rs.getInt(DB_ADMIN);
                     msg_id = rs.getString("msg_id");
-                    if(security == true) {
+                    lostOnline = rs.getString("LostOnline");
+                    if(security == 1) {
                         if (!token.equals(buffer_Token)) {
                             Log.e("Error:", "Ошибка. Несоответствие токена");
                             return;
@@ -146,8 +190,9 @@ public class User implements Parcelable{
                         context.sendBroadcast(broadcast);
                         first_loaded = true;
                     }
+                    if(security == 1) update(new String[] {"LostOnline"}, new Object[] {System.currentTimeMillis() / 1000});
                     break;
-                }
+                }*/
             }
             catch (Exception e){
                 Log.e("Error", "Ошибка загрузки БД ", e);
@@ -185,6 +230,8 @@ public class User implements Parcelable{
         parcel.writeInt(lost_msg);
         parcel.writeInt(admin);
         parcel.writeString(msg_id);
+        parcel.writeString(lostOnline);
+        parcel.writeInt(security);
     }
 
     public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
@@ -223,7 +270,10 @@ public class User implements Parcelable{
         lost_msg = parcel.readInt();
         admin = parcel.readInt();
         msg_id = parcel.readString();
+        lostOnline = parcel.readString();
+        security = parcel.readInt();
         Log.e("Parcel", "User " + login + "был распакован из Parcel");
+        if(security == 1) update(new String[] {"LostOnline"}, new Object[] {System.currentTimeMillis() / 1000});
         loaded = true;
     }
 
@@ -242,34 +292,27 @@ public class User implements Parcelable{
         }
         update_sql += "WHERE `id` = '" + id + "'";
 
-        if(upd != null && upd.isAlive() == true) return false;
-
-        upd = new UpdateUserInfo();
-        upd.start();
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Log.w("QUERY - UPDATE", update_sql);
+                try{
+                    connection = null;
+                    statement = null;
+                    rs = null;
+                    Class.forName("com.mysql.jdbc.Driver");
+                    connection = DriverManager.getConnection("jdbc:mysql://" + "triniti.ru-hoster.com/iborlZer?characterEncoding=utf8", "iborlZer",
+                            "22599226a");
+                    statement = connection.createStatement();
+                    statement.executeUpdate(update_sql);
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+        t.start();
         return true;
-    }
-
-    class UpdateUserInfo extends Thread{
-
-        public void start() { run(); }
-
-        public void run(){
-            Log.w("QUERY - UPDATE", update_sql);
-            try{
-                connection = null;
-                statement = null;
-                rs = null;
-                Class.forName("com.mysql.jdbc.Driver");
-                connection = DriverManager.getConnection("jdbc:mysql://" + "triniti.ru-hoster.com/iborlZer?characterEncoding=utf8", "iborlZer",
-                        "22599226a");
-                statement = connection.createStatement();
-                statement.executeUpdate(update_sql);
-            }
-            catch (Exception e){
-                e.printStackTrace();
-            }
-        }
-
     }
 
 }

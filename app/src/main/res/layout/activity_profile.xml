@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="#efefef">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/profile_info"
+        android:background="@drawable/shadow_back">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/info_relative"
+            android:layout_gravity="right|center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Large Text"
+                android:id="@+id/info_Name"
+                android:layout_centerHorizontal="true"
+                android:padding="16dp"
+                android:textColor="@color/colorBlackText"
+                android:textStyle="bold" />
+
+            <Button
+                android:layout_width="125dp"
+                android:layout_height="30dp"
+                android:text="@string/open_message"
+                android:id="@+id/info_openMessage"
+                android:layout_below="@+id/info_Name"
+                android:background="@drawable/button"
+                android:textColor="@color/white"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:textSize="12sp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp" />
+
+            <RelativeLayout
+                android:layout_width="125dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button"
+                android:layout_below="@+id/info_Name"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/info_score_rel"
+                android:layout_alignBottom="@+id/info_openMessage"
+                android:layout_alignTop="@+id/info_openMessage">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:id="@+id/score_image"
+                    android:src="@drawable/score"
+                    android:layout_alignBottom="@+id/score_text"
+                    android:layout_alignTop="@+id/score_text"
+                    android:contentDescription="@string/score"
+                    android:layout_marginLeft="10dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/info_score"
+                    android:id="@+id/score_text"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="8dp"
+                    android:layout_toRightOf="@+id/score_image" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:id="@+id/score_amount"
+                    android:background="@drawable/amount"
+                    android:padding="5dp"
+                    android:textSize="8sp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="3dp"
+                    android:text="50"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="8dp" />
+
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/img_status"
+                android:src="@drawable/online"
+                android:layout_margin="16dp"
+                android:layout_below="@+id/info_openMessage"
+                android:contentDescription="@string/img_status" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/online"
+                android:id="@+id/info_status"
+                android:textColor="@color/green_online"
+                android:textSize="16sp"
+                android:layout_alignTop="@+id/img_status"
+                android:layout_alignBottom="@+id/img_status"
+                android:layout_toRightOf="@+id/img_status"
+                android:layout_marginTop="2dp" />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="25dp"
+                android:id="@+id/img_city"
+                android:src="@drawable/city"
+                android:contentDescription="@string/city"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_below="@+id/img_status" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/info_city"
+                android:id="@+id/info_city"
+                android:layout_alignTop="@+id/img_city"
+                android:layout_alignBottom="@+id/img_city"
+                android:layout_toRightOf="@+id/img_city"
+                android:textSize="16sp"
+                android:layout_alignParentTop="false"
+                android:layout_alignWithParentIfMissing="false"
+                android:layout_marginTop="3dp"
+                android:textColor="@color/colorBlackText" />
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:id="@+id/img_age"
+                android:src="@drawable/age"
+                android:layout_below="@+id/img_city"
+                android:layout_alignLeft="@+id/img_city"
+                android:layout_alignRight="@+id/img_city"
+                android:layout_marginBottom="16dp"
+                android:contentDescription="@string/age" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/info_age"
+                android:id="@+id/info_age"
+                android:layout_marginTop="3dp"
+                android:textSize="16sp"
+                android:textColor="@color/colorBlackText"
+                android:layout_alignTop="@+id/img_age"
+                android:layout_alignLeft="@+id/info_city"
+                android:layout_alignBottom="@+id/img_age" />
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:id="@+id/img_posts_add"
+                android:layout_marginBottom="16dp"
+                android:layout_below="@+id/img_age"
+                android:layout_alignLeft="@+id/img_city"
+                android:layout_alignRight="@+id/img_city"
+                android:src="@drawable/posts_add"
+                android:contentDescription="@string/posts_add" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/info_posts_add"
+                android:id="@+id/info_posts_add"
+                android:textColor="@color/colorBlackText"
+                android:textSize="16sp"
+                android:layout_marginTop="3dp"
+                android:layout_alignTop="@+id/img_posts_add"
+                android:layout_alignLeft="@+id/info_age"
+                android:layout_alignBottom="@+id/img_posts_add" />
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:id="@+id/img_posts_execute"
+                android:layout_marginBottom="16dp"
+                android:src="@drawable/posts_execute"
+                android:layout_below="@+id/img_posts_add"
+                android:layout_alignLeft="@+id/img_city"
+                android:layout_alignRight="@+id/img_city"
+                android:contentDescription="@string/posts_execute" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/info_posts_execute"
+                android:id="@+id/info_posts_execute"
+                android:textColor="@color/colorBlackText"
+                android:textSize="16sp"
+                android:layout_marginTop="3dp"
+                android:layout_alignTop="@+id/img_posts_execute"
+                android:layout_alignLeft="@+id/info_posts_add"
+                android:layout_alignBottom="@+id/img_posts_execute" />
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:id="@+id/img_contact_mail"
+                android:layout_marginBottom="16dp"
+                android:src="@drawable/contact_mail"
+                android:contentDescription="@string/contact_mail"
+                android:layout_below="@+id/img_posts_execute"
+                android:layout_alignLeft="@+id/img_city"
+                android:layout_alignRight="@+id/img_city" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/iinfo_contact_mail"
+                android:id="@+id/info_contact_mail"
+                android:textColor="@color/colorBlackText"
+                android:textSize="16sp"
+                android:layout_marginTop="3dp"
+                android:layout_alignTop="@+id/img_contact_mail"
+                android:layout_alignBottom="@+id/img_contact_mail"
+                android:layout_alignLeft="@+id/info_posts_execute"
+                android:singleLine="true" />
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:id="@+id/img_contact_phone"
+                android:contentDescription="@string/contact_phone"
+                android:layout_marginBottom="16dp"
+                android:src="@drawable/contact_phone"
+                android:layout_below="@+id/img_contact_mail"
+                android:layout_alignLeft="@+id/img_city"
+                android:layout_alignRight="@+id/img_city" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/iinfo_contact_phone"
+                android:id="@+id/info_contact_phone"
+                android:textColor="@color/colorBlackText"
+                android:textSize="16sp"
+                android:layout_alignTop="@+id/img_contact_phone"
+                android:layout_alignBottom="@+id/img_contact_phone"
+                android:layout_alignLeft="@+id/info_contact_mail"
+                android:layout_marginTop="3dp" />
+        </RelativeLayout>
+    </FrameLayout>
+
+</RelativeLayout>
