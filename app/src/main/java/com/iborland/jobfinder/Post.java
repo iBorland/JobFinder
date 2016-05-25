@@ -57,6 +57,8 @@ public class Post implements Parcelable{
         }
     }
 
+
+
     class PostLoad extends Thread{
 
         PostLoad(){

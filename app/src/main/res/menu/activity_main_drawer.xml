@@ -15,10 +15,6 @@
             android:icon="@drawable/profile"
             android:title="Профиль" />
         <item
-            android:id="@+id/nav_setting"
-            android:icon="@drawable/setting"
-            android:title="Настройки"/>
-        <item
             android:id="@+id/nav_test"
             android:icon="@drawable/moderation"
             android:title="Модерация"/>

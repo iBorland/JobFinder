@@ -285,7 +285,7 @@ public class AddActivity extends AppCompatActivity {
             mysql.close();
             mysql = null;
 
-            user.score += 10;
+            user.score += 20;
             user.ad_amount++;
             user.update(new String[] {User.DB_SCORE, User.DB_AMOUNT_POSTS}, new Object[] {user.score, user.ad_amount});
             return 1;

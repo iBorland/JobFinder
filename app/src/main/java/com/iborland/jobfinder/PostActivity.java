@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -44,9 +45,9 @@ import java.util.HashMap;
  */
 public class PostActivity extends AppCompatActivity {
 
-    TextView sName, sText, sCost, sAdresses, sDate, zName, zCity, action_Header;
+    TextView sName, sText, sCost, sAdresses, sDate, zName, zCity, action_Header, zName_e, z_City_e;
     ListView list;
-    FrameLayout fText, fInfo;
+    FrameLayout fText, fInfo, fExecutor;
     LinearLayout lin;
     int post_id;
     Post Post;
@@ -58,6 +59,7 @@ public class PostActivity extends AppCompatActivity {
     ProgressDialog dialog;
     Button accept;
     String[] ratings;
+    User executor;
 
     Connection connection = null;
     Statement statement = null;
@@ -90,6 +92,9 @@ public class PostActivity extends AppCompatActivity {
         zCity = (TextView)findViewById(R.id.zCity);
         fText = (FrameLayout)findViewById(R.id.fText);
         fInfo = (FrameLayout)findViewById(R.id.fInfo);
+        zName_e = (TextView)findViewById(R.id.zName_e);
+        z_City_e = (TextView)findViewById(R.id.zCity_e);
+        fExecutor = (FrameLayout)findViewById(R.id.fInfo_Executor);
 
         top = AnimationUtils.loadAnimation(this, android.support.design.R.anim.abc_slide_in_top);
         left = AnimationUtils.loadAnimation(this, R.anim.slide_left);
@@ -144,6 +149,11 @@ public class PostActivity extends AppCompatActivity {
                 l.execute();
             }
         });
+
+        if(Post.status == 6 || Post.status == 10){
+            LoadExecutor loadExecutor = new LoadExecutor();
+            loadExecutor.execute();
+        }
 
         if(Post.amount > 0){
             //lin.addView(sAdresses);
@@ -594,6 +604,43 @@ public class PostActivity extends AppCompatActivity {
         protected Void doInBackground(Void... params) {
             partner = new User(Post.ownerID, "123", true, true, PostActivity.this);
             return null;
+        }
+    }
+
+    class LoadExecutor extends AsyncTask<Void, Void, Void>{
+
+        ProgressDialog progressDialog;
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            executor = new User(Post.executor, "123", true, true, PostActivity.this);
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(PostActivity.this);
+            progressDialog.setMessage(getString(R.string.loaded));
+            progressDialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            progressDialog.dismiss();
+            zName_e.setText(executor.name + " " + executor.surname);
+            z_City_e.setText(executor.city);
+            fExecutor.setVisibility(View.VISIBLE);
+            fExecutor.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(PostActivity.this, ProfileActivity.class);
+                    intent.putExtra("User", user);
+                    intent.putExtra("Profile", executor);
+                    startActivity(intent);
+                }
+            });
         }
     }
 }

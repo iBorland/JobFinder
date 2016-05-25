@@ -7,7 +7,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:id="@+id/imageView2"
-        android:src="@drawable/logo_app"
+        android:src="@drawable/logo_auth"
         android:layout_centerHorizontal="true"
         android:contentDescription="@string/logo"
         android:layout_marginTop="20dp" />

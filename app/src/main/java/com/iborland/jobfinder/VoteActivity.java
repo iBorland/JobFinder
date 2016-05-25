@@ -128,7 +128,7 @@ public class VoteActivity extends AppCompatActivity {
             dialog.show();
         }
         loaded = false;
-        if(user.admin == 0) user.score -= 20;
+        if(user.admin == 0) user.score -= 10;
         new UpdateBalance().execute();
     }
 
@@ -164,7 +164,7 @@ public class VoteActivity extends AppCompatActivity {
         @Override
         protected Integer doInBackground(Void... params) {
             try{
-                String query = "SELECT * FROM `posts` WHERE `status` = '1' AND `vote_id` = '0' ORDER BY RAND() LIMIT 1";
+                String query = "SELECT * FROM `posts` WHERE `status` = '1' AND `vote_id` = '0' and `ownerID` != '" + user.id + "' ORDER BY RAND() LIMIT 1";
                 Class.forName("com.mysql.jdbc.Driver");
                 connection = DriverManager.getConnection("jdbc:mysql://" + getString(R.string.db_ip), getString(R.string.db_login),
                         getString(R.string.db_password));

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:id="@+id/reeeeeeeel">
+    android:id="@+id/reeeeeeeel"
+    android:background="#efefef">
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -33,7 +34,7 @@
             <FrameLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:drawable/dialog_holo_light_frame"
+                android:background="@drawable/shadow_back"
                 android:padding="16dp"
                 android:id="@+id/fText">
 
@@ -108,7 +109,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/fInfo"
-                android:background="@android:drawable/dialog_holo_light_frame"
+                android:background="@drawable/shadow_back"
                 android:padding="16dp">
 
                 <RelativeLayout
@@ -149,7 +150,73 @@
                         android:textSize="18dp"
                         android:layout_below="@+id/zName" />
 
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:id="@+id/zOpen"
+                        android:src="@drawable/select_profile"
+                        android:padding="8dp"
+                        android:layout_alignParentRight="true" />
+
                 </RelativeLayout>
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/fInfo_Executor"
+                android:background="@drawable/shadow_back"
+                android:padding="16dp"
+                android:visibility="gone">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/layout_Info_e">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="Информация об исполнителе:"
+                        android:id="@+id/ssInfo_e"
+                        android:padding="4dp"
+                        android:textColor="@color/colorBlackText"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="Имя"
+                        android:id="@+id/zName_e"
+                        android:layout_below="@+id/ssInfo_e"
+                        android:padding="4dp"
+                        android:textColor="@color/colorBlackText"
+                        android:textSize="18dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="Населённый пункт"
+                        android:id="@+id/zCity_e"
+                        android:padding="4dp"
+                        android:textColor="@color/colorBlackText"
+                        android:textSize="18dp"
+                        android:layout_below="@+id/zName_e" />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:id="@+id/zOpen_e"
+                        android:src="@drawable/select_profile"
+                        android:padding="8dp"
+                        android:layout_alignParentRight="true" />
+
+                </RelativeLayout>
+
             </FrameLayout>
 
             <TextView

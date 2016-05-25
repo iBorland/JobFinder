@@ -43,6 +43,10 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -186,7 +190,7 @@ public class MainActivity extends AppCompatActivity
                     if(user.msg_id == null || !user.msg_id.equals(token)){
                         if(user.msg_id != null) Log.e("MSG_ID", user.msg_id);
                         else Log.e("MSG_ID", "null");
-                        Log.e("Token", token);
+                        if(token != null) Log.e("Token", token);
                         UpdateToken updateToken = new UpdateToken();
                         updateToken.execute();
                     }
@@ -275,9 +279,7 @@ public class MainActivity extends AppCompatActivity
             intent.putExtra("Profile", user);
             startActivity(intent);
 
-        } else if (id == R.id.nav_setting) {
-
-        } else if (id == R.id.nav_exit) {
+        }  else if (id == R.id.nav_exit) {
             DBHelper mDatabaseHelper;
             SQLiteDatabase mSqLiteDatabase;
 
@@ -481,24 +483,16 @@ public class MainActivity extends AppCompatActivity
             if(user == null) return -1;
             int amount = 0;
             try{
-                Connection connection;
-                Statement statement;
-                ResultSet rs;
-                String query = "SELECT id FROM posts WHERE ownerID = " + params[0] + " ORDER BY id DESC LIMIT 5";
-                Class.forName("com.mysql.jdbc.Driver");
-                connection = DriverManager.getConnection("jdbc:mysql://" + getString(R.string.db_ip), getString(R.string.db_login),
-                        getString(R.string.db_password));
-                statement = connection.createStatement();
-                rs = statement.executeQuery(query);
-                while (rs.next()){
-                    int id = rs.getInt("id");
-                    Post post = new Post(id);
+                if(params[0] == 0) return -1;
+                APILoader apiLoader = new APILoader("http://api.jobfinder.ru.com/myposts.php"); // это круто
+                apiLoader.addParams(new String[]{"id"}, new String[]{"" + params[0]});
+                String str = apiLoader.execute();
+                JSONArray jsonArray = new JSONArray(str);
+                for(int i = 0; i != jsonArray.length(); i++){
+                    Post post = new Post(jsonArray.getInt(i));
                     posts.add(post);
                     amount++;
                 }
-                connection.close();
-                statement.close();
-                rs.close();
             }
             catch (Exception e){
                 e.printStackTrace();
@@ -525,7 +519,7 @@ public class MainActivity extends AppCompatActivity
             ArrayList<HashMap<String, Object>> data = new ArrayList<>(5);
             HashMap<String, Object> map;
 
-            final String[] status = new String[] {"Ожидает модерации", "Отклонено: ", "Ожидает исполнителя", "Выполняет: "};
+            final String[] status = new String[] {"Ожидает модерации", "Отклонено: ", "Ожидает исполнителя", "Выполняет: ", "Исполнено"};
             final String[] from = new String[] {"Name", "Status", "Date", "Login", "Text"};
             final int[] to = new int[] {R.id.main_name, R.id.main_status, R.id.main_date, R.id.main_login, R.id.main_text};
 
@@ -535,6 +529,7 @@ public class MainActivity extends AppCompatActivity
                 if(posts.get(i).status == 1) map.put(from[1], status[0]);
                 if(posts.get(i).status == 5) map.put(from[1], status[2]);
                 if(posts.get(i).status == 6) map.put(from[1], status[3] + posts.get(i).executor_name);
+                if(posts.get(i).status == 10) map.put(from[1], status[4]);
                 map.put(from[0], posts.get(i).postName);
                 map.put(from[2], new SimpleDateFormat("dd.MM.yy 'в' HH:mm").format(new Date((long) Integer.parseInt(posts.get(i).createtime)*1000)));
                 map.put(from[3], posts.get(i).ownerLogin);
