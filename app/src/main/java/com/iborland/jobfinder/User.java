@@ -21,6 +21,13 @@ import java.sql.Statement;
 /**
  * Created by iborland on 19.03.16.
  */
+
+/*
+
+Класс пользователей. Здесь принимается из БД и содержится вся информация о пользователе.
+
+ */
+
 public class User implements Parcelable{
 
     static final String DB_ID = "id";

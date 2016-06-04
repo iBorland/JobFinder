@@ -57,6 +57,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+/*
+
+Этот класс - основное активити приложения, главное меню.
+Здесь проверяется авторизован-ли пользователь, привязан-ли у него номер сотового телефона или email,
+здесь создаётся боковое меню навигации, здесь отображаются созданные объявления пользователя, здесь
+отображается то объявление, которое пользователь выполняет.
+
+ */
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 

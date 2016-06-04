@@ -11,6 +11,14 @@ import java.sql.Statement;
 /**
  * Created by iBorland on 22.04.2016.
  */
+
+/*
+
+Класс для более удобной работой с удалённой базой данных.
+С помощью него можно быстро и удобно отправлять INSERT и UPDATE запросы.
+
+ */
+
 public class MySQL extends Thread{
 
     static final Integer ERROR_NONE = 1;

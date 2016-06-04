@@ -18,6 +18,13 @@ import com.google.android.gms.gcm.GcmListenerService;
 /**
  * Created by iBorland on 02.05.2016.
  */
+
+/*
+
+Класс для работы с Google Cloud Message. Этот класс принимает сообщения от сервером GCM и создаёт соответствующие уведомления.
+
+ */
+
 public class MyGcmListenerService extends GcmListenerService {
 
     private static final String TAG = "MyGcmListenerService";

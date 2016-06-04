@@ -16,6 +16,13 @@ import java.util.concurrent.ExecutionException;
 /**
  * Created by iborland on 20.03.16.
  */
+
+/*
+
+Класс объявлений. Здесь принимается из БД и содержится вся информация об объявлениях.
+
+ */
+
 public class Post implements Parcelable{
 
     int id;

@@ -38,6 +38,12 @@ import java.util.regex.Pattern;
 /**
  * Created by iborland on 20.03.16.
  */
+
+/*
+Класс - активити для регистрации нового пользователя в удалённой базе данных.
+Здесь пользователь вводит все свои данные, проверяется их валидность и записываются в БД.
+ */
+
 public class RegActivity extends AppCompatActivity {
 
 

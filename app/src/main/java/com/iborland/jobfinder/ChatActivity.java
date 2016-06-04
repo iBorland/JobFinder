@@ -39,6 +39,14 @@ import java.util.TimerTask;
 /**
  * Created by iBorland on 12.04.2016.
  */
+
+/*
+
+Класс - активита чата. Эта активити получает из Intent два объекта User, пользователя и его партнёра (собеседника).
+Также тут есть BroadCast рисивер, который обновляет сообщения, когда пользователь получает новое сообщение.
+
+ */
+
 public class ChatActivity extends AppCompatActivity {
 
     User user, partner;

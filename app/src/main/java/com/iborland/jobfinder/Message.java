@@ -7,6 +7,12 @@ import android.util.Log;
 /**
  * Created by iBorland on 12.04.2016.
  */
+
+/*
+
+Класс сообщений. Сделан для удобства работы с сообщениями.
+
+ */
 class Message implements Comparable, Parcelable{
 
     int id, sender_id, recipient_id;

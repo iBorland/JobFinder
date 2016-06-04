@@ -29,6 +29,13 @@ import java.sql.Statement;
 /**
  * Created by iBorland on 26.04.2016.
  */
+
+/*
+
+Класс для модерации объявлений. Пользователю даются рандомное, не пренадлежащее ему объявлении и он его модерирует.
+
+ */
+
 public class VoteActivity extends AppCompatActivity {
 
     User user;

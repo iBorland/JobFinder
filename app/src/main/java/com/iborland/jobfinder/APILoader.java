@@ -11,6 +11,12 @@ import java.net.URLConnection;
 /**
  * Created by iborland on 29.03.16.
  */
+
+/*
+
+Этот класс создан для упрощения отправки POST запроса и принятия ответа
+
+ */
 public class APILoader {
 
     String adress = null;

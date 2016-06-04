@@ -21,6 +21,13 @@ import java.util.Date;
 /**
  * Created by iBorland on 22.05.2016.
  */
+
+/*
+
+Класс - активити в котором можно посмотреть профиль любого пользователя.
+
+ */
+
 public class ProfileActivity extends AppCompatActivity {
 
     User user, profile;

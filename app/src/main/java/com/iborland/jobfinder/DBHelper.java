@@ -7,6 +7,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 /**
  * Created by iborland on 19.03.16.
  */
+
+/*
+Класс для работы с локальной БД.
+ */
+
 public class DBHelper extends SQLiteOpenHelper {
 
     DBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {

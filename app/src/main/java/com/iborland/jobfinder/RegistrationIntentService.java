@@ -16,6 +16,11 @@ import java.io.IOException;
 /**
  * Created by iBorland on 02.05.2016.
  */
+
+/*
+Класс для работы GCM. Регистрирует устройство на серверах GCM и получает уникальный токен, на который отправляются уведомления.
+ */
+
 public class RegistrationIntentService extends IntentService {
 
     private static final String[] TOPICS = {"global"};
@@ -48,10 +53,8 @@ public class RegistrationIntentService extends IntentService {
             subscribeTopics(token);
 
             Intent t = new Intent(getString(R.string.token_loaded));
-            Log.e("AGA", "Токен отправляется");
             t.putExtra("Token", token);
             sendBroadcast(t);
-            Log.e("AGA", "Токен отправлян");
 
             // You should store a boolean that indicates whether the generated token has been
             // sent to your server. If the boolean is false, send the token to your server,

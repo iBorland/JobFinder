@@ -31,8 +31,16 @@ import java.util.ArrayList;
 /**
  * Created by iborland on 25.03.16.
  */
+
+/*
+
+Этот класс - Activity для создания объявлеий.
+Здесь указывается основная информация об объявлении, можно указать адреса.
+
+ */
 public class AddActivity extends AppCompatActivity {
 
+    //объявляем переменные
     EditText pName, pText, pCost, pCity;
     TextView pCategory;
     LinearLayout ll;
@@ -56,6 +64,7 @@ public class AddActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
+        // инициализируем переменные
         ll = (LinearLayout)findViewById(R.id.LinearInScroll);
         user = getIntent().getParcelableExtra("User");
         left = AnimationUtils.loadAnimation(this, R.anim.slide_left);
@@ -69,6 +78,7 @@ public class AddActivity extends AppCompatActivity {
         pCategory = (TextView)findViewById(R.id.pCategory);
         pCity = (EditText)findViewById(R.id.pCity);
         actionBar = getSupportActionBar();
+        //делаем кнопочку "назад" в ActionBar
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
@@ -79,7 +89,7 @@ public class AddActivity extends AppCompatActivity {
         snackTextView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
 
         snackTextView.setTextColor(getResources().getColor(R.color.colorText));
-        category = getIntent().getIntExtra("Category", 0);
+        category = getIntent().getIntExtra("Category", 0); // получаем категорию из интента
         if(category != 0){
             pCategory.setText(categories[category - 1]);
             pCategory.setTextColor(getResources().getColor(R.color.colorBlackText));

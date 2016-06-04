@@ -30,6 +30,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 
+/*
+
+Класс - активити для просмотра объявлений в выбранной категории.
+В эту активити можно попасть из главного меню (MainActivity) если выбрать какую-либо категорию.
+Здесь объявлений загружаются из удалённой базы и выподяться "порциями" по 50 штук.
+
+ */
+
 public class Category_Activity extends AppCompatActivity {
 
     User user;
